@@ -1,15 +1,34 @@
 import React, { Component } from 'react';
 import Axios from 'axios';
 
-class AccessCheck extends Component {
+import { connect } from 'react-redux';
+import * as actions from '../../Store/Actions/actions'
+import SearchReceipt from '../SearchReceipt/SearchReceipt';
 
-    componentWillMount() {
-        console.log('accessCheck');
+
+class AppPremission extends Component {
+
+    componentWillMount(){
+        this.AccessCheck();
+    }
+
+    AccessCheck = () => {
+        Axios.get('https://cors-anywhere.herokuapp.com/'+'https://apikeys-5e3d9.firebaseio.com/edamam.json')
+        .then(res => this.props.setPremissoin(res.data))
+    }
+
+    render () {
+        return (
+            <SearchReceipt />
+        )
     }
     
-    render() {
-        return null
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        setPremissoin: data => dispatch(actions.setPremissions(data))
     }
 }
 
-export default AccessCheck;
+export default connect(null, mapDispatchToProps)(AppPremission);

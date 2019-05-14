@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import SearchReceipt from '../SearchReceipt/SearchReceipt';
+import AccessCheck from '../../Container/AccessCheck/AccessCheck';
 
 class Layout extends Component {
     state = {
@@ -28,7 +28,7 @@ class Layout extends Component {
                 <h1>Navbar</h1>
                 <h1>List</h1>
                 <h1>Receipt</h1>
-                <SearchReceipt />
+                <AccessCheck />
             </div>
         )
     }
