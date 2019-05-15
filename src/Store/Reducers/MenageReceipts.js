@@ -2,8 +2,8 @@ import * as actionTypes from '../Actions/ActionTypes';
 
 const initialState = {
     access: {
-        apiKey: 0,
-        apiId: 0
+        apiKey: null,
+        apiId: null    
     },
     receipts: {},
     savedReceipts: {},
