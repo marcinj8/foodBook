@@ -1,0 +1,13 @@
+.recipe__block {
+    margin: 15px;
+    padding: 10px;
+    border: 1px black solid;
+    border-radius: 20px 0 20px 0;
+    box-shadow: 3px 5px 25px;
+    transition: all .2s ease-in-out;
+}
+
+.recipe__block:hover {
+    box-shadow: 3px 5px 5px;
+    transform: scale(.98)
+}

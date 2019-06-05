@@ -1,14 +1,33 @@
 import React, { Component } from 'react';
 
 import AccessCheck from '../../Container/AccessCheck/AccessCheck';
+import NavigationBlock from '../../Component/Navigation/NavigationBlock';
 
 class Layout extends Component {
     state = {
-        navbar: {},
-        access: {
-            apiKey: '',
-            apiId: ''
-        }
+        navigation: {
+            start: {
+                active: true,
+                name: 'Start'
+            },
+            recipe: {
+                active: false,
+                name: 'Recipts',
+            },
+            favourites: {
+                active: false,
+                name: 'Favourites'
+            },
+            contact: {
+                active: false,
+                name: 'Contact me'
+            },
+            purchaseList: {
+                active: false,
+                name: 'Purchase list'
+            }
+        
+        },
     };
 
     setUpAccesData = data =>{
@@ -20,15 +39,63 @@ class Layout extends Component {
         })
     }
 
+    copyArr = arr => {
+        return arr.map(item => this.makeCopy(item));
+    }
+
+    copyObj = obj => {
+        const newObj = {};
+            
+        for (let key in obj) {
+            if (obj.hasOwnProperty(key)) {
+                newObj[key] = this.makeCopy(obj[key]);
+            }
+            return newObj;
+        }
+    }
+
+    makeCopy = object => {
+        if (Array.isArray(object)) {
+            return this.copyArr(object)
+        } else if (typeof(object) === 'object') {
+            this.copyObj(object)
+        }
+        return object
+    }
+
+    setUnactiveOverlap = navigation => {
+        const updateNavigationActiveProperty = navigation;
+        for (let key in navigation) {
+            navigation[key].active = false;
+        }
+        this.setState( {
+            navigation: updateNavigationActiveProperty
+        })
+        return navigation
+    }
+
+    setActiveOverlapHandler = ID => {
+        const updateNavigation = this.makeCopy(this.state.navigation);
+        this.setUnactiveOverlap(updateNavigation)
+        updateNavigation[ID].active = true;
+        this.setState({
+            navigation: updateNavigation
+        })
+        console.log(updateNavigation)
+    }
+
     render() {
 
         return (
             <div>
-                <h1>Header</h1>
-                <h1>Navbar</h1>
-                <h1>List</h1>
-                <h1>Receipt</h1>
-                <AccessCheck />
+                <h1>Receipts Book</h1>
+                <NavigationBlock 
+                    navigation={this.state.navigation}
+                    setActiveOverlap={this.setActiveOverlapHandler}/>
+                    <div className='receipts__container'>
+                        <AccessCheck /> 
+                    </div>
+               
             </div>
         )
     }
