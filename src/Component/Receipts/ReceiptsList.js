@@ -12,7 +12,9 @@ const receiptsList = props => {
                 <Receipt 
                     key={index}
                     receipt={item.recipe}
-                    clicked={() => props.seeReceiptDetail(item.recipe)}/>
+                    activeRecipe={props.activeRecipe === index}
+                    active={''}
+                    clicked={() => props.seeReceiptDetail(item.recipe, index)}/>
             )
         })
     }

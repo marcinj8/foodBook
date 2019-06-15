@@ -1,4 +1,16 @@
-.searchReveipt__container {
+.searchRcipe__container {
     display: flex;
     justify-content: space-around;
+    margin: 0 auto;
+    width: 90%;
+}
+
+.searchRcipe__recipeList {
+    width: 40%;
+}
+
+.searchRcipe__recipeDetails {
+    width: 40%;
+    position: relative;
+
 }

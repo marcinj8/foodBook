@@ -45,16 +45,17 @@ class SearchReceipt extends Component {
 
     render() {
         return(
-            <div className='searchReveipt__container'>
-                <div>
+            <div className='searchRcipe__container'>
+                <div className='searchRcipe__recipeList'>
                     {this.props.receipts !== null
                         ? <ReceiptList 
                             receiptList={this.props.receiptList} 
+                            activeRecipe={this.props.activeRecipe}
                             seeReceiptDetail={this.props.seeReciptDetail}/>
                         : <div>Loading...</div>
                     }
                 </div>
-                <div>
+                <div className='searchRcipe__recipeDetails'>
                     {this.props.reciptDetail !== null
                         ? <ReciptDetail 
                             reciptDetail={this.props.reciptDetail}/>
@@ -71,7 +72,8 @@ const mapStateToProps = state => {
         apiKey: state.access.apiKey,
         apiId: state.access.apiId,
         receiptList: state.receipts,
-        reciptDetail: state.reciptDetail
+        reciptDetail: state.reciptDetail,
+        activeRecipe: state.activeRecipe
     }
 }
 
@@ -79,7 +81,7 @@ const mapDispatchToProps = dispatch => {
     return {
         setReceips: res => dispatch(actions.serReceipts(res)),
         errorHandler: err => dispatch(actions.errorHandler(err)),
-        seeReciptDetail: details => dispatch(actions.seeReciptDetail(details))
+        seeReciptDetail: (details, index) => dispatch(actions.seeReciptDetail(details, index))
     }
 }
 

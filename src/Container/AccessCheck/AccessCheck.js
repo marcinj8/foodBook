@@ -15,6 +15,7 @@ class AppPremission extends Component {
     AccessCheck = () => {
         Axios.get('https://cors-anywhere.herokuapp.com/'+'https://apikeys-5e3d9.firebaseio.com/edamam.json')
         .then(res => this.props.setPremissoin(res.data))
+        .catch(err => console.log(err, 'nie działa'))
     }
 
     render () {

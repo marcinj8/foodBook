@@ -24,9 +24,10 @@ export const errorHandler = error => {
     }
 }
 
-export const seeReciptDetail = details => {
+export const seeReciptDetail = (details, index) => {
     return {
         type: actionTypes.SEE_RECIPT_DETAIL,
-        details: details
+        details: details,
+        index: index
     }
 }

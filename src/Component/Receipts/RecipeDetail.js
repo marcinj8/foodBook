@@ -1,5 +1,7 @@
 import React from 'react';
 
+import './RecipeDetail.css';
+
 const recipeDetail = props => {
     
     const ingredients = [];
@@ -10,7 +12,7 @@ const recipeDetail = props => {
     })
 
     return (
-        <div>
+        <div className='recipeDetail__block'>
             <h3>{props.reciptDetail.label}</h3>
             <div>
                 <h4>Ingredients:</h4>

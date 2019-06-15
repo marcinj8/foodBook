@@ -7,6 +7,7 @@ const initialState = {
     },
     receipts: null,
     reciptDetail: null,
+    activeRecipe: null,
     savedReceipts: {},
     isMoreReceipts: false,
     error: {
@@ -35,11 +36,12 @@ const setReceipts = (state, receipts, isMoreReceipts) => {
     }
 }
 
-const setReciptDetail = (state, details) => {
-    console.log(details);
+const setReciptDetail = (state, details, index) => {
+    console.log(details, index);
     return {
         ...state,
-        reciptDetail: details
+        reciptDetail: details,
+        activeRecipe: index
     }
 }
 
@@ -47,7 +49,7 @@ const menageReceiptReducer = ( state = initialState, action ) => {
     switch (action.type) {
         case actionTypes.GET_PREMISSION: return setKey(state, action.apiKey, action.apiId);
         case actionTypes.SET_RECEIPTS: return setReceipts(state, action.receipts, action.isMoreReceipts);
-        case actionTypes.SEE_RECIPT_DETAIL: return setReciptDetail(state, action.details)
+        case actionTypes.SEE_RECIPT_DETAIL: return setReciptDetail(state, action.details, action.index)
         default: return state;
     }
 }
