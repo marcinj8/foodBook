@@ -1,0 +1,25 @@
+.navigation__item {
+    padding: 10px 0 7px 0;
+    cursor: pointer;
+    width: 100%;
+    border-right: dotted 1px black;
+    border-bottom: solid 3px transparent;
+    transition: all .2s;
+    font-size: 1.1em;
+}
+
+.navigation__item:last-child {
+    border-right: none;
+}
+
+.navigation__item--active {
+    color: rgb(27, 3, 83);
+    text-shadow: 0 0 1px white;
+    border-bottom: solid 3px rgb(79, 7, 246)
+}
+
+.navigation__item--noActive:hover {
+    color: rgb(27, 3, 83);
+    text-shadow: 0 0 1px white;
+    border-bottom: solid 3px rgb(79, 7, 246)
+}

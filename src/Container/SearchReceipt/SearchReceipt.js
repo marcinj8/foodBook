@@ -18,34 +18,53 @@ class SearchReceipt extends Component {
         premission: false
     };
 
-    componentWillMount () {
-        if(this.props.apiKey !== null && this.props.apiId !== null ) {
-            this.getReceipts();
-        };
-    };
-
     componentDidUpdate () {
-        if(this.props.apiKey !== null && this.props.apiId !== null && this.props.receiptList === null) {
+        console.log(this.state.loading , this.props.apiId, this.props.receiptList.length)
+
+        if(this.props.apiKey !== null && this.props.apiId !== null && this.props.ingredient !== '' && this.props.receiptList.length === 0 && this.state.loading === false) {
             this.getReceipts();
+            console.log('update searchingRecipes', this.props.ingredient)
         };
+        if(this.props.receiptList.length > 0 && this.state.loading === true) {
+            this.setLoadingToFalse()
+        }
     };
     
     setReceips = response => {
-        console.log(response)
         this.props.setReceips(response.data)
-        
     }
 
+    setLoadingToFalse = () => {
+        this.setState({loading: false})
+    }
+
+    setLoadingToTrue = () => {
+        this.setState({loading: true})
+    }
 
     getReceipts = () => {
-        Axios.get(`https://api.edamam.com/search?q=beef&app_id=${this.props.apiId}&app_key=${this.props.apiKey}&from=10&to=20`)
+        this.setLoadingToTrue()
+        Axios.get(`https://api.edamam.com/search?q=${this.props.ingredient}&app_id=${this.props.apiId}&app_key=${this.props.apiKey}&from=10&to=20`)
         .then(res => this.setReceips(res))
         .catch(err => this.props.errorHandler(err))
     }
 
+    addToFavouritesHandler = recipe => {
+        const recipeData = recipe;
+        recipe.bookmarked = true;
+        Axios.post('https://fooddatabase-75cfa.firebaseio.com/favourites.json', recipeData)
+        this.props.onAddToFavourites(recipeData)
+    }
+
     render() {
+        const searchRcipeStyle = ['searchRcipe__container',
+        this.props.isActive
+        ? 'searchRcipe__container--active'
+        : 'searchRcipe__container--noActive'
+    ];
+
         return(
-            <div className='searchRcipe__container'>
+            <div className={searchRcipeStyle.join(' ')}>
                 <div className='searchRcipe__recipeList'>
                     {this.props.receipts !== null
                         ? <ReceiptList 
@@ -58,8 +77,10 @@ class SearchReceipt extends Component {
                 <div className='searchRcipe__recipeDetails'>
                     {this.props.reciptDetail !== null
                         ? <ReciptDetail 
-                            reciptDetail={this.props.reciptDetail}/>
-                        : <div>Choose recipe</div>
+                            isBookmarked={this.props.reciptDetail.bookmarked}
+                            addToFavourites={() => this.addToFavouritesHandler(this.props.reciptDetail)}
+                            reciptDetail={this.props.reciptDetail.recipe}/>
+                        : <h4>Choose recipe</h4>
                     }
                 </div>
             </div>
@@ -79,9 +100,10 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        setReceips: res => dispatch(actions.serReceipts(res)),
+        setReceips: res => dispatch(actions.setReceipts(res)),
         errorHandler: err => dispatch(actions.errorHandler(err)),
-        seeReciptDetail: (details, index) => dispatch(actions.seeReciptDetail(details, index))
+        seeReciptDetail: (details, index) => dispatch(actions.seeReciptDetail(details, index)),
+        onAddToFavourites: recipe => dispatch(actions.addToFavourites(recipe))
     }
 }
 

@@ -3,13 +3,12 @@ import Axios from 'axios';
 
 import { connect } from 'react-redux';
 import * as actions from '../../Store/Actions/actions'
-import SearchReceipt from '../SearchReceipt/SearchReceipt';
-
 
 class AppPremission extends Component {
 
     componentWillMount(){
         this.AccessCheck();
+        this.getFavouritesRecipes()
     }
 
     AccessCheck = () => {
@@ -18,9 +17,15 @@ class AppPremission extends Component {
         .catch(err => console.log(err, 'nie działa'))
     }
 
+    getFavouritesRecipes = () => {
+        Axios.get('https://cors-anywhere.herokuapp.com/'+'https://fooddatabase-75cfa.firebaseio.com/favourites.json')
+        .then(res => this.props.setFavourites(res.data))
+        .catch(err => console.log(err, 'nie działa'))
+    }
+
     render () {
         return (
-            <SearchReceipt />
+            null
         )
     }
     
@@ -28,7 +33,8 @@ class AppPremission extends Component {
 
 const mapDispatchToProps = dispatch => {
     return {
-        setPremissoin: data => dispatch(actions.setPremissions(data))
+        setPremissoin: data => dispatch(actions.setPremissions(data)),
+        setFavourites: recipes => dispatch(actions.setFavourites(recipes))
     }
 }
 

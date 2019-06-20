@@ -3,11 +3,14 @@ import React from 'react';
 import './RecipeDetail.css';
 
 const recipeDetail = props => {
-    
+    if(props.reciptDetail === null) {
+        return null
+    }
+
     const ingredients = [];
     props.reciptDetail.ingredients.map( (ingredient, index) => {
         ingredients.push(
-            <li key={index}>{ingredient.text} - weight: {Math.round(ingredient.weight)}g</li>
+            <li key={index}>{ingredient.text} ( {Math.round(ingredient.weight)}g )</li>
         )
     })
 
@@ -20,6 +23,11 @@ const recipeDetail = props => {
                     {ingredients}
                 </ul>
             </div>
+            {
+                props.isBookmarked
+                ?<button onClick={ () => console.log(props.ID)}>Remove from favourite</button>
+                :<button onClick={props.addToFavourites}>Add to favourite</button>
+            }
         </div>
     )
 }

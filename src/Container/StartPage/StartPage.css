@@ -1,0 +1,69 @@
+.startPage__container {
+    position: absolute;
+    left: 0;
+    box-sizing: border-box;
+    overflow: hidden;
+    background: gray;
+    transition: all .3s ease-in-out;
+}
+
+.startPage__container--active {
+    animation: showStartPage .4s forwards;
+
+}
+
+.startPage__container--noActive {
+    animation: hideStartPage .3s forwards;
+
+
+}
+
+@keyframes showStartPage {
+    0% {
+        width: 0%;
+        height: 0;
+        padding: 0;
+    }
+    35%{
+        width: 20%;
+        height: 0;
+        padding: 0;
+    }
+
+    75%{
+        width: 20%;
+        height: 500px;
+        padding: 50px 5px 20px 5px;
+    }
+
+    100%{
+        width: 100%;
+        height: 500px;
+        padding: 50px 5px 20px 5px;
+    }
+}
+
+@keyframes hideStartPage {
+    0% {
+        width: 100%;
+        height: 500px;
+        padding: 50px 5px 20px 5px;
+    }
+    35%{
+        width: 20%;
+        height: 500px;
+        padding: 50px 5px 20px 5px;;
+    }
+
+    55%{
+        width: 20%;
+        height: 0;
+        padding: 0;
+    }
+
+    100%{
+        width: 0%;
+        height: 0;
+        padding: 0;
+    }
+}

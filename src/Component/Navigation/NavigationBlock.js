@@ -1,6 +1,8 @@
 import React from 'react';
 import NavigationItem from './NavigationItem';
 
+import './NavigationBlock.css'
+
 const navigationBlock = props => {
 
     const navigationElements = [];

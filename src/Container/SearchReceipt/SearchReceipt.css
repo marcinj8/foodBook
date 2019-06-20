@@ -11,6 +11,78 @@
 
 .searchRcipe__recipeDetails {
     width: 40%;
-    position: relative;
+}
 
+.searchRcipe__container {
+    box-sizing: border-box;
+    transition: all .3s ease-in-out;
+}
+
+.searchRcipe__container--active {
+    animation: showSearchRecipe .4s forwards;
+
+}
+
+.searchRcipe__container--noActive {
+    animation: hideSearchRecipe .3s forwards;
+
+
+}
+
+@keyframes showSearchRecipe {
+    0% {
+        overflow: hidden;
+        opacity: 0;
+        height: 0;
+        padding: 0;
+    }
+    35%{
+        opacity: 0%;
+        height: 0;
+        padding: 0;
+    }
+
+    55%{
+        opacity: 0;
+        width: 20%;
+        height: 500px;
+        padding: 50px 5px 20px 5px;
+    }
+
+    100%{
+        opacity: 100%;
+        overflow: none;
+        left: 0%;
+        width: 100%;
+        height: auto;
+        padding: 50px 5px 20px 5px;
+    }
+}
+
+@keyframes hideSearchRecipe {
+    0% {
+        opacity: 100%;
+        width: 100%;
+        padding: 50px 5px 20px 5px;
+    }
+    35%{
+        opacity: 0%;
+        overflow: hidden;
+        padding: 50px 5px 20px 5px;;
+    }
+
+    55%{
+        height: 500px;
+        width: 20%;
+        height: 0;
+        padding: 0;
+    }
+
+    100%{
+        opacity: 0%;
+        overflow: hidden;
+        width: 0%;
+        height: 0;
+        padding: 0;
+    }
 }

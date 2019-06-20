@@ -8,13 +8,13 @@ export const setPremissions = data => {
     }
 };
 
-export const serReceipts = data => {
+export const setReceipts = data => {
     return {
         type: actionTypes.SET_RECEIPTS,
         receipts: data.hits,
         isMoreReceipts: data.more
     }
-}
+};
 
 export const errorHandler = error => {
     return {
@@ -22,7 +22,7 @@ export const errorHandler = error => {
         occured: true,
         message: error.message || 'something went wrong',
     }
-}
+};
 
 export const seeReciptDetail = (details, index) => {
     return {
@@ -30,4 +30,18 @@ export const seeReciptDetail = (details, index) => {
         details: details,
         index: index
     }
-}
+};
+
+export const setFavourites = recipes => {
+    return {
+        type: actionTypes.SET_FAVOURITES,
+        recipes: recipes
+    }
+};
+
+export const addToFavourites = recipe => {
+    return {
+        type: actionTypes.ADD_TO_FAVOURITIES,
+        recipe: recipe
+    }
+};

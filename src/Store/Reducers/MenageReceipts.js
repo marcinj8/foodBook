@@ -5,10 +5,11 @@ const initialState = {
         apiKey: null,
         apiId: null
     },
-    receipts: null,
+    receipts: [],
     reciptDetail: null,
     activeRecipe: null,
-    savedReceipts: {},
+    favouritesRecipes: null,
+    savedReceipts: null,
     isMoreReceipts: false,
     error: {
         occurred: false,
@@ -45,13 +46,33 @@ const setReciptDetail = (state, details, index) => {
     }
 }
 
+const setFavouritesRecipes = (state, recipes) => {
+    return {
+        ...state,
+        favouritesRecipes: recipes
+    }
+}
+
+const addToFavourites = (state, recipe) => {
+    return {
+        ...state,
+        favouritesRecipes: {
+            ...state.favouritesRecipes,
+            recipe
+        }
+    }
+}
+
 const menageReceiptReducer = ( state = initialState, action ) => {
     switch (action.type) {
         case actionTypes.GET_PREMISSION: return setKey(state, action.apiKey, action.apiId);
         case actionTypes.SET_RECEIPTS: return setReceipts(state, action.receipts, action.isMoreReceipts);
         case actionTypes.SEE_RECIPT_DETAIL: return setReciptDetail(state, action.details, action.index)
+        case actionTypes.SET_FAVOURITES: return setFavouritesRecipes(state, action.recipes);
+        case actionTypes.ADD_TO_FAVOURITIES: return addToFavourites(state, action.recipe);
         default: return state;
     }
 }
+console.log(initialState)
 
 export default menageReceiptReducer;

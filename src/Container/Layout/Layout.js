@@ -2,6 +2,11 @@ import React, { Component } from 'react';
 
 import AccessCheck from '../../Container/AccessCheck/AccessCheck';
 import NavigationBlock from '../../Component/Navigation/NavigationBlock';
+import StartPage from '../StartPage/StartPage';
+import SearchReceipt from '../SearchReceipt/SearchReceipt';
+import FavouriteRecipes from '../FavouriteRecipes/FavouriteRecipes';
+import ContactForm from '../ContactForm/ContactForm';
+import PurchaseList from '../PurchaseList/PurchaseList';
 
 class Layout extends Component {
     state = {
@@ -18,16 +23,17 @@ class Layout extends Component {
                 active: false,
                 name: 'Favourites'
             },
+            purchaseList: {
+                active: false,
+                name: 'Purchase list'
+            },
             contact: {
                 active: false,
                 name: 'Contact me'
             },
-            purchaseList: {
-                active: false,
-                name: 'Purchase list'
-            }
-        
         },
+        ingredient: '',
+        isSearchingActive: false
     };
 
     setUpAccesData = data =>{
@@ -81,20 +87,37 @@ class Layout extends Component {
         this.setState({
             navigation: updateNavigation
         })
-        console.log(updateNavigation)
+    }
+
+    searchRecipesHandler = ingredient => {
+        this.setState({ingredient: ingredient})
+        this.setActiveOverlapHandler('recipe');
     }
 
     render() {
-
         return (
             <div>
                 <h1>Receipts Book</h1>
-                <NavigationBlock 
+                <NavigationBlock
+                    ingredientInputValue={this.state.ingredient}
                     navigation={this.state.navigation}
                     setActiveOverlap={this.setActiveOverlapHandler}/>
-                    <div className='receipts__container'>
-                        <AccessCheck /> 
-                    </div>
+                <div className='page__container'>
+                    <StartPage
+                        searchRecipes={this.searchRecipesHandler}
+                        isActive={this.state.navigation.start.active} />
+                    <AccessCheck
+                        isActive={this.state.navigation.recipe.active}/>
+                    <SearchReceipt
+                        ingredient={this.state.ingredient}
+                        isActive={this.state.navigation.recipe.active}/>
+                    <FavouriteRecipes 
+                        isActive={this.state.navigation.favourites.active} />
+                    <PurchaseList 
+                        isActive={this.state.navigation.purchaseList.active} />
+                    <ContactForm 
+                        isActive={this.state.navigation.contact.active} />
+                </div>
                
             </div>
         )
