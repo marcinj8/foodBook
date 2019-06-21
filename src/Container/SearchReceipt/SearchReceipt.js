@@ -10,12 +10,16 @@ import './SearchReceipt.css';
 
 class SearchReceipt extends Component {
     state = {
+        currentSearching: {
+            ingredient: '',
+            searchFrom: 0,
+            searchTo: 10
+        },
         loading: false,
         error: {
             occurred: false,
             message: null
         },
-        premission: false
     };
 
     componentDidUpdate () {
@@ -44,15 +48,18 @@ class SearchReceipt extends Component {
 
     getReceipts = () => {
         this.setLoadingToTrue()
-        Axios.get(`https://api.edamam.com/search?q=${this.props.ingredient}&app_id=${this.props.apiId}&app_key=${this.props.apiKey}&from=10&to=20`)
+        Axios.get(`https://api.edamam.com/search?q=${this.props.ingredient}&app_id=${this.props.apiId}&app_key=${this.props.apiKey}&from=${this.state.currentSearching.searchFrom}&to=${this.state.currentSearching.searchTo}`)
         .then(res => this.setReceips(res))
         .catch(err => this.props.errorHandler(err))
     }
 
     addToFavouritesHandler = recipe => {
-        const recipeData = recipe;
-        recipe.bookmarked = true;
+        const recipeData = {...recipe};
+        recipeData.bookmarked = true;
+        console.log(recipe, recipeData)
         Axios.post('https://fooddatabase-75cfa.firebaseio.com/favourites.json', recipeData)
+        .then(res => console.log(res, recipeData))
+        .catch(err => console.log(err, recipeData))
         this.props.onAddToFavourites(recipeData)
     }
 

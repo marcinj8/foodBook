@@ -13,22 +13,27 @@ class Layout extends Component {
         navigation: {
             start: {
                 active: true,
+                disabled: false,
                 name: 'Start'
             },
             recipe: {
                 active: false,
+                disabled: false,
                 name: 'Recipts',
             },
             favourites: {
                 active: false,
+                disabled: false,
                 name: 'Favourites'
             },
             purchaseList: {
                 active: false,
+                disabled: false,
                 name: 'Purchase list'
             },
             contact: {
                 active: false,
+                disabled: false,
                 name: 'Contact me'
             },
         },
@@ -36,14 +41,14 @@ class Layout extends Component {
         isSearchingActive: false
     };
 
-    setUpAccesData = data =>{
-        const updateAccesData = {...this.state.access};
-        updateAccesData.apiKey = data.apiKey;
-        updateAccesData.apiId = data.user;
-        this.setState({
-            access: updateAccesData
-        })
-    }
+    // setUpAccesData = data =>{
+    //     const updateAccesData = {...this.state.access};
+    //     updateAccesData.apiKey = data.apiKey;
+    //     updateAccesData.apiId = data.user;
+    //     this.setState({
+    //         access: updateAccesData
+    //     })
+    // }
 
     copyArr = arr => {
         return arr.map(item => this.makeCopy(item));

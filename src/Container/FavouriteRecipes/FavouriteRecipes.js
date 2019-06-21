@@ -2,10 +2,11 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import ReceiptsList from '../../Component/Receipts/ReceiptsList';
-
-import './FavouriteRecipes.css'
 import Modal from '../../Component/Modal/Modal';
 import RecipeDetail from '../../Component/Receipts/RecipeDetail';
+import * as AsyncFunc from '../../AsyncFunc/AsyncFunc';
+
+import './FavouriteRecipes.css';
 
 class FavouriteRecipes extends Component {
     state = {
@@ -13,6 +14,17 @@ class FavouriteRecipes extends Component {
         favouriteRecipeDetail: null
     }
 
+    componentWillUpdate () {
+        // pobierz i prześlij dane
+        if(this.props.isActive){
+            AsyncFunc.test();
+            console.log('show')
+        }
+        if(!this.props.isActive) {
+            console.log('hide')
+        }
+    }
+    
     seeFavoriteRecipeDetailHandler = (recipeDetail, index) => {
         console.log(recipeDetail)
         this.setState({
@@ -34,11 +46,11 @@ class FavouriteRecipes extends Component {
             ? 'favouriteRecipes__container--active'
             : 'favouriteRecipes__container--noActive'
         ];
-        const favouritesRecipesList = [];
+        let favouritesRecipesList = [];
         if(this.props.favourites !== null) {
-            Object.keys(this.props.favourites).map( key => favouritesRecipesList.push({...this.props.favourites[key], ID: key}))
+            favouritesRecipesList = this.props.favourites;
         }
-        console.log(this.state)
+
         return (
             <div className={StartPageStyle.join(' ')}>
                 <h2>Favorite Recipes</h2>

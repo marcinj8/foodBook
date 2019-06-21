@@ -28,11 +28,25 @@ const setKey = (state, apiKey, apiId) => {
     }
 }
 
+const compareRecipeList = (state, newRecipes) => {
+    const currentFavouriteList =  [...state.favouritesRecipes];
+    const newRecipesUpdate = [...newRecipes];
+        newRecipesUpdate.map( (value, index) => {
+            for(let favouriteRecipe of currentFavouriteList) {
+                if(favouriteRecipe.recipe.label === value.recipe.label) {
+                    newRecipesUpdate[index] = favouriteRecipe;
+                };
+            };
+        });
+    return newRecipesUpdate
+}
+
 const setReceipts = (state, receipts, isMoreReceipts) => {
-    console.log(receipts);
+    const recipeList = compareRecipeList(state, receipts);
+    console.log(recipeList, 'recipelist')
     return {
         ...state,
-        receipts: receipts,
+        receipts: recipeList,
         isMoreReceipts: isMoreReceipts
     }
 }
@@ -47,13 +61,16 @@ const setReciptDetail = (state, details, index) => {
 }
 
 const setFavouritesRecipes = (state, recipes) => {
+    const favouritesRecipesList = [];
+    Object.keys(recipes).map( key => favouritesRecipesList.push({...recipes[key], ID: key}))
     return {
         ...state,
-        favouritesRecipes: recipes
+        favouritesRecipes: favouritesRecipesList
     }
 }
 
 const addToFavourites = (state, recipe) => {
+    console.log(state.favouritesRecipes, recipe)
     return {
         ...state,
         favouritesRecipes: {
