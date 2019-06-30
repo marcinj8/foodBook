@@ -9,6 +9,7 @@ const initialState = {
     reciptDetail: null,
     activeRecipe: null,
     favouritesRecipes: null,
+    dataBaseKey: '',
     savedReceipts: null,
     isMoreReceipts: false,
     error: {
@@ -18,65 +19,99 @@ const initialState = {
 }
 
 const setKey = (state, apiKey, apiId) => {
-    console.log(state, apiKey, apiId);
+    console.log(apiKey, apiId)
     return {
         ...state,
         access: {
+            ...state.acces,
             apiKey: apiKey,
             apiId: apiId
         }
     }
 }
 
-const compareRecipeList = (state, newRecipes) => {
-    const currentFavouriteList =  [...state.favouritesRecipes];
-    const newRecipesUpdate = [...newRecipes];
-        newRecipesUpdate.map( (value, index) => {
+const compareRecipeList = (state, newRecipes, favouriteList) => {
+    const currentFavouriteList =  favouriteList || [...state.favouritesRecipes];
+    const recipeListUpdated = [...newRecipes];
+        recipeListUpdated.map( (value, index) => {
             for(let favouriteRecipe of currentFavouriteList) {
                 if(favouriteRecipe.recipe.label === value.recipe.label) {
-                    newRecipesUpdate[index] = favouriteRecipe;
+                    recipeListUpdated[index] = favouriteRecipe;
                 };
             };
         });
-    return newRecipesUpdate
+    return recipeListUpdated
 }
 
 const setReceipts = (state, receipts, isMoreReceipts) => {
     const recipeList = compareRecipeList(state, receipts);
-    console.log(recipeList, 'recipelist')
     return {
         ...state,
         receipts: recipeList,
         isMoreReceipts: isMoreReceipts
-    }
+    };
 }
 
 const setReciptDetail = (state, details, index) => {
-    console.log(details, index);
+    const udpadeDetails = {...details};
+    udpadeDetails.ID = index || null;
+    console.log(udpadeDetails, index)
     return {
         ...state,
-        reciptDetail: details,
+        reciptDetail: udpadeDetails,
         activeRecipe: index
-    }
+    };
 }
 
-const setFavouritesRecipes = (state, recipes) => {
-    const favouritesRecipesList = [];
-    Object.keys(recipes).map( key => favouritesRecipesList.push({...recipes[key], ID: key}))
+const setFavouritesRecipes = (state, recipes, dataBaseKey) => {
+    // const favouritesRecipesList = [];
+    // Object.keys(recipes).map( key => favouritesRecipesList.push({...recipes[key], ID: key}))
     return {
         ...state,
-        favouritesRecipes: favouritesRecipesList
-    }
+        favouritesRecipes: recipes,
+        dataBaseKey: dataBaseKey
+    };
 }
 
-const addToFavourites = (state, recipe) => {
-    console.log(state.favouritesRecipes, recipe)
+const addToFavourites = (state, recipes) => {
     return {
         ...state,
-        favouritesRecipes: {
-            ...state.favouritesRecipes,
-            recipe
+        favouritesRecipes: recipes
+    };
+}
+
+const updateRecipeDetail = (state, favouriteList) => {
+    const updateRecipeDetail = {...state.reciptDetail};
+    favouriteList.map( (recipe, index) => {
+        if(recipe.recipe.label === state.reciptDetail.recipe.label) {
+            updateRecipeDetail.bookmarked = true;
+            updateRecipeDetail.ID = index;
+
         }
+    });
+    return updateRecipeDetail;
+    
+}
+
+const updateRecipeList = (state, recipes) => {
+    addToFavourites(state, recipes);
+    const recipeList = compareRecipeList(state, state.receipts, recipes);
+    const updatedRecipeDetail = updateRecipeDetail(state, recipes);
+    return {
+        ...state,
+        receipts: recipeList,
+        reciptDetail: updatedRecipeDetail
+
+    };
+}
+
+const removeFromFavourite = (state, id) => {
+    const updatedFavouriteList = [...state.favouritesRecipes];
+    updatedFavouriteList.splice(id,1)
+    console.log(updatedFavouriteList, id)
+    return {
+        ...state,
+        favouritesRecipes: updatedFavouriteList
     }
 }
 
@@ -84,12 +119,12 @@ const menageReceiptReducer = ( state = initialState, action ) => {
     switch (action.type) {
         case actionTypes.GET_PREMISSION: return setKey(state, action.apiKey, action.apiId);
         case actionTypes.SET_RECEIPTS: return setReceipts(state, action.receipts, action.isMoreReceipts);
-        case actionTypes.SEE_RECIPT_DETAIL: return setReciptDetail(state, action.details, action.index)
-        case actionTypes.SET_FAVOURITES: return setFavouritesRecipes(state, action.recipes);
-        case actionTypes.ADD_TO_FAVOURITIES: return addToFavourites(state, action.recipe);
+        case actionTypes.SEE_RECIPT_DETAIL: return setReciptDetail(state, action.details, action.index);
+        case actionTypes.SET_FAVOURITES: return setFavouritesRecipes(state, action.recipes, action.dataBaseKey);
+        case actionTypes.ADD_TO_FAVOURITIES: return updateRecipeList(state, action.recipes);
+        case actionTypes.REMOVE_FROM_FAVOURITIES: return removeFromFavourite(state, action.id);
         default: return state;
-    }
+    };
 }
-console.log(initialState)
 
 export default menageReceiptReducer;

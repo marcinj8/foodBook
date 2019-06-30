@@ -1,18 +1,18 @@
 import React from 'react';
 
 import './RecipeDetail.css';
+import { removeFromFavourite } from '../../Store/Actions/actions';
 
 const recipeDetail = props => {
     if(props.reciptDetail === null) {
         return null
     }
-
+    console.log(props.ID)
     const ingredients = [];
-    props.reciptDetail.ingredients.map( (ingredient, index) => {
-        ingredients.push(
+    props.reciptDetail.ingredients.map( (ingredient, index) => ingredients.push(
             <li key={index}>{ingredient.text} ( {Math.round(ingredient.weight)}g )</li>
         )
-    })
+    )
 
     return (
         <div className='recipeDetail__block'>
@@ -25,7 +25,7 @@ const recipeDetail = props => {
             </div>
             {
                 props.isBookmarked
-                ?<button onClick={ () => console.log(props.ID)}>Remove from favourite</button>
+                ?<button onClick={ () => props.removeFromFavourite(props.ID)}>Remove from favourite</button>
                 :<button onClick={props.addToFavourites}>Add to favourite</button>
             }
         </div>

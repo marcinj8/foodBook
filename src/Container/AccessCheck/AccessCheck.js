@@ -4,6 +4,8 @@ import Axios from 'axios';
 import { connect } from 'react-redux';
 import * as actions from '../../Store/Actions/actions'
 
+const CORS = 'https://cors-anywhere.herokuapp.com/';
+
 class AppPremission extends Component {
 
     componentWillMount(){
@@ -12,14 +14,22 @@ class AppPremission extends Component {
     }
 
     AccessCheck = () => {
-        Axios.get('https://cors-anywhere.herokuapp.com/'+'https://apikeys-5e3d9.firebaseio.com/edamam.json')
+        Axios.get(CORS+'https://apikeys-5e3d9.firebaseio.com/edamam.json')
         .then(res => this.props.setPremissoin(res.data))
         .catch(err => console.log(err, 'nie działa'))
     }
 
     getFavouritesRecipes = () => {
-        Axios.get('https://cors-anywhere.herokuapp.com/'+'https://fooddatabase-75cfa.firebaseio.com/favourites.json')
-        .then(res => this.props.setFavourites(res.data))
+        Axios.get(CORS+'https://fooddatabase-75cfa.firebaseio.com/favouritesList.json')
+        .then(res => {
+            let response = [];
+            let dataBaseKey = '';
+            for(let key in res.data) {
+                response = res.data[key];
+                dataBaseKey = key;
+            }
+            this.props.setFavourites(response, dataBaseKey)
+        })
         .catch(err => console.log(err, 'nie działa'))
     }
 
@@ -34,7 +44,7 @@ class AppPremission extends Component {
 const mapDispatchToProps = dispatch => {
     return {
         setPremissoin: data => dispatch(actions.setPremissions(data)),
-        setFavourites: recipes => dispatch(actions.setFavourites(recipes))
+        setFavourites: (recipes, dataBaseKey) => dispatch(actions.setFavourites(recipes, dataBaseKey))
     }
 }
 

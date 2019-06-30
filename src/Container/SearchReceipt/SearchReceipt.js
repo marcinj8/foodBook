@@ -23,11 +23,8 @@ class SearchReceipt extends Component {
     };
 
     componentDidUpdate () {
-        console.log(this.state.loading , this.props.apiId, this.props.receiptList.length)
-
         if(this.props.apiKey !== null && this.props.apiId !== null && this.props.ingredient !== '' && this.props.receiptList.length === 0 && this.state.loading === false) {
             this.getReceipts();
-            console.log('update searchingRecipes', this.props.ingredient)
         };
         if(this.props.receiptList.length > 0 && this.state.loading === true) {
             this.setLoadingToFalse()
@@ -54,13 +51,15 @@ class SearchReceipt extends Component {
     }
 
     addToFavouritesHandler = recipe => {
+        const updateFavouriteList = [...this.props.favouritesRecipes];
         const recipeData = {...recipe};
         recipeData.bookmarked = true;
-        console.log(recipe, recipeData)
-        Axios.post('https://fooddatabase-75cfa.firebaseio.com/favourites.json', recipeData)
+        updateFavouriteList.push(recipeData);
+        console.log(recipe, recipeData, updateFavouriteList)
+        Axios.put('https://fooddatabase-75cfa.firebaseio.com/favouritesList/'+this.props.dataBaseKey+'.json', updateFavouriteList)
         .then(res => console.log(res, recipeData))
         .catch(err => console.log(err, recipeData))
-        this.props.onAddToFavourites(recipeData)
+        this.props.onAddToFavourites(updateFavouriteList)
     }
 
     render() {
@@ -84,6 +83,8 @@ class SearchReceipt extends Component {
                 <div className='searchRcipe__recipeDetails'>
                     {this.props.reciptDetail !== null
                         ? <ReciptDetail 
+                            removeFromFavourite={this.props.removeFromFavourites}
+                            ID={this.props.reciptDetail.ID !==null ? this.props.reciptDetail.ID : null}
                             isBookmarked={this.props.reciptDetail.bookmarked}
                             addToFavourites={() => this.addToFavouritesHandler(this.props.reciptDetail)}
                             reciptDetail={this.props.reciptDetail.recipe}/>
@@ -101,7 +102,9 @@ const mapStateToProps = state => {
         apiId: state.access.apiId,
         receiptList: state.receipts,
         reciptDetail: state.reciptDetail,
-        activeRecipe: state.activeRecipe
+        activeRecipe: state.activeRecipe,
+        favouritesRecipes: state.favouritesRecipes,
+        dataBaseKey: state.dataBaseKey
     }
 }
 
@@ -110,7 +113,8 @@ const mapDispatchToProps = dispatch => {
         setReceips: res => dispatch(actions.setReceipts(res)),
         errorHandler: err => dispatch(actions.errorHandler(err)),
         seeReciptDetail: (details, index) => dispatch(actions.seeReciptDetail(details, index)),
-        onAddToFavourites: recipe => dispatch(actions.addToFavourites(recipe))
+        onAddToFavourites: recipes => dispatch(actions.addToFavourites(recipes)),
+        removeFromFavourites: id => dispatch(actions.removeFromFavourite(id))
     }
 }
 

@@ -1,35 +1,69 @@
 import React, { Component } from 'react';
+import Axios from 'axios';
 import { connect } from 'react-redux';
 
 import ReceiptsList from '../../Component/Receipts/ReceiptsList';
 import Modal from '../../Component/Modal/Modal';
 import RecipeDetail from '../../Component/Receipts/RecipeDetail';
-import * as AsyncFunc from '../../AsyncFunc/AsyncFunc';
+import * as actions from '../../Store/Actions/actions';
 
 import './FavouriteRecipes.css';
+
+const CORS = 'https://cors-anywhere.herokuapp.com/';
 
 class FavouriteRecipes extends Component {
     state = {
         showModal: false,
-        favouriteRecipeDetail: null
+        isLoadedNewList: false,
+        favouriteRecipeDetail: null,
+        favouriteRecipeID: null
     }
 
-    componentWillUpdate () {
-        // pobierz i prześlij dane
-        if(this.props.isActive){
-            AsyncFunc.test();
-            console.log('show')
+    componentDidUpdate () {
+        if(this.props.isActive && !this.state.isLoadedNewList){
+            this.setFavouriteList();
         }
-        if(!this.props.isActive) {
-            console.log('hide')
+        if(!this.props.isActive && this.state.isLoadedNewList) {
+            console.log(this.props.isActive,'hide');
+            // saveFavouriteList();
         }
     }
+
+    setLoadingToTrue = () => {
+        this.setState({isLoadedNewList: true})
+    }
+
+    setLoadingToFalse = () => {
+        this.setState({isLoadedNewList: false})
+    }
     
+    setFavouriteList = () => {
+        Axios.get(CORS+'https://fooddatabase-75cfa.firebaseio.com/favouritesList.json')
+        .then(res => {
+            this.setLoadingToTrue();
+            let response = [];
+            let dataBaseKey = '';
+            for(let key in res.data) {
+                response = res.data[key];
+                dataBaseKey = key;
+            }
+            this.props.setFavourites(response, dataBaseKey)
+        })
+    }
+
+    saveFavouriteList = list => {
+        Axios.put(CORS+'https://fooddatabase-75cfa.firebaseio.com/favouritesList/'+this.props.dataBaseKey+'.json', list)
+        .then(res => {
+            console.log(res);
+            this.setLoadingToFalse();
+        })
+    }
+
     seeFavoriteRecipeDetailHandler = (recipeDetail, index) => {
-        console.log(recipeDetail)
         this.setState({
             showModal: true,
-            favouriteRecipeDetail: recipeDetail
+            favouriteRecipeDetail: recipeDetail,
+            favouriteRecipeID: index
         })
     }
 
@@ -50,7 +84,7 @@ class FavouriteRecipes extends Component {
         if(this.props.favourites !== null) {
             favouritesRecipesList = this.props.favourites;
         }
-
+        console.log(this.props.favourites, this.state.favouriteRecipeDetail)
         return (
             <div className={StartPageStyle.join(' ')}>
                 <h2>Favorite Recipes</h2>
@@ -69,7 +103,8 @@ class FavouriteRecipes extends Component {
                     {
                         this.state.favouriteRecipeDetail !== null
                         ? <RecipeDetail 
-                            ID={this.state.favouriteRecipeDetail.ID}
+                            removeFromFavourite={this.props.removeFromFavourites}
+                            ID={this.state.favouriteRecipeID}
                             isBookmarked={this.state.favouriteRecipeDetail.bookmarked}
                             reciptDetail={this.state.favouriteRecipeDetail.recipe}/>
                         : null
@@ -82,7 +117,15 @@ class FavouriteRecipes extends Component {
 const mapStateToProps = state => {
     return {
         favourites: state.favouritesRecipes,
+        dataBaseKey: state.dataBaseKey
     }
 }
 
-export default connect(mapStateToProps)(FavouriteRecipes);
+const mapDispatchToProps = dispatch => {
+    return {
+        setFavourites: (recipes, key) => dispatch(actions.setFavourites(recipes, key)),
+        removeFromFavourites: id => dispatch(actions.removeFromFavourite(id))
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(FavouriteRecipes);

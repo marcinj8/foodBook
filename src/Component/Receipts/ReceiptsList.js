@@ -5,13 +5,12 @@ import './ReceiptsList.css';
 
 const receiptsList = props => {
     const receipts = [];
-
     if(props.receiptList !== null) {
         props.receiptList.map((item, index) => {
             return receipts.push(
                 <Receipt 
                     key={index}
-                    id={item.ID}
+                    id={index}
                     receipt={item.recipe}
                     activeRecipe={props.activeRecipe === index}
                     active={''}
