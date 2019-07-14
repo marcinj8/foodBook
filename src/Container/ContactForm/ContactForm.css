@@ -3,7 +3,7 @@
     right: 0%;
     box-sizing: border-box;
     overflow: hidden;
-    background: grey;
+    background: rgba(68, 68, 68, 0.4);
     transition: all .3s ease-in-out;
 }
 

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
 import AccessCheck from '../../Container/AccessCheck/AccessCheck';
 import NavigationBlock from '../../Component/Navigation/NavigationBlock';
@@ -38,17 +39,21 @@ class Layout extends Component {
             },
         },
         ingredient: '',
-        isSearchingActive: false
+        isSearchingActive: false,
+        disableSearchButton: true
     };
 
-    // setUpAccesData = data =>{
-    //     const updateAccesData = {...this.state.access};
-    //     updateAccesData.apiKey = data.apiKey;
-    //     updateAccesData.apiId = data.user;
-    //     this.setState({
-    //         access: updateAccesData
-    //     })
-    // }
+    componentDidUpdate () {
+        if (this.state.disableSearchButton && this.props.apiKey !== null && this.props.apiId !== null) {
+            this.activateSearchingButton();
+        }
+    }
+
+    activateSearchingButton = () => {
+        this.setState({
+            disableSearchButton: false
+        })
+    } 
 
     copyArr = arr => {
         return arr.map(item => this.makeCopy(item));
@@ -109,6 +114,7 @@ class Layout extends Component {
                     setActiveOverlap={this.setActiveOverlapHandler}/>
                 <div className='page__container'>
                     <StartPage
+                        disableSearchButton={this.state.disableSearchButton}
                         searchRecipes={this.searchRecipesHandler}
                         isActive={this.state.navigation.start.active} />
                     <AccessCheck
@@ -129,4 +135,11 @@ class Layout extends Component {
     }
 }
 
-export default Layout;
+const mapStateToprops = state => {
+    return {
+        apiKey: state.access.apiKey,
+        apiId: state.access.apiId
+    }
+}
+
+export default connect(mapStateToprops)(Layout);

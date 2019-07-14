@@ -7,7 +7,6 @@ const recipeDetail = props => {
     if(props.reciptDetail === null) {
         return null
     }
-    console.log(props.ID)
     const ingredients = [];
     props.reciptDetail.ingredients.map( (ingredient, index) => ingredients.push(
             <li key={index}>{ingredient.text} ( {Math.round(ingredient.weight)}g )</li>

@@ -2,7 +2,7 @@
     position: absolute;
     right: 40%;
     box-sizing: border-box;
-    background: grey;
+    background: rgba(68, 68, 68, 0.4);
     text-align: center;
     transition: all .3s ease-in-out;
 }

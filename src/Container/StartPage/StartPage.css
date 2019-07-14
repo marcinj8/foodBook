@@ -3,7 +3,9 @@
     left: 0;
     box-sizing: border-box;
     overflow: hidden;
-    background: gray;
+    background: rgba(68, 68, 68, 0.4);
+    border-bottom: 1px solid rgb(45, 1, 146);
+    box-shadow: 0 3px 6px rgb(97, 97, 97);
     transition: all .3s ease-in-out;
 }
 
@@ -14,8 +16,41 @@
 
 .startPage__container--noActive {
     animation: hideStartPage .3s forwards;
+}
 
+.startPage__button {
+    box-sizing: content-box;
+    margin: 20px;
+    padding: 10px;
+    width: 100px;
+    outline: none;
+    border: 1px solid transparent;
+    border-radius: 5px;
+    color: rgb(45, 1, 146);
+    box-shadow: 1px 1px 10px rgb(45, 1, 146);
 
+}
+
+.startPage__button:hover {
+    margin: 20px;
+    padding: 10px;
+    width: 100px;
+    outline: none;
+    color: rgb(24, 2, 75);
+    border: 1px solid rgb(79, 7, 246);
+    box-shadow: 0 0 15px rgb(45, 1, 146);
+}
+
+.startPage__button:disabled {
+    transform: scale(.95);
+    background: rgb(190, 190, 190);
+    box-shadow: 0 0 0;
+    color: gray;
+    cursor: not-allowed;
+}
+
+.startPage__button:enabled {
+    animation: activeSearchButton 1s forwards
 }
 
 @keyframes showStartPage {
@@ -24,19 +59,20 @@
         height: 0;
         padding: 0;
     }
-    35%{
+
+    35% {
         width: 20%;
         height: 0;
         padding: 0;
     }
 
-    75%{
+    75% {
         width: 20%;
         height: 500px;
         padding: 50px 5px 20px 5px;
     }
 
-    100%{
+    100% {
         width: 100%;
         height: 500px;
         padding: 50px 5px 20px 5px;
@@ -49,21 +85,51 @@
         height: 500px;
         padding: 50px 5px 20px 5px;
     }
-    35%{
+
+    35% {
         width: 20%;
         height: 500px;
-        padding: 50px 5px 20px 5px;;
+        padding: 50px 5px 20px 5px;
+        ;
     }
 
-    55%{
+    55% {
         width: 20%;
         height: 0;
         padding: 0;
     }
 
-    100%{
+    100% {
         width: 0%;
         height: 0;
         padding: 0;
+    }
+}
+
+@keyframes activeSearchButton {
+    0% {
+        transform: scale(.95);
+    }
+
+    40% {
+        transform: scale(.96);
+    }
+
+    55% {
+        transform: scale(1.1);
+        box-shadow: 0 0 15px;
+    }
+
+    70% {
+        transform: scale(1);
+    }
+
+    85% {
+        transform: scale(1.15);
+        box-shadow: 0 0 15px;
+    }
+
+    100% {
+        transform: scale(1);
     }
 }

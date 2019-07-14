@@ -38,21 +38,13 @@ class FavouriteRecipes extends Component {
     }
     
     setFavouriteList = () => {
-        Axios.get(CORS+'https://fooddatabase-75cfa.firebaseio.com/favouritesList.json')
-        .then(res => {
-            this.setLoadingToTrue();
-            let response = [];
-            let dataBaseKey = '';
-            for(let key in res.data) {
-                response = res.data[key];
-                dataBaseKey = key;
-            }
-            this.props.setFavourites(response, dataBaseKey)
-        })
+            this.props.setFavourites();
+            this.setLoadingToTrue(); // should work async (use redux to menage?)
+
     }
 
     saveFavouriteList = list => {
-        Axios.put(CORS+'https://fooddatabase-75cfa.firebaseio.com/favouritesList/'+this.props.dataBaseKey+'.json', list)
+        Axios.put(CORS+'https://fooddatabase-75cfa.firebaseio.com/favouritesList/'+'.json', list)
         .then(res => {
             console.log(res);
             this.setLoadingToFalse();
@@ -81,10 +73,11 @@ class FavouriteRecipes extends Component {
             : 'favouriteRecipes__container--noActive'
         ];
         let favouritesRecipesList = [];
+
         if(this.props.favourites !== null) {
             favouritesRecipesList = this.props.favourites;
         }
-        console.log(this.props.favourites, this.state.favouriteRecipeDetail)
+
         return (
             <div className={StartPageStyle.join(' ')}>
                 <h2>Favorite Recipes</h2>
@@ -123,8 +116,9 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        setFavourites: (recipes, key) => dispatch(actions.setFavourites(recipes, key)),
-        removeFromFavourites: id => dispatch(actions.removeFromFavourite(id))
+        setFavourites: () => dispatch(actions.setFavourites()),
+        removeFromFavourites: (dataBaseKey, recipes) => dispatch(actions.pushUpdatedFavouriteList(dataBaseKey, recipes))
+
     }
 }
 

@@ -18,17 +18,28 @@ class StartPage extends Component {
             ? 'startPage__container--active'
             : 'startPage__container--noActive'
         ];
-            
+        
+        const buttonContent = (
+            this.props.disableSearchButton
+            ? 'Loading..'
+            : 'Search'
+        )
+
         return (
             <div 
                 className={StartPageStyle.join(' ')}
                 onChange={this.mainIngredientInputChangeHandler}>
                 <h2>Search Recipe</h2>
                 <input placeholder='type ingredient'/> <br />
-                <button onClick={() => this.props.searchRecipes(this.state.ingredient)}>Search</button>
+                <button
+                    className='startPage__button'
+                    disabled={this.props.disableSearchButton && this.state.ingredient.length > 0}
+                    onClick={() => this.props.searchRecipes(this.state.ingredient)}>{buttonContent}</button>
             </div>
         )
     }
 }
 
 export default StartPage;
+
+// disabled dla inputa kiedy nie ma api key, disabled dla buttona kiedy input jest pusty

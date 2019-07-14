@@ -1,5 +1,8 @@
 import * as actionTypes from './ActionTypes';
-import { identifier } from '@babel/types';
+import Axios from 'axios';
+
+const CORS = 'https://cors-anywhere.herokuapp.com/';
+
 
 export const setPremissions = data => {
     return {
@@ -9,11 +12,18 @@ export const setPremissions = data => {
     }
 };
 
-export const setReceipts = data => {
+const storeRecipes = res => {
     return {
         type: actionTypes.SET_RECEIPTS,
-        receipts: data.hits,
-        isMoreReceipts: data.more
+        receipts: res.hits,
+        isMoreReceipts: res.more
+    }
+}
+
+export const setReceipts = (ingredient, apiId, apiKey, searchFrom, searchTo) => {
+    return dispatch => {
+        Axios.get(`https://api.edamam.com/search?q=${ingredient}&app_id=${apiId}&app_key=${apiKey}&from=${searchFrom}&to=${searchTo}`)
+        .then( res => dispatch(storeRecipes(res.data)))
     }
 };
 
@@ -33,7 +43,7 @@ export const seeReciptDetail = (details, index) => {
     }
 };
 
-export const setFavourites = (recipes, dataBaseKey) => {
+const storeFavourites = (recipes, dataBaseKey) => {
     return {
         type: actionTypes.SET_FAVOURITES,
         recipes: recipes,
@@ -41,16 +51,31 @@ export const setFavourites = (recipes, dataBaseKey) => {
     }
 };
 
-export const addToFavourites = recipes => {
+export const setFavourites = () => {
+    return dispatch => {
+        Axios.get(CORS+'https://fooddatabase-75cfa.firebaseio.com/favouritesList.json')
+        .then(res => {
+            dispatch(storeFavourites(res.data))
+        })
+    }
+};
+
+const updateFavouriteList = recipes => {
     return {
-        type: actionTypes.ADD_TO_FAVOURITIES,
+        type: actionTypes.UPDATE_FAVOURITIES,
         recipes: recipes
     }
 };
 
-export const removeFromFavourite = id => {
-    return {
-        type: actionTypes.REMOVE_FROM_FAVOURITIES,
-        id: id
-    };
-}
+export const pushUpdatedFavouriteList = (updatedFavouriteList) => {
+    console.log(updatedFavouriteList, 'fgfjkfj')
+    return dispatch => {
+        Axios.put('https://fooddatabase-75cfa.firebaseio.com/favouritesList/.json', updatedFavouriteList)
+        .then(res => {
+            console.log(res)
+            return dispatch(updateFavouriteList(updatedFavouriteList))
+        })
+        .catch(err => console.log(err))
+    }
+};
+

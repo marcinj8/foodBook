@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import Axios from 'axios';
 import { connect } from 'react-redux';
 
 import * as actions from '../../Store/Actions/actions';
@@ -44,30 +43,46 @@ class SearchReceipt extends Component {
     }
 
     getReceipts = () => {
-        this.setLoadingToTrue()
-        Axios.get(`https://api.edamam.com/search?q=${this.props.ingredient}&app_id=${this.props.apiId}&app_key=${this.props.apiKey}&from=${this.state.currentSearching.searchFrom}&to=${this.state.currentSearching.searchTo}`)
-        .then(res => this.setReceips(res))
-        .catch(err => this.props.errorHandler(err))
+        this.setLoadingToTrue();
+        this.props.setReceips(this.props.ingredient, this.props.apiId, this.props.apiKey, this.state.currentSearching.searchFrom, this.state.currentSearching.searchTo);
     }
 
-    addToFavouritesHandler = recipe => {
+    addedFavouriteList = recipe => {
         const updateFavouriteList = [...this.props.favouritesRecipes];
+        console.log(updateFavouriteList)
         const recipeData = {...recipe};
         recipeData.bookmarked = true;
         updateFavouriteList.push(recipeData);
-        console.log(recipe, recipeData, updateFavouriteList)
-        Axios.put('https://fooddatabase-75cfa.firebaseio.com/favouritesList/'+this.props.dataBaseKey+'.json', updateFavouriteList)
-        .then(res => console.log(res, recipeData))
-        .catch(err => console.log(err, recipeData))
-        this.props.onAddToFavourites(updateFavouriteList)
+        return updateFavouriteList
+    }
+
+    addToFavouritesHandler = recipe => {
+        const favouriteList = this.addedFavouriteList(recipe);
+        this.props.onAddToFavourites(favouriteList);
+    }
+
+    removedFromFavouriteList = id => {
+        const currentFavouriteList =[...this.props.favouritesRecipes];
+        const updateFavouriteList = currentFavouriteList.filter( (el, i) => {
+            console.log(i, id)
+            return (i !== id)
+        })
+        return updateFavouriteList;
+    }
+
+    removeFromFavouritiesHandler = id => {
+        console.log(this.props.favouritesRecipes)
+        const favouriteList = this.removedFromFavouriteList(id);
+        console.log(favouriteList)
+        // this.props.updateFavouriteList(favouriteList);
     }
 
     render() {
         const searchRcipeStyle = ['searchRcipe__container',
-        this.props.isActive
-        ? 'searchRcipe__container--active'
-        : 'searchRcipe__container--noActive'
-    ];
+            this.props.isActive
+            ? 'searchRcipe__container--active'
+            : 'searchRcipe__container--noActive'
+        ];
 
         return(
             <div className={searchRcipeStyle.join(' ')}>
@@ -83,8 +98,8 @@ class SearchReceipt extends Component {
                 <div className='searchRcipe__recipeDetails'>
                     {this.props.reciptDetail !== null
                         ? <ReciptDetail 
-                            removeFromFavourite={this.props.removeFromFavourites}
-                            ID={this.props.reciptDetail.ID !==null ? this.props.reciptDetail.ID : null}
+                            removeFromFavourite={this.removeFromFavouritiesHandler}
+                            ID={this.props.reciptDetail.ID}
                             isBookmarked={this.props.reciptDetail.bookmarked}
                             addToFavourites={() => this.addToFavouritesHandler(this.props.reciptDetail)}
                             reciptDetail={this.props.reciptDetail.recipe}/>
@@ -110,11 +125,11 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        setReceips: res => dispatch(actions.setReceipts(res)),
+        setReceips: (...arg) => dispatch(actions.setReceipts(...arg)),
         errorHandler: err => dispatch(actions.errorHandler(err)),
         seeReciptDetail: (details, index) => dispatch(actions.seeReciptDetail(details, index)),
-        onAddToFavourites: recipes => dispatch(actions.addToFavourites(recipes)),
-        removeFromFavourites: id => dispatch(actions.removeFromFavourite(id))
+        onAddToFavourites: (recipes) => dispatch(actions.pushUpdatedFavouriteList(recipes)),
+        removeFromFavourites: (recipes) => dispatch(actions.pushUpdatedFavouriteList(recipes))
     }
 }
 
