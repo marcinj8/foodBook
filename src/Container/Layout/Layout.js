@@ -8,6 +8,8 @@ import SearchReceipt from '../SearchReceipt/SearchReceipt';
 import FavouriteRecipes from '../FavouriteRecipes/FavouriteRecipes';
 import ContactForm from '../ContactForm/ContactForm';
 import PurchaseList from '../PurchaseList/PurchaseList';
+import Logo from '../../Component/Logo/Logo.js';
+import Footer from '../../Component/Footer/Footer.js';
 
 class Layout extends Component {
     state = {
@@ -19,7 +21,7 @@ class Layout extends Component {
             },
             recipe: {
                 active: false,
-                disabled: false,
+                disabled: true,
                 name: 'Recipts',
             },
             favourites: {
@@ -106,8 +108,8 @@ class Layout extends Component {
 
     render() {
         return (
-            <div>
-                <h1>Receipts Book</h1>
+            <div style={{'margin':'0', 'padding':'0'}}>
+                <Logo />
                 <NavigationBlock
                     ingredientInputValue={this.state.ingredient}
                     navigation={this.state.navigation}
@@ -129,7 +131,7 @@ class Layout extends Component {
                     <ContactForm 
                         isActive={this.state.navigation.contact.active} />
                 </div>
-               
+                <Footer />
             </div>
         )
     }
