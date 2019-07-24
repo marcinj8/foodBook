@@ -1,5 +1,5 @@
 .footer__container {
-    position: absolute;
+    position: fixed;
     bottom: 0;
     padding: 10px;
     background: rgb(115,113,113);
@@ -8,5 +8,6 @@
     width: 100%;
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-around
+    justify-content: space-around;
+    box-sizing: border-box
 }

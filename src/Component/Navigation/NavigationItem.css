@@ -1,11 +1,12 @@
 .navigation__item {
+    position: relative;
     padding: 10px 0 7px 0;
     cursor: pointer;
     width: 100%;
-    border-right: dotted 1px black;
     border-bottom: solid 3px transparent;
+    border-right: dotted 1px black;
+    font-size: 1.2em;
     transition: all .2s;
-    font-size: 1.1em;
 }
 
 .navigation__item:last-child {
@@ -18,8 +19,29 @@
     border-bottom: solid 3px rgb(79, 7, 246)
 }
 
-.navigation__item--noActive:hover {
+.navigation__item--disabled:hover {
+    background: rgba(80, 80, 80, 0.3);
     color: rgb(27, 3, 83);
     text-shadow: 0 0 1px white;
-    border-bottom: solid 3px rgb(79, 7, 246)
+    border-bottom: solid 3px rgb(102, 102, 102);
+    cursor: default;
+}
+
+.navigation__item--noActive::before {
+    content: '';
+    position: absolute;
+    width: 0%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    border-bottom: solid 3px rgb(79, 7, 246);
+    transition: all .45s ease-in-out;
+}
+
+.navigation__item--noActive:hover::before {
+    width: 100%;
+}
+
+.navigation__item--noActive:hover {
+    color: rgb(63, 0, 211);
 }

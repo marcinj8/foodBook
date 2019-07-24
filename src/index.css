@@ -6,6 +6,9 @@ body {
     sans-serif;
   background: rgb(191,173,227);
   background: linear-gradient(63deg, rgba(191,173,227,0.9444152661064426) 0%, rgba(139,179,167,1) 59%, rgba(140,210,206,1) 100%);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

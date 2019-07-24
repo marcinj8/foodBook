@@ -1,9 +1,22 @@
-.logo__header{
+.logo__container {
+    margin: 0 auto;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center
+}
+
+.logo__header {
     margin: 35px;
     letter-spacing: 2px;
 }
 
-.logo__firstLetter{
+.logo__firstLetter {
     color: rgb(79, 7, 246);
     font-size: 1.15em;
+}
+
+.logo__icon {
+    height: 100px;
+    width: 100px;
 }

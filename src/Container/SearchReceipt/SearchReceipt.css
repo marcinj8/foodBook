@@ -1,7 +1,8 @@
 .searchRcipe__container {
     display: flex;
     justify-content: space-around;
-    margin: 0 auto;
+    margin: 0 auto 30px auto;
+    height: auto;
     width: 90%;
 }
 
@@ -31,25 +32,26 @@
 
 @keyframes showSearchRecipe {
     0% {
-        overflow: hidden;
+        overflow: hidden; 
         opacity: 0;
         height: 0;
         padding: 0;
     }
-    35%{
+
+    35% {
         opacity: 0%;
         height: 0;
         padding: 0;
     }
 
-    55%{
+    55% {
         opacity: 0;
         width: 20%;
         height: 500px;
         padding: 50px 5px 20px 5px;
     }
 
-    100%{
+    100% {
         opacity: 100%;
         overflow: none;
         left: 0%;
@@ -65,24 +67,27 @@
         width: 100%;
         padding: 50px 5px 20px 5px;
     }
-    35%{
+
+    35% {
         opacity: 0%;
         overflow: hidden;
-        padding: 50px 5px 20px 5px;;
+        padding: 50px 5px 20px 5px;
+        ;
     }
 
-    55%{
+    55% {
         height: 500px;
         width: 20%;
         height: 0;
         padding: 0;
     }
 
-    100%{
+    100% {
         opacity: 0%;
         overflow: hidden;
         width: 0%;
         height: 0;
         padding: 0;
+        margin: 0;
     }
 }
