@@ -1,7 +1,6 @@
 import React from 'react';
 
 import './RecipeDetail.css';
-import { removeFromFavourite } from '../../Store/Actions/actions';
 
 const recipeDetail = props => {
     if(props.reciptDetail === null) {
@@ -9,7 +8,9 @@ const recipeDetail = props => {
     }
     const ingredients = [];
     props.reciptDetail.ingredients.map( (ingredient, index) => ingredients.push(
-            <li key={index}>{ingredient.text} ( {Math.round(ingredient.weight)}g )</li>
+            <li 
+                onClick={() => props.addToPurchaseList(ingredient.text, ingredient.weight)}
+                key={index}>{ingredient.text} ( {Math.round(ingredient.weight)}g )</li>
         )
     )
 

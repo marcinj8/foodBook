@@ -1,0 +1,42 @@
+[
+    {
+        "id": "name",
+        "htmlTag": "input",
+        "placeholder": {
+            "start":"",
+            "end":"name"
+        },
+        "className": "contactForm__input",
+        "validation": {}
+    },
+    {
+        "id": "email",
+        "htmlTag": "input",
+        "placeholder": {
+            "start":"",
+            "end":"email"
+        },
+        "className": "contactForm__input",
+        "validation": {}
+    },
+    {
+        "id": "topic",
+        "htmlTag": "input",
+        "placeholder": {
+            "start":"",
+            "end":"topic"
+        },
+        "className": "contactForm__input",
+        "validation": {}
+    },
+    {
+        "id": "message",
+        "htmlTag": "textarea",
+        "placeholder": {
+            "start":"",
+            "end":"message"
+        },
+        "className": "contactForm__textarea",
+        "validation": {}
+    }
+]

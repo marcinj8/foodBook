@@ -1,5 +1,5 @@
-import React, {Component} from 'react';
-import {connect} from 'react-redux';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
 import AccessCheck from '../../Container/AccessCheck/AccessCheck';
 import NavigationBlock from '../../Component/Navigation/NavigationBlock';
@@ -22,7 +22,7 @@ class Layout extends Component {
       recipe: {
         active: false,
         disabled: true,
-        name: 'Recipts',
+        name: 'Recipes',
       },
       favourites: {
         active: false,
@@ -45,59 +45,60 @@ class Layout extends Component {
     disableInput: true,
   };
 
-  componentDidUpdate () {
+  componentDidUpdate() {
     if (
       this.state.disableInput &&
       this.props.apiKey !== null &&
       this.props.apiId !== null
     ) {
-      this.activateSearchingButton ();
-      this.activateOverlap ('favourites', 'purchaseList');
+      this.activateSearchingButton();
+      this.activateOverlap('favourites', 'purchaseList');
     }
   }
 
   makeCopy = object => {
-    if (Array.isArray (object)) {
-      return this.copyArr (object);
+    if (Array.isArray(object)) {
+      return this.copyArr(object);
     } else if (typeof object === 'object') {
-      this.copyObj (object);
+      this.copyObj(object);
     }
     return object;
   };
 
   activateSearchingButton = () => {
-    this.setState ({
+    this.setState({
       disableInput: false,
     });
   };
 
   activateOverlap = (...data) => {
     const overlapsToActivate = [...data];
-    const updatedNavigation = this.makeCopy (this.state.navigation);
+    const updatedNavigation = this.makeCopy(this.state.navigation);
 
-    overlapsToActivate.map (overlap => {
-      Object.keys (updatedNavigation).map (updatedNavitagionItem => {
+    overlapsToActivate.map(overlap => {
+      return Object.keys(updatedNavigation).map(updatedNavitagionItem => {
         if (overlap === updatedNavitagionItem) {
           updatedNavigation[overlap].disabled = false;
         }
+        return updatedNavigation
       });
     });
 
-    this.setState ({
+    this.setState({
       navigation: updatedNavigation,
     });
   };
 
   copyArr = arr => {
-    return arr.map (item => this.makeCopy (item));
+    return arr.map(item => this.makeCopy(item));
   };
 
   copyObj = obj => {
     const newObj = {};
 
     for (let key in obj) {
-      if (obj.hasOwnProperty (key)) {
-        newObj[key] = this.makeCopy (obj[key]);
+      if (obj.hasOwnProperty(key)) {
+        newObj[key] = this.makeCopy(obj[key]);
       }
       return newObj;
     }
@@ -108,29 +109,29 @@ class Layout extends Component {
     for (let key in navigation) {
       navigation[key].active = false;
     }
-    this.setState ({
+    this.setState({
       navigation: updateNavigationActiveProperty,
     });
     return navigation;
   };
 
   setActiveOverlapHandler = ID => {
-    const updateNavigation = this.makeCopy (this.state.navigation);
-    this.setUnactiveOverlap (updateNavigation);
+    const updateNavigation = this.makeCopy(this.state.navigation);
+    this.setUnactiveOverlap(updateNavigation);
     updateNavigation[ID].active = true;
-    this.setState ({
+    this.setState({
       navigation: updateNavigation,
     });
   };
 
   searchRecipesHandler = ingredient => {
-    this.setState ({ingredient: ingredient});
-    this.setActiveOverlapHandler ('recipe');
+    this.setState({ ingredient: ingredient });
+    this.setActiveOverlapHandler('recipe');
   };
 
-  render () {
+  render() {
     return (
-      <div style={{margin: '0', padding: '0', minHeight: '90vh'}}>
+      <div style={{ margin: '0', padding: '0', minHeight: '90vh' }}>
         <Logo />
         <NavigationBlock
           ingredientInputValue={this.state.ingredient}
@@ -154,8 +155,8 @@ class Layout extends Component {
           />
           <PurchaseList isActive={this.state.navigation.purchaseList.active} />
           <ContactForm isActive={this.state.navigation.contact.active} />
+          <Footer />
         </div>
-        <Footer />
       </div>
     );
   }
@@ -163,9 +164,9 @@ class Layout extends Component {
 
 const mapStateToprops = state => {
   return {
-    apiKey: state.access.apiKey,
-    apiId: state.access.apiId,
+    apiKey: state.recipesReducer.access.apiKey,
+    apiId: state.recipesReducer.access.apiId,
   };
 };
 
-export default connect (mapStateToprops) (Layout);
+export default connect(mapStateToprops)(Layout);

@@ -23,7 +23,7 @@ const storeRecipes = res => {
 export const setReceipts = (ingredient, apiId, apiKey, searchFrom, searchTo) => {
     return dispatch => {
         Axios.get(`https://api.edamam.com/search?q=${ingredient}&app_id=${apiId}&app_key=${apiKey}&from=${searchFrom}&to=${searchTo}`)
-        .then( res => dispatch(storeRecipes(res.data)))
+            .then(res => dispatch(storeRecipes(res.data)))
     }
 };
 
@@ -53,10 +53,10 @@ const storeFavourites = (recipes, dataBaseKey) => {
 
 export const setFavourites = () => {
     return dispatch => {
-        Axios.get(CORS+'https://fooddatabase-75cfa.firebaseio.com/favouritesList.json')
-        .then(res => {
-            dispatch(storeFavourites(res.data))
-        })
+        Axios.get(CORS + 'https://fooddatabase-75cfa.firebaseio.com/favouritesList.json')
+            .then(res => {
+                dispatch(storeFavourites(res.data))
+            })
     }
 };
 
@@ -68,14 +68,22 @@ const updateFavouriteList = recipes => {
 };
 
 export const pushUpdatedFavouriteList = (updatedFavouriteList) => {
-    console.log(updatedFavouriteList, 'fgfjkfj')
+    console.log(updatedFavouriteList, 'pushed to server')
     return dispatch => {
         Axios.put('https://fooddatabase-75cfa.firebaseio.com/favouritesList/.json', updatedFavouriteList)
-        .then(res => {
-            console.log(res)
-            return dispatch(updateFavouriteList(updatedFavouriteList))
-        })
-        .catch(err => console.log(err))
+            .then(res => {
+                console.log(res)
+                return dispatch(updateFavouriteList(updatedFavouriteList))
+            })
+            .catch(err => console.log(err))
     }
 };
+
+export const removeFromFavourities = (id, favouriteList) => {
+    const currentFavouriteList = [...favouriteList];
+    const updateFavouriteList = currentFavouriteList.filter((el, i) => {
+        return (i !== id)
+    })
+    return pushUpdatedFavouriteList(updateFavouriteList);
+}
 

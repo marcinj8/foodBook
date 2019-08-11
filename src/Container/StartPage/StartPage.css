@@ -18,6 +18,11 @@
     animation: hideStartPage .3s forwards;
 }
 
+.startPage__input{
+    padding: 5px;
+    font-size: 1.02em;
+}
+
 .startPage__button {
     box-sizing: content-box;
     margin: 20px;

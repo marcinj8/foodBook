@@ -8,7 +8,7 @@ const footer = () => (
             Designed by Marcin Janerka
         </div>
         <div href="mailto:contac@marcinjanerka.com">
-            contact: contac@marcinjanerka.com
+            contact: contact@marcinjanerka.com
         </div>
     </footer>
 )

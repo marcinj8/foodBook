@@ -3,11 +3,12 @@
     padding: 0;
     display: flex;
     flex-wrap: wrap;
-    justify-content: center
+    justify-content: center;
+    flex-direction: column
 }
 
 .logo__header {
-    margin: 35px;
+    margin: 5px 20px;
     letter-spacing: 2px;
 }
 
@@ -17,6 +18,23 @@
 }
 
 .logo__icon {
-    height: 100px;
-    width: 100px;
+    margin: 0 auto;
+    height: 70px;
+    width: 70px;
+    padding: 10px
+}
+
+@media (min-width: 500px) {
+    .logo__container {
+        flex-direction: row
+    }
+
+    .logo__header {
+        margin: 35px 20px;
+    }
+
+    .logo__icon {
+        margin: 0;
+        padding: 20px
+    }
 }

@@ -6,7 +6,6 @@
     border-bottom: solid 3px transparent;
     border-right: dotted 1px black;
     font-size: 1.2em;
-    transition: all .2s;
 }
 
 .navigation__item:last-child {
@@ -35,7 +34,7 @@
     left: 0;
     top: 0;
     border-bottom: solid 3px rgb(79, 7, 246);
-    transition: all .45s ease-in-out;
+    transition: all .45s ease-in;
 }
 
 .navigation__item--noActive:hover::before {

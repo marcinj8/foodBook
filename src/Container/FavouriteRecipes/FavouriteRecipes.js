@@ -6,6 +6,7 @@ import ReceiptsList from '../../Component/Receipts/ReceiptsList';
 import Modal from '../../Component/Modal/Modal';
 import RecipeDetail from '../../Component/Receipts/RecipeDetail';
 import * as actions from '../../Store/Actions/actions';
+import * as actionsPurchaseList from '../../Store/Actions/actionsPurchaseList';
 
 import './FavouriteRecipes.css';
 
@@ -19,36 +20,36 @@ class FavouriteRecipes extends Component {
         favouriteRecipeID: null
     }
 
-    componentDidUpdate () {
-        if(this.props.isActive && !this.state.isLoadedNewList){
+    componentDidUpdate() { // dodac odświażanie po akcji na bazie danych
+        if (this.props.isActive && !this.state.isLoadedNewList) {
             this.setFavouriteList();
         }
-        if(!this.props.isActive && this.state.isLoadedNewList) {
-            console.log(this.props.isActive,'hide');
+        if (!this.props.isActive && this.state.isLoadedNewList) {
+            console.log(this.props.isActive, 'hide');
             // saveFavouriteList();
         }
     }
 
     setLoadingToTrue = () => {
-        this.setState({isLoadedNewList: true})
+        this.setState({ isLoadedNewList: true })
     }
 
     setLoadingToFalse = () => {
-        this.setState({isLoadedNewList: false})
+        this.setState({ isLoadedNewList: false })
     }
-    
+
     setFavouriteList = () => {
-            this.props.setFavourites();
-            this.setLoadingToTrue(); // should work async (use redux to menage?)
+        this.props.setFavourites();
+        this.setLoadingToTrue(); // should work async (use redux to menage?)
 
     }
 
     saveFavouriteList = list => {
-        Axios.put(CORS+'https://fooddatabase-75cfa.firebaseio.com/favouritesList/'+'.json', list)
-        .then(res => {
-            console.log(res);
-            this.setLoadingToFalse();
-        })
+        Axios.put(CORS + 'https://fooddatabase-75cfa.firebaseio.com/favouritesList.json', list)
+            .then(res => {
+                console.log(res);
+                this.setLoadingToFalse();
+            })
     }
 
     seeFavoriteRecipeDetailHandler = (recipeDetail, index) => {
@@ -69,12 +70,12 @@ class FavouriteRecipes extends Component {
     render() {
         const StartPageStyle = ['favouriteRecipes__container',
             this.props.isActive
-            ? 'favouriteRecipes__container--active'
-            : 'favouriteRecipes__container--noActive'
+                ? 'favouriteRecipes__container--active'
+                : 'favouriteRecipes__container--noActive'
         ];
         let favouritesRecipesList = [];
 
-        if(this.props.favourites !== null) {
+        if (this.props.favourites !== null) {
             favouritesRecipesList = this.props.favourites;
         }
 
@@ -84,10 +85,10 @@ class FavouriteRecipes extends Component {
                 <div className='favouriteRecipes__recipeList'>
                     {
                         favouritesRecipesList.length > 0
-                        ? <ReceiptsList 
-                            seeReceiptDetail={this.seeFavoriteRecipeDetailHandler}
-                            receiptList={favouritesRecipesList}/>
-                        : <h3>Loading...</h3> 
+                            ? <ReceiptsList
+                                seeReceiptDetail={this.seeFavoriteRecipeDetailHandler}
+                                receiptList={favouritesRecipesList} />
+                            : <h3>Loading...</h3>
                     }
                 </div>
                 <Modal
@@ -95,12 +96,13 @@ class FavouriteRecipes extends Component {
                     show={this.state.showModal}>
                     {
                         this.state.favouriteRecipeDetail !== null
-                        ? <RecipeDetail 
-                            removeFromFavourite={this.props.removeFromFavourites}
-                            ID={this.state.favouriteRecipeID}
-                            isBookmarked={this.state.favouriteRecipeDetail.bookmarked}
-                            reciptDetail={this.state.favouriteRecipeDetail.recipe}/>
-                        : null
+                            ? <RecipeDetail
+                                addToPurchaseList={this.props.addToPurchaseList}
+                                removeFromFavourite={(id) => this.props.removeFromFavourites(id, this.props.favourites)}
+                                ID={this.state.favouriteRecipeID}
+                                isBookmarked={this.state.favouriteRecipeDetail.bookmarked}
+                                reciptDetail={this.state.favouriteRecipeDetail.recipe} />
+                            : null
                     }
                 </Modal>
             </div>
@@ -109,16 +111,16 @@ class FavouriteRecipes extends Component {
 }
 const mapStateToProps = state => {
     return {
-        favourites: state.favouritesRecipes,
-        dataBaseKey: state.dataBaseKey
+        favourites: state.recipesReducer.favouritesRecipes,
+        dataBaseKey: state.recipesReducer.dataBaseKey
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
         setFavourites: () => dispatch(actions.setFavourites()),
-        removeFromFavourites: (dataBaseKey, recipes) => dispatch(actions.pushUpdatedFavouriteList(dataBaseKey, recipes))
-
+        removeFromFavourites: (id, recipes) => dispatch(actions.removeFromFavourities(id, recipes)),
+        addToPurchaseList: (...args) => dispatch(actionsPurchaseList.addToPurchaseList(...args))
     }
 }
 
