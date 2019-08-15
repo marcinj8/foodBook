@@ -22,9 +22,9 @@ class SearchReceipt extends Component {
         },
     };
 
-    componentDidUpdate() { 
+    componentDidUpdate() {
         if (this.props.apiKey !== null && this.props.apiId !== null && this.state.loading === false) {
-            if(this.props.ingredient !== this.state.currentSearching.ingredient && this.props.ingredient !== '') {
+            if (this.props.ingredient !== this.state.currentSearching.ingredient && this.props.ingredient !== '') {
                 this.getReceipts();
             }
         };
@@ -46,7 +46,7 @@ class SearchReceipt extends Component {
     }
 
     updateCurrentSearching = () => {
-        const updateState = {...this.state.currentSearching};
+        const updateState = { ...this.state.currentSearching };
         updateState.ingredient = this.props.ingredient;
 
         this.setState({
@@ -94,13 +94,13 @@ class SearchReceipt extends Component {
                 <div className='searchRcipe__recipeDetails'>
                     {this.props.reciptDetail !== null
                         ? <ReciptDetail
-                            addToPurchaseList={this.props.addToPurchaseList}
+                            addToPurchaseList={(...args) => this.props.addToPurchaseList(this.props.itemsToPurchase, ...args)}
+                            addToFavourites={() => this.addToFavouritesHandler(this.props.reciptDetail)}
                             removeFromFavourite={(id) => this.props.removeFromFavourites(id, this.props.favouritesRecipes)}
                             ID={this.props.reciptDetail.ID}
                             isBookmarked={this.props.reciptDetail.bookmarked}
-                            addToFavourites={() => this.addToFavouritesHandler(this.props.reciptDetail)}
                             reciptDetail={this.props.reciptDetail.recipe} />
-                        : <div style={{'marginTop': '50px'}}>
+                        : <div style={{ 'marginTop': '50px' }}>
                             <h4>Choose recipe</h4>
                         </div>
                     }
@@ -118,7 +118,8 @@ const mapStateToProps = state => {
         reciptDetail: state.recipesReducer.reciptDetail,
         activeRecipe: state.recipesReducer.activeRecipe,
         favouritesRecipes: state.recipesReducer.favouritesRecipes,
-        dataBaseKey: state.recipesReducer.dataBaseKey
+        dataBaseKey: state.recipesReducer.dataBaseKey,
+        itemsToPurchase: state.purchaseListReducer.purchaseList,
     }
 }
 
@@ -129,7 +130,8 @@ const mapDispatchToProps = dispatch => {
         seeReciptDetail: (details, index) => dispatch(actions.seeReciptDetail(details, index)),
         onAddToFavourites: (recipes) => dispatch(actions.pushUpdatedFavouriteList(recipes)),
         removeFromFavourites: (id, recipes) => dispatch(actions.removeFromFavourities(id, recipes)),
-        addToPurchaseList: (...args) => dispatch(actionsPurchaseList.addToPurchaseList(...args))
+        addToPurchaseList: (...args) => dispatch(actionsPurchaseList.addToPurchaseList( ...args))
+
     }
 }
 

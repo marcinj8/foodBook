@@ -24,10 +24,6 @@ class FavouriteRecipes extends Component {
         if (this.props.isActive && !this.state.isLoadedNewList) {
             this.setFavouriteList();
         }
-        if (!this.props.isActive && this.state.isLoadedNewList) {
-            console.log(this.props.isActive, 'hide');
-            // saveFavouriteList();
-        }
     }
 
     setLoadingToTrue = () => {
@@ -97,7 +93,7 @@ class FavouriteRecipes extends Component {
                     {
                         this.state.favouriteRecipeDetail !== null
                             ? <RecipeDetail
-                                addToPurchaseList={this.props.addToPurchaseList}
+                                addToPurchaseList={(...args) => this.props.addToPurchaseList(this.props.itemsToPurchase, ...args)}
                                 removeFromFavourite={(id) => this.props.removeFromFavourites(id, this.props.favourites)}
                                 ID={this.state.favouriteRecipeID}
                                 isBookmarked={this.state.favouriteRecipeDetail.bookmarked}
@@ -112,7 +108,8 @@ class FavouriteRecipes extends Component {
 const mapStateToProps = state => {
     return {
         favourites: state.recipesReducer.favouritesRecipes,
-        dataBaseKey: state.recipesReducer.dataBaseKey
+        dataBaseKey: state.recipesReducer.dataBaseKey,
+        itemsToPurchase: state.purchaseListReducer.purchaseList,
     }
 }
 
@@ -120,7 +117,7 @@ const mapDispatchToProps = dispatch => {
     return {
         setFavourites: () => dispatch(actions.setFavourites()),
         removeFromFavourites: (id, recipes) => dispatch(actions.removeFromFavourities(id, recipes)),
-        addToPurchaseList: (...args) => dispatch(actionsPurchaseList.addToPurchaseList(...args))
+        addToPurchaseList: (...args) => dispatch(actionsPurchaseList.addToPurchaseList( ...args))
     }
 }
 

@@ -1,6 +1,14 @@
 import * as actionTypes from './ActionTypes';
 
-export const addToPurchaseList = (ingredient, weight) => {
+const addIngredientToState = (ingredient, weight) => {
+    return {
+        type: actionTypes.ADD_PURCHASE_LIST,
+        ingredient: ingredient,
+        weight: weight
+    }
+}
+
+const addToIngredient = (ingredient, weight) => { // poprawić zgodnie z przeznaczeniem
     return {
         type: actionTypes.ADD_PURCHASE_LIST,
         ingredient: ingredient,
@@ -15,15 +23,21 @@ export const removeFromPurchaseList = data => {
     }
 }
 
-const checkCurrentState = (state, ingredient, weight) => {
-    const currentPurchaseList = { ...state.purchaseList };
-    Object.keys(currentPurchaseList).map(stateIngredient => {
-        if(stateIngredient === ingredient) {
+export const addToPurchaseList = (purchaseList, ingredient, weight) => { // przekazać aktualny state !
+    console.log(purchaseList, ingredient, weight)
+    // const currentPurchaseList = { ...purchaseList };
+    // Object.keys(currentPurchaseList).map(stateIngredient => {
+    //     if (stateIngredient === ingredient) {
+    //         return addToIngredient(ingredient, weight)
+    //     } else {
+    //         return addIngredientToState(ingredient, weight)
+    //     }
+    // })
 
-        } else {
-
-        }
-        
-        console.log(ingredient)
-    })
+    
+    return {
+        type: actionTypes.ADD_PURCHASE_LIST,
+        ingredient: ingredient,
+        weight: weight
+    }
 }

@@ -30,7 +30,7 @@ const setKey = (state, apiKey, apiId) => {
   };
 };
 
-const compareRecipeList = (state, newRecipes, favouriteList) => {
+const compareRecipeList = (newRecipes, favouriteList) => {
   const currentFavouriteList = favouriteList;
   const recipeListUpdated = [...newRecipes];
   recipeListUpdated.map((value, index) => {
@@ -47,10 +47,10 @@ const compareRecipeList = (state, newRecipes, favouriteList) => {
   return recipeListUpdated;
 };
 
-const setReceipts = (state, recpes, isMoreReceipts) => {
-  let recipeList = recpes;
+const setReceipts = (state, recipes, isMoreReceipts) => {
+  let recipeList = recipes;
   if (state.favouritesRecipes !== null) {
-    recipeList = compareRecipeList(state, recpes, state.favouritesRecipes);
+    recipeList = compareRecipeList(recipes, state.favouritesRecipes);
   }
   //dodanie indexu do listy przepisów
   return {
@@ -82,18 +82,11 @@ const setFavouritesRecipes = (state, recipes, dataBaseKey) => {
   };
 };
 
-// const addToFavourites = (state, recipes) => {
-//     return {
-//         ...state,
-//         favouritesRecipes: recipes
-//     };
-// } to delete
-
 const updateRecipeDetail = (state, favouriteList) => {
   const updateRecipeDetail = { ...state.reciptDetail };
   favouriteList.map((recipe, index) => {
     if (recipe.recipe.label === state.reciptDetail.recipe.label) {
-      updateRecipeDetail.bookmarked = true;
+      updateRecipeDetail.bookmarked = !state.reciptDetail.recipe.bookmarked;
       updateRecipeDetail.ID = index;
     }
     return updateRecipeDetail
@@ -102,9 +95,7 @@ const updateRecipeDetail = (state, favouriteList) => {
 };
 
 const updateFavouriteList = (state, favouritesRecipes) => {
-  // addToFavourites(state, favouritesRecipes); to delete
   const recipeList = compareRecipeList(
-    state,
     state.receipts,
     favouritesRecipes
   );
