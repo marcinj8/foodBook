@@ -17,7 +17,7 @@ const receiptsList = props => {
                     clicked={() => props.seeReceiptDetail(item, index)}/>
             )
         })
-    }
+    } 
 
     return (
         <div>

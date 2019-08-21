@@ -30,29 +30,29 @@ const setKey = (state, apiKey, apiId) => {
   };
 };
 
-const compareRecipeList = (newRecipes, favouriteList) => {
-  const currentFavouriteList = favouriteList;
-  const recipeListUpdated = [...newRecipes];
-  recipeListUpdated.map((value, index) => {
+const compareRecipeList = (recipes, favouriteList) => {
+  const recipeListUpdated = [...recipes];
+  const currentFavouriteList = [...favouriteList];
+  recipeListUpdated.map((recipe, index) => {
     for (let favouriteRecipe of currentFavouriteList) {
-      if (favouriteRecipe.recipe.label === value.recipe.label) {
+      if (favouriteRecipe.recipe.label === recipe.recipe.label) {
         recipeListUpdated[index] = favouriteRecipe;
         recipeListUpdated[index].ID = currentFavouriteList.findIndex(
           recipe => recipe === favouriteRecipe
         );
       }
+      return recipe;
     }
-    return recipeListUpdated
+    return recipe;
   });
   return recipeListUpdated;
 };
 
 const setReceipts = (state, recipes, isMoreReceipts) => {
-  let recipeList = recipes;
+  let recipeList = [...recipes];
   if (state.favouritesRecipes !== null) {
     recipeList = compareRecipeList(recipes, state.favouritesRecipes);
   }
-  //dodanie indexu do listy przepisów
   return {
     ...state,
     receipts: recipeList,
@@ -61,16 +61,15 @@ const setReceipts = (state, recipes, isMoreReceipts) => {
 };
 
 const setReciptDetail = (state, details, index) => {
-  const udpadeDetails = { ...details };
+  const updadeDetails = { ...details };
   return {
     ...state,
-    reciptDetail: udpadeDetails,
+    reciptDetail: updadeDetails,
     activeRecipe: index,
   };
 };
 
 const setFavouritesRecipes = (state, recipes, dataBaseKey) => {
-  console.log(recipes);
   const favouriteRecipes = recipes === null ? [] : [...recipes];
 
   // const favouritesRecipesList = [];
@@ -82,12 +81,28 @@ const setFavouritesRecipes = (state, recipes, dataBaseKey) => {
   };
 };
 
+const setFavouritesRecipeDetail = (recipeDetail, index) => {
+  recipeDetail.bookmarked = true;
+  recipeDetail.ID = index;
+  return recipeDetail
+}
+
+const setUnFavouritesRecipeDetail = (recipeDetail) => {
+  recipeDetail.bookmarked = false;
+  delete updateRecipeDetail.ID;;
+  return recipeDetail
+}
+
 const updateRecipeDetail = (state, favouriteList) => {
   const updateRecipeDetail = { ...state.reciptDetail };
+  if (favouriteList.length === 0) {
+     return setUnFavouritesRecipeDetail(updateRecipeDetail);
+  }
   favouriteList.map((recipe, index) => {
     if (recipe.recipe.label === state.reciptDetail.recipe.label) {
-      updateRecipeDetail.bookmarked = !state.reciptDetail.recipe.bookmarked;
-      updateRecipeDetail.ID = index;
+      return setFavouritesRecipeDetail(updateRecipeDetail, index)
+    } else if (recipe.recipe.label !== state.reciptDetail.recipe.label) {
+      return setUnFavouritesRecipeDetail(updateRecipeDetail);
     }
     return updateRecipeDetail
   });
@@ -95,14 +110,16 @@ const updateRecipeDetail = (state, favouriteList) => {
 };
 
 const updateFavouriteList = (state, favouritesRecipes) => {
+  const newFavouritiesList = [...favouritesRecipes];
   const recipeList = compareRecipeList(
     state.receipts,
     favouritesRecipes
   );
   const updatedRecipeDetail = updateRecipeDetail(state, favouritesRecipes);
+  console.log(updatedRecipeDetail)
   return {
     ...state,
-    favouritesRecipes: favouritesRecipes,
+    favouritesRecipes: newFavouritiesList,
     receipts: recipeList,
     reciptDetail: updatedRecipeDetail,
   };

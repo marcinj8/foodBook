@@ -65,7 +65,7 @@ class SearchReceipt extends Component {
         const recipeData = { ...recipe };
         recipeData.bookmarked = true;
         updateFavouriteList.push(recipeData);
-        return updateFavouriteList
+        return updateFavouriteList;
     }
 
     addToFavouritesHandler = recipe => {

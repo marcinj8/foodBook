@@ -63,6 +63,11 @@ class FavouriteRecipes extends Component {
         })
     }
 
+    removeFromFavouritesHandler = (id) => {
+        this.closeModalHandler();
+        this.props.removeFromFavourites(id, this.props.favourites);
+    }
+
     render() {
         const StartPageStyle = ['favouriteRecipes__container',
             this.props.isActive
@@ -72,9 +77,8 @@ class FavouriteRecipes extends Component {
         let favouritesRecipesList = [];
 
         if (this.props.favourites !== null) {
-            favouritesRecipesList = this.props.favourites;
+            favouritesRecipesList = [...this.props.favourites];
         }
-
         return (
             <div className={StartPageStyle.join(' ')}>
                 <h2>Favorite Recipes</h2>
@@ -94,7 +98,7 @@ class FavouriteRecipes extends Component {
                         this.state.favouriteRecipeDetail !== null
                             ? <RecipeDetail
                                 addToPurchaseList={(...args) => this.props.addToPurchaseList(this.props.itemsToPurchase, ...args)}
-                                removeFromFavourite={(id) => this.props.removeFromFavourites(id, this.props.favourites)}
+                                removeFromFavourite={(id) => this.removeFromFavouritesHandler(id)}
                                 ID={this.state.favouriteRecipeID}
                                 isBookmarked={this.state.favouriteRecipeDetail.bookmarked}
                                 reciptDetail={this.state.favouriteRecipeDetail.recipe} />
@@ -117,7 +121,7 @@ const mapDispatchToProps = dispatch => {
     return {
         setFavourites: () => dispatch(actions.setFavourites()),
         removeFromFavourites: (id, recipes) => dispatch(actions.removeFromFavourities(id, recipes)),
-        addToPurchaseList: (...args) => dispatch(actionsPurchaseList.addToPurchaseList( ...args))
+        addToPurchaseList: (...args) => dispatch(actionsPurchaseList.addToPurchaseList(...args))
     }
 }
 

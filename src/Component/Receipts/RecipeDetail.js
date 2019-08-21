@@ -3,6 +3,7 @@ import React from 'react';
 import './RecipeDetail.css';
 
 const recipeDetail = props => {
+    // console.log(props)
     if(props.reciptDetail === null) {
         return null
     }

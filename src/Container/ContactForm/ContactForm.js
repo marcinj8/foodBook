@@ -120,7 +120,7 @@ class ContactForm extends Component {
 
         return (
             <div style={{ 'width': '100%', 'background': 'red'}}>
-                <img src={postCard} className={postCardStyle.join(' ')} />
+                <img alt='post card' src={postCard} className={postCardStyle.join(' ')} />
                 {
                     this.state.isSent
                         ? confirmation // dodać animację - zjazd podziękowania w dół
