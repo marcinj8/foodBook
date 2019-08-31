@@ -26,14 +26,18 @@ class PurchaseList extends Component {
                 : 'purchaseList__container--noActive'
         ];
 
-        let purchaseList = 'Purchase list is empty'
-        if(this.props.purchaseList !== null && Object.keys(this.props.purchaseList).length > 0) {
+        let purchaseList = (
+            <div>
+                Purchase list is empty
+            </div>
+        );
+        if (this.props.purchaseList !== null && Object.keys(this.props.purchaseList).length > 0) {
             purchaseList = (
-            <PurchaseListRender 
-                purchaseList={this.props.purchaseList}
-                removeFromPurchaseList={this.props.onRemoveFromPurchaseList}
-                tooglePurchasedProperty={this.props.onTooglePurchasedProperty}
-            />
+                <PurchaseListRender
+                    purchaseList={this.props.purchaseList}
+                    removeFromPurchaseList={this.props.onRemoveFromPurchaseList}
+                    tooglePurchasedProperty={this.props.onTooglePurchasedProperty}
+                />
             )
         }
 
@@ -42,9 +46,11 @@ class PurchaseList extends Component {
                 <h4>Purchase List</h4>
                 {purchaseList}
                 <button
+                    className='purchaseList__button'
                     onClick={() => this.props.onRemoveMultipleItemsFromPurchaseList('purchased', this.props.purchaseList)}
                     type="">Clear Purchased</button>
-                <button 
+                <button
+                    className='purchaseList__button'
                     onClick={() => this.props.onRemoveMultipleItemsFromPurchaseList('all')}
                     type="">Clear All</button>
             </div>

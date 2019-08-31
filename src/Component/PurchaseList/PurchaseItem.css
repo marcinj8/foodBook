@@ -2,8 +2,10 @@
     margin: 20px auto;
     padding: 5px;
     width: 90%;
-    box-shadow: 3px 2px 10px;
+    box-shadow: 3px 2px 10px black;
     transition: all .2s ease-in;
+    color: white;
+    background: rgba(98, 97, 97, .5)
 }
 
 .purchaseItem__container--purchased {
@@ -22,7 +24,7 @@
 
 .purchaseItem__container:hover {
     transform: scale(1.01);
-    box-shadow: 4px 3px 13px;
+    box-shadow: 4px 3px 13px black;
     border-bottom: 1px solid rgb(79, 7, 246);
     border-left: 1px solid rgb(79, 7, 246);
     border-right: 1px solid rgb(79, 7, 246);

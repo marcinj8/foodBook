@@ -1,11 +1,117 @@
-.navigation__contianer {
+.navigatoin__desktop {
+    display: none;
+}
+
+.navigation__sidebar {
+    position: fixed;
+    top: 0;
+    left: -100%;
+    background: rgb(91, 51, 0);
+    background: linear-gradient(180deg, rgba(91, 51, 0, 1) 0%, rgba(125, 78, 17, 1) 21%, rgba(133, 86, 28, 1) 33%, rgba(117, 70, 12, 1) 44%, rgba(50, 28, 0, 1) 100%);
+    height: 100vh;
+    width: 200px;
+    z-index: 1001;
+    transform: all .2s linear;
+    box-shadow: 3px 0 5px;
+    transition: all .4s;
+}
+
+.navigation__sidebarLogo {
+    margin: 40px auto;
+    height: 70px;
+    width: 70px;
+    padding: 10px
+}
+
+.navigation__togglerSidebar {
     position: sticky;
-    top:0px;
-    display: flex;
-    justify-content: space-around;
-    width: 100%;
-    background: rgb(115,113,113);
-    background: linear-gradient(0deg, rgba(115,113,113,1) 0%, rgba(115,113,113,1) 34%, rgba(143,134,158,1) 70%, rgb(101, 96, 110) 88%, rgba(91,84,107,1) 100%);
-    z-index: 100;
-    box-shadow: 0 3px 8px;
+    top: 0px;
+    background: rgb(91, 51, 0);
+    background: linear-gradient(180deg, rgba(91, 51, 0, 1) 0%, rgba(125, 78, 17, 1) 21%, rgba(133, 86, 28, 1) 33%, rgba(117, 70, 12, 1) 44%, rgba(50, 28, 0, 1) 100%);
+}
+
+.navigation__sidebarTogglerButton {
+    background: transparent;
+    outline: none;
+    border: none;
+    display: block;
+    position: relative;
+    left: 0;
+    cursor: pointer;
+}
+
+.navigation__sidebarTogglerButton div {
+    width: 35px;
+    height: 5px;
+    background-color: rgba(255, 255, 255, 0.418);
+    border-radius: 3px;
+    margin: 6px 0;
+    border: 1px solid rgb(63, 22, 3);
+}
+
+.navigation__sidebar--open {
+    left: 0;
+    /* animation: openSidebar .4s forwards; */
+}
+
+.navigation__sidebar--close {
+    left: -100%;
+    /* animation: closeSidebar .4s forwards; */
+}
+
+.navigation__sidebarButton {
+    padding: 5px;
+    margin-top: 35px;
+    color: wheat;
+    font-size: 1.2rem;
+    background: transparent;
+    outline: none;
+    border: none;
+}
+
+.navigation__sidebarButton:active {
+    color: red;
+}
+
+@media(min-width: 575px) {
+    .navigatoin__desktop {
+        position: sticky;
+        top: 0px;
+        display: flex;
+        justify-content: space-around;
+        width: 100%;
+        background: rgb(91, 51, 0);
+        background: linear-gradient(180deg, rgba(91, 51, 0, 1) 0%, rgba(125, 78, 17, 1) 21%, rgba(133, 86, 28, 1) 33%, rgba(117, 70, 12, 1) 44%, rgba(50, 28, 0, 1) 100%);
+        z-index: 100;
+        box-shadow: 0 3px 8px;
+    }
+
+    .navigation__sidebar {
+        display: none;
+    }
+
+    .navigation__togglerSidebar {
+        display: none;
+    }
+}
+
+@keyframes openSidebar {
+    0% {
+        left: -100%;
+    }
+
+    100% {
+        left: 0;
+    }
+}
+
+
+@keyframes closeSidebar {
+    0% {
+        left: 0;
+    }
+
+    100% {
+        left: -100%;
+    }
 }

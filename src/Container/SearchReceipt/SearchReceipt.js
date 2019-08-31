@@ -80,6 +80,8 @@ class SearchReceipt extends Component {
                 : 'searchRcipe__container--noActive'
         ];
 
+        const modal = null // slider na telefony
+
         return (
             <div className={searchRcipeStyle.join(' ')}>
                 <div className='searchRcipe__recipeList'>
@@ -91,6 +93,7 @@ class SearchReceipt extends Component {
                         : <div>Loading...</div>
                     }
                 </div>
+                {modal}
                 <div className='searchRcipe__recipeDetails'>
                     {this.props.reciptDetail !== null
                         ? <ReciptDetail

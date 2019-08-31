@@ -3,9 +3,9 @@
     right: 20%;
     box-sizing: border-box;
     overflow: hidden;
-    background: rgba(68, 68, 68, 0.4);
+    background: rgba(68, 68, 68, 0.75);
     border-bottom: 1px solid rgb(45, 1, 146);
-    box-shadow: 0 3px 6px rgb(97, 97, 97);
+    box-shadow: 3px 3px 6px;
     transition: all .3s ease-in-out;
 }
 
@@ -16,8 +16,18 @@
 
 .purchaseList__container--noActive {
     animation: hidePurchaseList .3s forwards;
+}
 
-
+.purchaseList__button {
+    box-sizing: content-box;
+    margin: 20px;
+    padding: 10px;
+    width: 100px;
+    outline: none;
+    border: 1px solid transparent;
+    border-radius: 5px;
+    color: rgb(45, 1, 146);
+    box-shadow: 1px 1px 10px rgb(45, 1, 146);
 }
 
 @keyframes showPurchaseList {

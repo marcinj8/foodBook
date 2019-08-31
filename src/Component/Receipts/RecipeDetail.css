@@ -1,4 +1,31 @@
-.recipeDetail__block{
+.recipeDetail__block {
     position: sticky;
     top: 200px;
+    color: whitesmoke
+}
+
+.recipeDetail__ingredient {
+    position: relative;
+    width: 90%;
+    margin: 15px auto;
+    cursor: pointer
+}
+
+.recipeDetail__ingredient:hover {
+    background: rgba(192, 192, 192, 0.644)
+}
+
+.recipeDetail__ingredient::before {
+    position: absolute;
+    left: 0;
+    content: '';
+    bottom: 0;
+    width: 0%;
+    border-bottom: 1px solid transparent;
+    transition: all .5s;
+}
+
+.recipeDetail__ingredient:hover::before {
+    width: 100%;
+    border-bottom: 1px solid rgb(204, 117, 3);
 }

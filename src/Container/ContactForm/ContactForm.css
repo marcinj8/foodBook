@@ -3,9 +3,9 @@
     right: 0%;
     box-sizing: border-box;
     overflow: hidden;
-    background: rgba(68, 68, 68, 0.4);
+    background: rgba(68, 68, 68, 0.75);
     border-bottom: 1px solid rgb(45, 1, 146);
-    box-shadow: 0 3px 6px rgb(97, 97, 97);
+    box-shadow: 3px 3px 6px;
     transition: all .3s ease-in-out;
 }
 
@@ -20,15 +20,14 @@
 }
 
 .contactForm__postCard {
+    position: absolute;
     margin: 0;
     padding: 0;
-    position: absolute;
-    width: 460px;
-    left: calc(50% - 230px);
-    top: 25%;
-    transform: skew(63deg, 27deg);
+    width: 300px;
+    left: calc(50% - 150px);
+    top: 50%;
     opacity: 0;
-    z-index: 0;
+    z-index: -10;
     transition: all .5s;
 }
 
@@ -126,6 +125,20 @@
     animation: activeFormButton 3s forwards
 }
 
+/* @media (min-width: 550px) {
+    .contactForm__postCard {
+        margin: 0;
+        padding: 0;
+        position: absolute;
+        width: 0;
+        left: calc(50% - 100px);
+        top: 25%;
+        opacity: 0;
+        z-index: 0;
+        transition: all .5s;
+    }
+} */
+
 @media (min-width: 750px) {
     .contactForm__form {
         width: 700px;
@@ -160,7 +173,6 @@
 
 @keyframes sendMessage {
     0% {
-        transform: skew(63deg, 27deg);
         opacity: 0;
         top: 25%;
         z-index: 0;
@@ -168,7 +180,6 @@
 
     40% {
         top: 25%;
-        transform: skew(0, 0);
         opacity: 1;
         z-index: 1000;
     }
@@ -179,7 +190,6 @@
     }
 
     100% {
-        transform: skew(0, 0);
         opacity: 0;
         z-index: 0;
         top: -120%;

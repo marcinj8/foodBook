@@ -8,7 +8,7 @@ const initialState = {
 
 const setPurchaseList = (state, data) => {
     const purchaseList = {};
-    if(data === null) {
+    if (data === null) {
         return state
     }
     Object.keys(data).map(key => {
@@ -44,8 +44,12 @@ const sendListOnServer = state => {// dodac do reducera
 }
 
 const removeFromPurchaseList = (state, id) => {
-    const updatedPurchaseList = { ...state.purchaseList};
-    delete updatedPurchaseList[id];
+    let updatedPurchaseList = { ...state.purchaseList };
+    if (id !== '') {
+        delete updatedPurchaseList[id];
+    } else if( id === ''){
+        updatedPurchaseList = null
+    }
     return {
         ...state,
         purchaseList: updatedPurchaseList,
@@ -57,14 +61,14 @@ const removeFromPurchaseList = (state, id) => {
 const removeMultipleItemsFromPurchaseList = (state) => {
     console.log('delete multiple')
     return {
-        ...state, 
+        ...state,
         isStateListUpdated: false,
         isServerListUpdated: true
     };
 }
 
 const tooglePurchasedProperty = (state, id) => {
-    const updatedPurchaseList = {...state.purchaseList};
+    const updatedPurchaseList = { ...state.purchaseList };
     updatedPurchaseList[id].purchased = !updatedPurchaseList[id].purchased;
 
     return {

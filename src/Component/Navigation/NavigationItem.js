@@ -3,7 +3,7 @@ import React from 'react';
 import './NavigationItem.css';
 
 const navigationItem = props => {
-  let navigationItemStyle = [
+  const navigationItemStyle = [
     'navigation__item',
     props.active
       ? 'navigation__item--active'

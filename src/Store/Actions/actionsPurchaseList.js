@@ -53,12 +53,12 @@ const removeMultipleItemsOnServer = itemsToSave => {
 }
 
 export const removeMultipleItemsFromPurchaseList = (command, purchaseList) => {
-    const itemToSave = null;
+    let itemToSave = '';
     if (command === 'purchased') {
         return filterItemsToSaveOnServer(purchaseList);
     }
     if (command === 'all') {
-        return removeMultipleItemsOnServer(itemToSave); // nie działa
+        return removeFromPurchaseList(itemToSave); // nie działa
     }
 }
 

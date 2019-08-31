@@ -1,25 +1,24 @@
-.navigation__item {
+.sideBarItem__item {
     position: relative;
     color: white;
     padding: 10px 0 7px 0;
     cursor: pointer;
     width: 100%;
     border-bottom: solid 3px transparent;
-    border-right: none;
     font-size: 1.2em;
 }
 
-.navigation__item:last-child {
+.sideBarItem__item:last-child {
     border-right: none;
 }
 
-.navigation__item--active {
+.sideBarItem__item--active {
     color: rgb(204, 117, 3);
     text-shadow: 0 0 px white;
     border-bottom: solid 3px rgb(204, 117, 3)
 }
 
-.navigation__item--disabled:hover {
+.sideBarItem__item--disabled:hover {
     background: rgba(80, 80, 80, 0.3);
     color: rgb(27, 3, 83);
     text-shadow: 0 0 1px white;
@@ -27,7 +26,7 @@
     cursor: default;
 }
 
-.navigation__item--noActive::before {
+.sideBarItem__item--noActive::before {
     content: '';
     position: absolute;
     width: 0%;
@@ -38,16 +37,10 @@
     transition: all .45s ease-in;
 }
 
-.navigation__item--noActive:hover::before {
+.sideBarItem__item--noActive:hover::before {
     width: 100%;
 }
 
-.navigation__item--noActive:hover {
+.sideBarItem__item--noActive:hover {
     color: rgb(204, 117, 3);
-}
-
-@media(min-width: 575px) {
-    .navigation__item {
-        border-right: dotted 1px black;
-    }
 }

@@ -40,6 +40,7 @@ class Layout extends Component {
         name: 'Contact',
       },
     },
+    showSidebar: false,
     ingredient: '',
     isSearchingActive: false,
     disableInput: true,
@@ -129,6 +130,12 @@ class Layout extends Component {
     this.setActiveOverlapHandler('recipe');
   };
 
+  sidebarToggler = () => {
+    this.setState({
+      showSidebar: !this.state.showSidebar
+    })
+  }
+
   render() {
     return (
       <div style={{ margin: '0', padding: '0', minHeight: '90vh' }}>
@@ -136,7 +143,9 @@ class Layout extends Component {
         <NavigationBlock
           ingredientInputValue={this.state.ingredient}
           navigation={this.state.navigation}
+          showSidebar={this.state.showSidebar}
           setActiveOverlap={this.setActiveOverlapHandler}
+          sidebarToggler={this.sidebarToggler}
         />
         <div className="page__container">
           <StartPage
@@ -155,8 +164,8 @@ class Layout extends Component {
           />
           <PurchaseList isActive={this.state.navigation.purchaseList.active} />
           <ContactForm isActive={this.state.navigation.contact.active} />
-          <Footer />
         </div>
+        <Footer />
       </div>
     );
   }
