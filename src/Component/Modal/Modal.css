@@ -1,18 +1,23 @@
 .modal {
     z-index: 990;
     position: fixed;
-    background: rgb(143, 99, 16);
-    border: 1px soild black;
-    border-radius: 3px;
-    width:300px;
+    background: rgb(91,51,0);
+    background: rgb(91,51,0);
+    background: linear-gradient(53deg, rgba(91,51,0,1) 0%, rgba(125,78,17,1) 21%, rgba(133,86,28,1) 33%, rgba(117,70,12,1) 44%, rgba(50,28,0,1) 100%); border-radius: 3px;
+    background-image: url('../../Assets/modalbg.png');
+    width: 300px;
     height: 400px;
     overflow: auto;
     top: -100%;
     left: -100%;
     transition: all .3s;
+    border-radius: 6px;
+    border: 2px wheat solid;
+    box-shadow: 4px 3px 13px black;
+    box-sizing: border-box;
 }
 
-.modal--show{
+.modal--show {
     top: calc(50% - 200px);
     left: calc(50% - 150px);
 }

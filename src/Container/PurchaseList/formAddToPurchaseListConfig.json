@@ -1,0 +1,24 @@
+[
+    {
+        "id": "description",
+        "htmlTag": "input",
+        "type": "text",
+        "placeholder": "description",
+        "className": "modalAddToPurchaseList__input",
+        "validation": {
+            "minLength": 1,
+            "message": "please check description"
+        }
+    },
+    {
+        "id": "weight",
+        "htmlTag": "input",
+        "type": "number",
+        "placeholder": "weight",
+        "className": "modalAddToPurchaseList__input",
+        "validation": {
+            "minLength": 1,
+            "message": "please check quantity"
+        }
+    }
+]

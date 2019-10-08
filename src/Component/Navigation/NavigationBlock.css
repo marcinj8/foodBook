@@ -2,6 +2,7 @@
     display: none;
 }
 
+
 .navigation__sidebar {
     position: fixed;
     top: 0;
@@ -24,6 +25,7 @@
 }
 
 .navigation__togglerSidebar {
+    display: block;
     position: sticky;
     top: 0px;
     background: rgb(91, 51, 0);
@@ -71,6 +73,16 @@
 
 .navigation__sidebarButton:active {
     color: red;
+}
+
+.navigation__sidebarContact {
+    display: block;
+    position: absolute;
+    bottom: 5px;
+    padding: 5px;
+    color: white;
+    font-size: .8rem;
+    border-top: 1px solid black;
 }
 
 @media(min-width: 575px) {

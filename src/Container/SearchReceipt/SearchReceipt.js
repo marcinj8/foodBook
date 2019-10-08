@@ -5,6 +5,7 @@ import * as actions from '../../Store/Actions/actions';
 import * as actionsPurchaseList from '../../Store/Actions/actionsPurchaseList';
 import ReceiptList from '../../Component/Receipts/ReceiptsList';
 import ReciptDetail from '../../Component/Receipts/RecipeDetail';
+import Modal from '../../Component/Modal/Modal';
 
 import './SearchReceipt.css';
 
@@ -20,9 +21,13 @@ class SearchReceipt extends Component {
             occurred: false,
             message: null
         },
+        showMobileModalDetail: false
     };
 
     componentDidUpdate() {
+        if(window.innerWidth< 575){
+            console.log(window.innerWidth, window.outerWidth)
+        }
         if (this.props.apiKey !== null && this.props.apiId !== null && this.state.loading === false) {
             if (this.props.ingredient !== this.state.currentSearching.ingredient && this.props.ingredient !== '') {
                 this.getReceipts();
@@ -80,7 +85,21 @@ class SearchReceipt extends Component {
                 : 'searchRcipe__container--noActive'
         ];
 
-        const modal = null // slider na telefony
+        const recipeDetalModal = this.props.reciptDetail !== null
+            ? (
+                <Modal>
+                    <div className='searchRcipe__recipeDetailsSliderl'>
+                        <ReciptDetail
+                            addToPurchaseList={(...args) => this.props.addToPurchaseList(this.props.itemsToPurchase, ...args)}
+                            addToFavourites={() => this.addToFavouritesHandler(this.props.reciptDetail)}
+                            removeFromFavourite={(id) => this.props.removeFromFavourites(id, this.props.favouritesRecipes)}
+                            ID={this.props.reciptDetail.ID}
+                            isBookmarked={this.props.reciptDetail.bookmarked}
+                            reciptDetail={this.props.reciptDetail.recipe} />
+                    </div>
+                </Modal>
+            )
+            : null;
 
         return (
             <div className={searchRcipeStyle.join(' ')}>
@@ -93,7 +112,7 @@ class SearchReceipt extends Component {
                         : <div>Loading...</div>
                     }
                 </div>
-                {modal}
+                {recipeDetalModal}
                 <div className='searchRcipe__recipeDetails'>
                     {this.props.reciptDetail !== null
                         ? <ReciptDetail
@@ -133,7 +152,7 @@ const mapDispatchToProps = dispatch => {
         seeReciptDetail: (details, index) => dispatch(actions.seeReciptDetail(details, index)),
         onAddToFavourites: (recipes) => dispatch(actions.pushUpdatedFavouriteList(recipes)),
         removeFromFavourites: (id, recipes) => dispatch(actions.removeFromFavourities(id, recipes)),
-        addToPurchaseList: (...args) => dispatch(actionsPurchaseList.addToPurchaseList( ...args))
+        addToPurchaseList: (...args) => dispatch(actionsPurchaseList.addToPurchaseList(...args))
 
     }
 }

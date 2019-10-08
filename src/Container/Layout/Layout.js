@@ -138,7 +138,7 @@ class Layout extends Component {
 
   render() {
     return (
-      <div style={{ margin: '0', padding: '0', minHeight: '90vh' }}>
+      <div style={{ margin: '0', padding: '0', minHeight: '100vh' }}>
         <Logo />
         <NavigationBlock
           ingredientInputValue={this.state.ingredient}

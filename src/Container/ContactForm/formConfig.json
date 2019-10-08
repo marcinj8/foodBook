@@ -2,41 +2,65 @@
     {
         "id": "name",
         "htmlTag": "input",
+        "type": "text",
         "placeholder": {
-            "start":"",
-            "end":"name"
+            "start": "",
+            "end": "name"
         },
         "className": "contactForm__input",
-        "validation": {}
+        "validation": {
+            "required": true,
+            "minLength": 5,
+            "message": "please check your name"
+        }
     },
     {
         "id": "email",
         "htmlTag": "input",
+        "type": "text",
         "placeholder": {
-            "start":"",
-            "end":"email"
+            "start": "",
+            "end": "email"
         },
         "className": "contactForm__input",
-        "validation": {}
+        "validation": {
+            "required": true,
+            "minLength": 5,
+            "includes": [
+                "@",
+                "."
+            ],
+            "message": "please check your email address"
+        }
     },
     {
         "id": "topic",
         "htmlTag": "input",
+        "type": "text",
         "placeholder": {
-            "start":"",
-            "end":"topic"
+            "start": "",
+            "end": "topic"
         },
         "className": "contactForm__input",
-        "validation": {}
+        "validation": {
+            "required": true,
+            "minLength": 5,
+            "message": "please check topic"
+        }
     },
     {
         "id": "message",
         "htmlTag": "textarea",
+        "type": "text",
         "placeholder": {
-            "start":"",
-            "end":"message"
+            "start": "",
+            "end": "message"
         },
         "className": "contactForm__textarea",
-        "validation": {}
+        "validation": {
+            "required": true,
+            "minLength": 5,
+            "message": "please check your message"
+        }
     }
 ]

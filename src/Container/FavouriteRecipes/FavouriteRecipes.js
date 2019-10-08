@@ -81,7 +81,7 @@ class FavouriteRecipes extends Component {
         }
         return (
             <div className={StartPageStyle.join(' ')}>
-                <h2>Favorite Recipes</h2>
+                <h2 className='favouriteRecipes__title'>Favorite Recipes</h2>
                 <div className='favouriteRecipes__recipeList'>
                     {
                         favouritesRecipesList.length > 0

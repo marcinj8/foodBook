@@ -3,7 +3,7 @@ import React from 'react';
 import './RecipeDetail.css';
 
 const recipeDetail = props => {
-    // console.log(props)
+    console.log(props.reciptDetail.ingredients)
     if (props.reciptDetail === null) {
         return null
     }
@@ -12,8 +12,7 @@ const recipeDetail = props => {
         <li className="recipeDetail__ingredient"
             onClick={() => props.addToPurchaseList(ingredient.text, ingredient.weight)}
             key={index}>{ingredient.text} ( {Math.round(ingredient.weight)}g )</li>
-    )
-    )
+    ))
 
     return (
         <div className='recipeDetail__block'>

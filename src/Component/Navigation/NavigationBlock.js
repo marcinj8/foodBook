@@ -49,6 +49,7 @@ const navigationBlock = props => {
       <div className='navigatoin__desktop'>
         {navigationElements}
       </div>
+
       <div className='navigation__togglerSidebar'>
         <button
           className='navigation__sidebarTogglerButton'
@@ -57,16 +58,24 @@ const navigationBlock = props => {
           <div></div>
           <div></div>
         </button>
-
       </div>
+
       <Backdrop
         clicked={props.sidebarToggler}
         show={props.showSidebar} />
+
       <div className={sidebarStyle.join(' ')}>
         <img className="navigation__sidebarLogo" src={icon} alt="" />
         {sideBarElements}
         <button className='navigation__sidebarButton'
           onClick={props.sidebarToggler}>Close</button>
+        <div>
+          <a
+            className='navigation__sidebarContact'
+            href="mailto:contac@marcinjanerka.com">
+            Send message: contact@marcinjanerka.com
+          </a>
+        </div>
       </div>
     </nav >
   );
