@@ -1,17 +1,27 @@
 import React from 'react';
 
+import './FormElement.css';
+
 const formElement = props => {
-console.log(props)
-    const message = props.showMessage
-        ? <div>{props.message}</div>
+    const message = props.validation.showMessage
+        ? <div className='form__validatoinMessage'>{props.validation.message}</div>
         : null;
+
+    const itemStyle = [
+        props.class,
+        props.validation.showMessage
+            ? 'form__validationError'
+            : props.validation.isValid
+                ? 'form__validationSucces'
+                : null
+    ];
 
     switch (props.htmlTag) {
         case 'input':
             return (
                 <div>
                     <input
-                        className={props.class}
+                        className={itemStyle.join(' ')}
                         placeholder={props.placeholder}
                         onChange={props.onChangeElement}
                         type={props.type}
@@ -24,7 +34,7 @@ console.log(props)
             return (
                 <div>
                     <textarea
-                        className={props.class}
+                        className={itemStyle.join(' ')}
                         placeholder={props.placeholder}
                         onChange={props.onChangeElement}
                         type="text"

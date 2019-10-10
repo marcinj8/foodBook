@@ -18,7 +18,6 @@ const formElements = props => {
                     : props.placeholders[item.id].placeholder.end}
                 onChangeElement={props.onChangeElement}
                 itemValue={props.values[item.id]}
-                showMessage={props.showMessage}
             />
         )
     })

@@ -1,0 +1,25 @@
+.form__validatoinMessage {
+    color: red;
+    text-shadow: 0 0 1spx white;
+    background: rgba(2,2,2,0.5);
+    width: 90%;
+    padding: 0 5px;
+    margin: 0 auto
+}
+
+.form__validationError {
+    border-color: red;
+    /* border: solid 2px red */
+    background: rgb(245, 160, 160)
+}
+
+.form__validationSucces {
+    background: rgb(183, 240, 183)
+}
+
+@media(min-width: 500px){
+    .form__validatoinMessage {
+        width: 300px;
+    }
+    
+}

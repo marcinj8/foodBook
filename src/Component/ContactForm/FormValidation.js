@@ -48,7 +48,8 @@ const checkValidation = (value, validationConditions) => {
 
     return {
         isValid: isValid,
-        message: validationMessage
+        message: validationMessage,
+        showMessage: !isValid
     }
 }
 

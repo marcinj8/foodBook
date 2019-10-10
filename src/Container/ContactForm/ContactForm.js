@@ -14,7 +14,6 @@ class ContactForm extends Component {
         emailValidation: {},
         placeholders: {},
         isSent: false,
-        showMessage: false,
         animatePlaceholder: true,
         disableSendButton: true
     };
@@ -52,11 +51,11 @@ class ContactForm extends Component {
     enableSendButton = conditionsObj => {
         const isValidArray = [];
         let enableButton = false;
+        const emailValidationUpdated = {...this.state.emailValidation}
 
         for(let key in conditionsObj) {
-            isValidArray.push(conditionsObj[key].isValid)
+            isValidArray.push(conditionsObj[key].isValid);
         }
-        console.log(isValidArray);
 
         for(let value of isValidArray) {
             if(value) {
@@ -69,7 +68,8 @@ class ContactForm extends Component {
         
         this.setState({
             disableSendButton: !enableButton,
-            showMessage: enableButton
+            showMessage: enableButton,
+            emailValidation: emailValidationUpdated
         })
     }
 
@@ -82,11 +82,11 @@ class ContactForm extends Component {
         if(formConfig[emailValidationIndex].validation){
             emailValidationUpdated[e.target.placeholder] = checkValidation(e.target.value, formConfig[emailValidationIndex].validation);
         }
+        this.enableSendButton(emailValidationUpdated);
         this.setState({ 
             emailData: updatedEmailData,
             emailValidation: emailValidationUpdated
         });
-        this.enableSendButton(emailValidationUpdated);
     };
 
     sendEmail = () => {
@@ -130,7 +130,6 @@ class ContactForm extends Component {
                 ? 'contactForm__container--active'
                 : 'contactForm__container--noActive',
         ];
-
         const postCardStyle = [
             'contactForm__postCard',
             this.state.isSent
@@ -148,7 +147,6 @@ class ContactForm extends Component {
                         onChangeElement={this.onInputChange}
                         values={this.state.emailData}
                         emailValidation={this.state.emailValidation}
-                        showMessage={this.state.showMessage}
                     />
                 </form>
                 <button
@@ -173,7 +171,7 @@ class ContactForm extends Component {
                 {
                     this.state.isSent
                         ? confirmation // dodać animację - zjazd podziękowania w dół
-                        : contactForm   // dodać animację - wysłanie koperty (png asset)
+                        : contactForm  
                 }
             </div>
         );
