@@ -21,11 +21,14 @@ class SearchReceipt extends Component {
             occurred: false,
             message: null
         },
-        showMobileModalDetail: false
+        showMobileModalDetail: false,
+        currentScrollPositon: 0,
+        showIsmoreButton: false,
+        dateOfStartShowingButton: 0
     };
 
     componentDidUpdate() {
-        if(window.innerWidth< 575){
+        if (window.innerWidth < 575) {
             console.log(window.innerWidth, window.outerWidth)
         }
         if (this.props.apiKey !== null && this.props.apiId !== null && this.state.loading === false) {
@@ -35,6 +38,9 @@ class SearchReceipt extends Component {
         };
         if (this.props.receiptList.length > 0 && this.state.loading === true) {
             this.setLoadingToFalse()
+        }
+        if (this.state.currentScrollPositon !== this.props.currentScrollPositon) {
+            this.scrollHandler();
         }
     };
 
@@ -47,7 +53,10 @@ class SearchReceipt extends Component {
     }
 
     setLoadingToTrue = () => {
-        this.setState({ loading: true })
+
+        this.setState({
+            loading: true,
+        })
     }
 
     updateCurrentSearching = () => {
@@ -65,17 +74,46 @@ class SearchReceipt extends Component {
         this.updateCurrentSearching();
     }
 
-    addedFavouriteList = recipe => {
-        const updateFavouriteList = [...this.props.favouritesRecipes];
-        const recipeData = { ...recipe };
-        recipeData.bookmarked = true;
-        updateFavouriteList.push(recipeData);
-        return updateFavouriteList;
+    hideIsmoreButton = () => {
+        const currentDate = new Date();
+        console.log(this.state.dateOfStartShowingButton + 4000, currentDate.getTime())
+        if (this.state.dateOfStartShowingButton + 4000 < currentDate.getTime() && this.state.showIsmoreButton) {
+            console.log('yesss');
+            this.setState({
+                showIsmoreButton: false
+            })
+        }
     }
 
-    addToFavouritesHandler = recipe => {
-        const favouriteList = this.addedFavouriteList(recipe);
-        this.props.onAddToFavourites(favouriteList);
+    setCounterToHideButton = () => {
+        let counter = null;
+        if (!this.state.showIsmoreButton && this.state.dateOfStartShowingButton === 0) { // drugi warunek obowiązuje do momentu kiedy uda się zastosowac clearinterval
+            return counter = setInterval(
+                () => this.hideIsmoreButton(), 1000
+            )
+        } else if (this.state.showIsmoreButton) {
+            return clearInterval(counter)
+        }
+    }
+
+    showIsmoreButton = () => {
+        const dateOfStartShowingButtonUpdated = new Date();
+        this.setCounterToHideButton();
+        this.setState({
+            showIsmoreButton: true,
+            dateOfStartShowingButton: dateOfStartShowingButtonUpdated.getTime()
+        })
+    }
+
+    scrollHandler = () => {
+        this.showIsmoreButton();
+        this.setState({
+            currentScrollPositon: this.props.currentScrollPositon
+        })
+    }
+
+    addToFavouritesHandler = newRecipe => {
+        this.props.onAddToFavourites(newRecipe);
     }
 
     render() {
@@ -84,6 +122,13 @@ class SearchReceipt extends Component {
                 ? 'searchRcipe__container--active'
                 : 'searchRcipe__container--noActive'
         ];
+
+        const isMoreButtonStyle = [
+            'searchRcipe__buttonIsmore',
+            this.props.isActive && this.state.showIsmoreButton
+                ? 'searchRcipe__buttonIsmore--show'
+                : 'searchRcipe__buttonIsmore--hide'
+        ]
 
         const recipeDetalModal = this.props.reciptDetail !== null
             ? (
@@ -112,10 +157,12 @@ class SearchReceipt extends Component {
                         : <div>Loading...</div>
                     }
                 </div>
+                <button className={isMoreButtonStyle.join(' ')} onClick={() => console.log('dupa')} >More receipes</button>
                 {recipeDetalModal}
                 <div className='searchRcipe__recipeDetails'>
                     {this.props.reciptDetail !== null
                         ? <ReciptDetail
+                            isFavouriteList={false}
                             addToPurchaseList={(...args) => this.props.addToPurchaseList(this.props.itemsToPurchase, ...args)}
                             addToFavourites={() => this.addToFavouritesHandler(this.props.reciptDetail)}
                             removeFromFavourite={(id) => this.props.removeFromFavourites(id, this.props.favouritesRecipes)}
@@ -142,6 +189,7 @@ const mapStateToProps = state => {
         favouritesRecipes: state.recipesReducer.favouritesRecipes,
         dataBaseKey: state.recipesReducer.dataBaseKey,
         itemsToPurchase: state.purchaseListReducer.purchaseList,
+        isMore: state.recipesReducer.isMore
     }
 }
 
@@ -150,7 +198,7 @@ const mapDispatchToProps = dispatch => {
         setReceips: (...arg) => dispatch(actions.setReceipts(...arg)),
         errorHandler: err => dispatch(actions.errorHandler(err)),
         seeReciptDetail: (details, index) => dispatch(actions.seeReciptDetail(details, index)),
-        onAddToFavourites: (recipes) => dispatch(actions.pushUpdatedFavouriteList(recipes)),
+        onAddToFavourites: (newRecipe) => dispatch(actions.pushUpdatedFavouriteList(newRecipe)),
         removeFromFavourites: (id, recipes) => dispatch(actions.removeFromFavourities(id, recipes)),
         addToPurchaseList: (...args) => dispatch(actionsPurchaseList.addToPurchaseList(...args))
 

@@ -30,6 +30,9 @@
                 "@",
                 "."
             ],
+            "excludes": [
+                " "
+            ],
             "message": "please check your email address"
         }
     },

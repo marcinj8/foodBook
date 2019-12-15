@@ -68,9 +68,9 @@ const addIngredientesToState = () => {
     }
 }
 
-export const addToPurchaseList = (currentIngredientList, ingredient, weight) => {
+export const addToPurchaseList = (ingredient, quantity, weight) => {
     const item = {
-        ingredient: ingredient,
+        ingredient: quantity + ' of ' + ingredient,
         weight: weight,
         purchased: false
     }
@@ -98,7 +98,6 @@ export const getPurchaseList = () => {
     return dispatch => {
         Axios.get('https://fooddatabase-75cfa.firebaseio.com/purchseList.json')
             .then(res => {
-                console.log(res);
                 return dispatch(setPurchaseList(res.data))
             })
             .catch(err => alert(err))
@@ -130,38 +129,3 @@ export const sendListOnServer = purchaseList => {
     }
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// export const addToPurchaseList = (purchaseList, ingredient, weight) => {
-//     pushPurchaseItemToServer(ingredient, weight);
-//     // rozpozawanie składników do opracownia
-//     // const currentPurchaseList = { ...purchaseList };
-//     // // debugger
-//     // return dispatch => {
-//     //     if (currentPurchaseList === {} ) {
-//     //         console.log('dsafsadf')
-//     //         return dispatch(pushPurchaseItemToServer(ingredient, weight))
-//     //     }
-//     //     Object.keys(currentPurchaseList).map(stateIngredient => {
-//     //         if (stateIngredient === ingredient) {
-//     //             console.log(stateIngredient);
-//     //             return dispatch(pushPurchaseItemToServer(ingredient, weight))
-//     //         } else if (stateIngredient !== ingredient) {
-//     //             return dispatch(pushPurchaseItemToServer(ingredient, weight))
-//     //         }
-//     //     })
-//     // }
-// }

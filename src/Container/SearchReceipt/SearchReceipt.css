@@ -24,8 +24,6 @@
 
 .searchRcipe__container--noActive {
     animation: hideSearchRecipe .3s forwards;
-
-
 }
 
 .searchRcipe__recipeDetails {
@@ -39,6 +37,26 @@
     /* right: -100%; */
 }
 
+.searchRcipe__buttonIsmore {
+    position: fixed;
+    bottom: 50px;
+    left: calc(50% - 75px);
+    width: 150px;
+    height: 40px;
+    box-shadow: 5px 5px 15px;
+    border-radius: 5px;
+    opacity: 0;
+    transform: scale(.5)
+}
+
+.searchRcipe__buttonIsmore--show {
+    animation: showButton .3s forwards;
+
+}
+
+.searchRcipe__buttonIsmore--hide {
+    animation: hideButton .3s forwards;
+}
 
 @keyframes showSearchRecipe {
     0% {
@@ -102,6 +120,42 @@
     }
 }
 
+@keyframes showButton {
+    0% {
+        opacity: 0;
+        z-index: -1000;
+        transform: scale(.5)
+    }
+
+    1% {
+        z-index: 10;
+    }
+
+    100% {
+        transform: scale(1);
+        opacity: 1;
+        z-index: 10;
+    }
+}
+
+@keyframes hideButton {
+    0% {
+        opacity: 1;
+        z-index: 10;
+        transform: scale(1)
+    }
+
+    90% {
+        opacity: 0;
+    }
+
+    100% {
+        transform: scale(.5);
+        opacity: 0;
+        z-index: -10000;
+    }
+}
+
 @media(min-width: 575px) {
     .searchRcipe__recipeList {
         width: 40%;
@@ -114,5 +168,8 @@
 
     .searchRcipe__recipeDetailsSliderl {
         display: none
+    }
+    .searchRcipe__buttonIsmore {
+        bottom: 10%;
     }
 }

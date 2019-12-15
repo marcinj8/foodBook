@@ -9,7 +9,7 @@
     transition: all .3s ease-in-out;
 }
 
-.favouriteRecipes__title{
+.favouriteRecipes__title {
     margin: 5px auto 10px auto;
     font-size: 1.5rem;
     color: black;
@@ -21,6 +21,15 @@
     min-width: 50px;
     width: 90%;
     text-align: left;
+}
+
+.favouriteRecipes__emptyList {
+    position: absolute;
+    top: 20%;
+    left: calc(50% - 100px);
+    width: 200px;
+    color: wheat;
+    font-size: 1.5em;
 }
 
 .favouriteRecipes__container--active {

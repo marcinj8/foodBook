@@ -44,8 +44,12 @@ class Layout extends Component {
     ingredient: '',
     isSearchingActive: false,
     disableInput: true,
+    currentScrollPositon: 0,
   };
 
+  componentDidMount() {
+    window.addEventListener('scroll', this.onScrollHandler);
+  }
   componentDidUpdate() {
     if (
       this.state.disableInput &&
@@ -57,6 +61,12 @@ class Layout extends Component {
     }
   }
 
+  onScrollHandler = () => {
+    const currentScrollPositonUpdated = window.pageYOffset;
+    this.setState({
+      currentScrollPositon: currentScrollPositonUpdated
+    })
+  }
   makeCopy = object => {
     if (Array.isArray(object)) {
       return this.copyArr(object);
@@ -156,6 +166,7 @@ class Layout extends Component {
           />
           <AccessCheck isActive={this.state.navigation.recipe.active} />
           <SearchReceipt
+            currentScrollPositon={this.state.currentScrollPositon}
             ingredient={this.state.ingredient}
             isActive={this.state.navigation.recipe.active}
           />

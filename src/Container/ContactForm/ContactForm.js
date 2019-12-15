@@ -27,7 +27,7 @@ class ContactForm extends Component {
         const emailValidation = {}
         const placeholders = {};
 
-        formConfig.map(item => {
+        for (let item of formConfig) {
             emailData[item.id] = '';
             placeholders[item.id] = {};
             emailValidation[item.id] = {};
@@ -37,10 +37,8 @@ class ContactForm extends Component {
             emailValidation[item.id].isValid = false;
             emailValidation[item.id].message = '';
             emailValidation[item.id].showMessage = false;
-            // show message dla każdego pozycji czy ogólnie, live validation
+        }
 
-            // return 
-        })
         this.setState({
             emailData: emailData,
             emailValidation: emailValidation,
@@ -51,21 +49,21 @@ class ContactForm extends Component {
     enableSendButton = conditionsObj => {
         const isValidArray = [];
         let enableButton = false;
-        const emailValidationUpdated = {...this.state.emailValidation}
+        const emailValidationUpdated = { ...this.state.emailValidation }
 
-        for(let key in conditionsObj) {
+        for (let key in conditionsObj) {
             isValidArray.push(conditionsObj[key].isValid);
         }
 
-        for(let value of isValidArray) {
-            if(value) {
+        for (let value of isValidArray) {
+            if (value) {
                 enableButton = true;
             } else {
                 enableButton = false;
                 break;
             }
         }
-        
+
         this.setState({
             disableSendButton: !enableButton,
             showMessage: enableButton,
@@ -76,14 +74,14 @@ class ContactForm extends Component {
     onInputChange = e => {
         const updatedEmailData = { ...this.state.emailData };
         const emailValidationUpdated = { ...this.state.emailValidation };
-        const emailValidationIndex = formConfig.findIndex( item => item.placeholder.end === e.target.placeholder);
+        const emailValidationIndex = formConfig.findIndex(item => item.placeholder.end === e.target.placeholder);
         updatedEmailData[e.target.placeholder] = e.target.value;
-        
-        if(formConfig[emailValidationIndex].validation){
+
+        if (formConfig[emailValidationIndex].validation) {
             emailValidationUpdated[e.target.placeholder] = checkValidation(e.target.value, formConfig[emailValidationIndex].validation);
         }
         this.enableSendButton(emailValidationUpdated);
-        this.setState({ 
+        this.setState({
             emailData: updatedEmailData,
             emailValidation: emailValidationUpdated
         });
@@ -146,7 +144,7 @@ class ContactForm extends Component {
                         placeholders={this.state.placeholders}
                         onChangeElement={this.onInputChange}
                         values={this.state.emailData}
-                        emailValidation={this.state.emailValidation}
+                        itemValidation={this.state.emailValidation}
                     />
                 </form>
                 <button
@@ -171,7 +169,7 @@ class ContactForm extends Component {
                 {
                     this.state.isSent
                         ? confirmation // dodać animację - zjazd podziękowania w dół
-                        : contactForm  
+                        : contactForm
                 }
             </div>
         );

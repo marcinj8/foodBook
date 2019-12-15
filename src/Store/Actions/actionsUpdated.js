@@ -12,7 +12,6 @@ export const setPremissions = data => {
 };
 
 const storeRecipes = res => {
-    console.log(res)
     return {
         type: actionTypes.SET_RECEIPTS,
         receipts: res.hits,
@@ -58,15 +57,14 @@ export const setFavourites = () => {
             })
     }
 };
-const updateFavouriteList = newRecipe => {
+const updateFavouriteList = recipes => {
     return {
         type: actionTypes.UPDATE_FAVOURITIES,
-        newRecipe: newRecipe
+        newRecipe: recipes
     }
 };
 
 export const pushUpdatedFavouriteList = (newRecipe) => {
-    newRecipe.bookmarked = true;
     console.log(newRecipe, 'pushed to server')
     return dispatch => {
         Axios.post('https://fooddatabase-75cfa.firebaseio.com/favouritesList/.json', newRecipe)
@@ -78,20 +76,10 @@ export const pushUpdatedFavouriteList = (newRecipe) => {
     }
 };
 
-const deleteRecipeFromFavourites = id => {
-    return {
-        type: actionTypes.DELETE_RECIPE_FROM_FAVOURITE_LIST,
-        id: id
-    }
-}
-
-export const removeFromFavourities = (id) => {
-    console.log(id)
-    return dispatch => {
-        Axios.delete('https://fooddatabase-75cfa.firebaseio.com/favouritesList/' + id + '.json')
-            .then(res => {
-                console.log(res)
-                return dispatch(deleteRecipeFromFavourites(id))
-            })
-    }
+export const removeFromFavourities = (id, favouriteList) => {
+    const currentFavouriteList = [...favouriteList];
+    const updateFavouriteList = currentFavouriteList.filter((el, i) => {
+        return (i !== id)
+    })
+    return pushUpdatedFavouriteList(updateFavouriteList);
 }

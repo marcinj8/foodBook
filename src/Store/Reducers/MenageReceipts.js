@@ -8,7 +8,9 @@ const initialState = {
   receipts: [],
   reciptDetail: null,
   activeRecipe: null,
-  favouritesRecipes: [],
+  favouritesRecipes: null,
+  isFavouriteRecipesUpdatedOnApp: false,
+  isRecipesUpdatedOnApp: false,
   dataBaseKey: '',
   savedReceipts: null,
   isMoreReceipts: false,
@@ -30,113 +32,105 @@ const setKey = (state, apiKey, apiId) => {
   };
 };
 
-const compareRecipeList = (recipes, favouriteList) => {
-  const recipeListUpdated = [...recipes];
-  const currentFavouriteList = [...favouriteList];
-  recipeListUpdated.map((recipe, index) => {
-    for (let favouriteRecipe of currentFavouriteList) {
-      if (favouriteRecipe.recipe.label === recipe.recipe.label) {
-        recipeListUpdated[index] = favouriteRecipe;
-        recipeListUpdated[index].ID = currentFavouriteList.findIndex(
-          recipe => recipe === favouriteRecipe
-        );
+const compareRecipeList = (recipes, favouritesRecipes) => {
+  const favouriteRecipesArr = Object.keys(favouritesRecipes);
+  let recipesUpdated = [...recipes];
+  if (recipes.length) {
+    recipesUpdated.map((recipe, index) => { // zribic for
+      for (let favouriteRecipeID of favouriteRecipesArr){
+        if (recipe.recipe.label === favouritesRecipes[favouriteRecipeID].recipe.label) {
+          recipesUpdated[index] = { ...favouritesRecipes[favouriteRecipeID] }
+        }
       }
-      return recipe;
-    }
-    return recipe;
-  });
-  return recipeListUpdated;
-};
+    })
+    console.log(recipesUpdated)
 
-const setReceipts = (state, recipes, isMoreReceipts) => {
-  let recipeList = [...recipes];
-  if (state.favouritesRecipes !== null) {
-    recipeList = compareRecipeList(recipes, state.favouritesRecipes);
+    return recipesUpdated;
   }
+  return recipesUpdated;
+}
+
+const setRecipes = (state, recipes, isMoreRecipes) => {
+  let recipesUpdated = [...recipes];
+  if (state.favouritesRecipes !== null) {
+    recipesUpdated = compareRecipeList([...recipes], state.favouritesRecipes);
+  }
+  console.log(recipes)
   return {
     ...state,
-    receipts: recipeList,
-    isMoreReceipts: isMoreReceipts,
-  };
-};
+    receipts: [...recipesUpdated],
+    isMoreReceipts: isMoreRecipes,
+    isRecipesUpdatedOnApp: false,
+  }
+}
 
 const setReciptDetail = (state, details, index) => {
-  const updadeDetails = { ...details };
   return {
     ...state,
-    reciptDetail: updadeDetails,
+    reciptDetail: { ...details },
     activeRecipe: index,
   };
 };
 
-const setFavouritesRecipes = (state, recipes, dataBaseKey) => {
-  const favouriteRecipes = recipes === null ? [] : [...recipes];
+const setFavouritesRecipes = (state, favRecipes) => {
+  const favouriteRecipesUpdated = favRecipes === null ? {} : { ...favRecipes };
+  let recipesUpdated = [...state.receipts];
+  if (state.receipts !== null) {
+    recipesUpdated = compareRecipeList(state.receipts, { ...favRecipes });
+  }
 
-  // const favouritesRecipesList = [];
-  // Object.keys(recipes).map( key => favouritesRecipesList.push({...recipes[key], ID: key}))
   return {
     ...state,
-    favouritesRecipes: favouriteRecipes,
-    dataBaseKey: dataBaseKey,
-  };
-};
-
-const setFavouritesRecipeDetail = (recipeDetail, index) => {
-  recipeDetail.bookmarked = true;
-  recipeDetail.ID = index;
-  return recipeDetail
-}
-
-const setUnFavouritesRecipeDetail = (recipeDetail) => {
-  recipeDetail.bookmarked = false;
-  delete updateRecipeDetail.ID;;
-  return recipeDetail
-}
-
-const updateRecipeDetail = (state, favouriteList) => {
-  const updateRecipeDetail = { ...state.reciptDetail };
-  if (favouriteList.length === 0) {
-     return setUnFavouritesRecipeDetail(updateRecipeDetail);
+    receipts: recipesUpdated,
+    favouritesRecipes: { ...favouriteRecipesUpdated },
+    isFavouriteRecipesUpdatedOnApp: true
   }
-  favouriteList.map((recipe, index) => {
-    if (recipe.recipe.label === state.reciptDetail.recipe.label) {
-      return setFavouritesRecipeDetail(updateRecipeDetail, index)
-    } else if (recipe.recipe.label !== state.reciptDetail.recipe.label) {
-      return setUnFavouritesRecipeDetail(updateRecipeDetail);
-    }
-    return updateRecipeDetail
-  });
-  return updateRecipeDetail;
-};
+}
 
-const updateFavouriteList = (state, favouritesRecipes) => {
-  const newFavouritiesList = [...favouritesRecipes];
+const updateFavouriteList = (state, newRecipe) => {
+  // debugger
+  console.log('updateFavouriteList', newRecipe)
+  const newFavouritiesList = {...state.favouritesRecipes};
+  const temporaryKey = new Date().getTime();
+  console.log(temporaryKey)
+  newFavouritiesList[temporaryKey] = {...newRecipe};
+  console.log('dupa')
   const recipeList = compareRecipeList(
     state.receipts,
-    favouritesRecipes
+    newFavouritiesList
   );
-  const updatedRecipeDetail = updateRecipeDetail(state, favouritesRecipes);
-  console.log(updatedRecipeDetail)
   return {
     ...state,
     favouritesRecipes: newFavouritiesList,
     receipts: recipeList,
-    reciptDetail: updatedRecipeDetail,
+    isFavouriteRecipesUpdatedOnApp: false,
+
+
+    // reciptDetail: updatedRecipeDetail, czy to potrzebne?
   };
 };
 
+const deleteRecipeFromFavouriteList = (state, id) => {
+  console.log(id);
+  return {
+    ...state,
+    isRecipesUpdatedOnApp: false,
+  };
+}
 const menageReceiptReducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.GET_PREMISSION:
       return setKey(state, action.apiKey, action.apiId);
     case actionTypes.SET_RECEIPTS:
-      return setReceipts(state, action.receipts, action.isMoreReceipts);
+      return setRecipes(state, action.receipts, action.isMoreReceipts);
     case actionTypes.SEE_RECIPT_DETAIL:
       return setReciptDetail(state, action.details, action.index);
     case actionTypes.SET_FAVOURITES:
       return setFavouritesRecipes(state, action.recipes, action.dataBaseKey);
     case actionTypes.UPDATE_FAVOURITIES:
-      return updateFavouriteList(state, action.recipes);
+      return updateFavouriteList(state, action.newRecipe);
+    case actionTypes.DELETE_RECIPE_FROM_FAVOURITE_LIST:
+      return deleteRecipeFromFavouriteList(state, action.id);
     default:
       return state;
   }

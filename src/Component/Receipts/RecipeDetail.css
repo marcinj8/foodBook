@@ -29,3 +29,14 @@
     width: 100%;
     border-bottom: 1px solid rgb(204, 117, 3);
 }
+
+.recipeDetail_confirmation {
+    height: 30px;
+    width: 200px;
+    padding: 10px 0 0 0;
+    background: rgba(192, 192, 192, 0.144);
+    margin: 20px auto 0 auto;
+    text-decoration: underline wavy orange;
+    border: 1px black solid;
+    border-radius: 0 5px 0 5px;
+}

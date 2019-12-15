@@ -3,7 +3,7 @@ import React from 'react';
 import './RecipeDetail.css';
 
 const recipeDetail = props => {
-    console.log(props.reciptDetail.ingredients)
+    console.log(props.ID)
     if (props.reciptDetail === null) {
         return null
     }
@@ -24,10 +24,12 @@ const recipeDetail = props => {
                 </ul>
             </div>
             {
-                props.isBookmarked
+                !props.isBookmarked
+                ? <button onClick={props.addToFavourites}>Add to favourite</button>
+                : props.isFavouriteList
                     ? <button onClick={() => props.removeFromFavourite(props.ID)}>Remove from favourite</button>
-                    : <button onClick={props.addToFavourites}>Add to favourite</button>
-            }
+                    : <div className='recipeDetail_confirmation'>Added to favourite</div>
+                }
         </div>
     )
 }

@@ -6,8 +6,19 @@
         "placeholder": "description",
         "className": "modalAddToPurchaseList__input",
         "validation": {
-            "minLength": 1,
+            "minLength": 3,
             "message": "please check description"
+        }
+    },
+    {
+        "id": "quantity",
+        "htmlTag": "input",
+        "type": "text",
+        "placeholder": "quantity",
+        "className": "modalAddToPurchaseList__input",
+        "validation": {
+            "minLength": 1,
+            "message": "please check quantity"
         }
     },
     {
@@ -18,7 +29,7 @@
         "className": "modalAddToPurchaseList__input",
         "validation": {
             "minLength": 1,
-            "message": "please check quantity"
+            "message": "please check weight"
         }
     }
 ]

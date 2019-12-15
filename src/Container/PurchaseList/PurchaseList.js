@@ -13,10 +13,17 @@ import './PurchaseList.css';
 class PurchaseList extends Component {
     state = {
         isShowModalAddToPurchaseList: false,
-        newItemData: {}
+        newItemData: {
+            description: '',
+            quantity: '',
+            weight: ''
+        },
+        newItemValidation: null,
+
     }
 
     componentDidMount() {
+        this.setNewItemState();
         this.props.onGetPurchaseList();
         this.setModalAddIngredientsData();
     }
@@ -28,6 +35,25 @@ class PurchaseList extends Component {
         if (!this.props.isServerListUpdated) {
             this.props.onSendListOnServer(this.props.purchaseList);
         }
+    }
+
+    setNewItemState = () => {
+        const newItemvalidationUpdated = {};
+        for (let item of formConfig) {
+            // placeholders[item.id] = {};
+            newItemvalidationUpdated[item.id] = {};
+            // placeholders[item.id].placeholder = {};
+            // placeholders[item.id].placeholder.end = item.placeholder.end;
+            newItemvalidationUpdated[item.id].isValid = false;
+            newItemvalidationUpdated[item.id].message = '';
+            newItemvalidationUpdated[item.id].showMessage = false;
+        }
+
+        this.setState({
+            newItemValidation: newItemvalidationUpdated,
+            // placeholders: placeholders
+        })
+        
     }
 
     setModalAddIngredientsData = () => {
@@ -42,7 +68,8 @@ class PurchaseList extends Component {
 
     onInputChange = e => {
         const newItemUpdatedData = this.state.newItemData;
-        newItemUpdatedData[e.target.placeholder] =  e.target.value
+        newItemUpdatedData[e.target.placeholder] =  e.target.value;
+        // podpiąć walidację
         this.setState({
             newItemData: newItemUpdatedData
         })
@@ -62,10 +89,11 @@ class PurchaseList extends Component {
 
     addToPurchaseListHandler = () => {
         const newItemName = this.state.newItemData.description;
-        const newItemQuantity = this.state.newItemData.weight;
+        const newItemQuantity = this.state.newItemData.quantity;
+        const newItemWeight = this.state.newItemData.weight;
 
+        this.props.onAddToPurchaseList(newItemName, newItemQuantity, newItemWeight);
         this.hideModalAddToPurchaseList();
-        this.props.onAddToPurchaseList(null, newItemName, newItemQuantity);
         this.setState({
             newItemData: {}
         })
@@ -99,6 +127,7 @@ class PurchaseList extends Component {
                 show={this.state.isShowModalAddToPurchaseList}
                 closeModal={this.hideModalAddToPurchaseList}>
                 <FormElements
+                    itemValidation={this.state.newItemValidation}
                     values={this.state.newItemData}
                     formConfig={formConfig} 
                     onChangeElement={this.onInputChange}/>

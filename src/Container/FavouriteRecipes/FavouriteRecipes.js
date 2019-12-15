@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import Axios from 'axios';
 import { connect } from 'react-redux';
 
 import ReceiptsList from '../../Component/Receipts/ReceiptsList';
@@ -10,8 +9,6 @@ import * as actionsPurchaseList from '../../Store/Actions/actionsPurchaseList';
 
 import './FavouriteRecipes.css';
 
-const CORS = 'https://cors-anywhere.herokuapp.com/';
-
 class FavouriteRecipes extends Component {
     state = {
         showModal: false,
@@ -20,9 +17,13 @@ class FavouriteRecipes extends Component {
         favouriteRecipeID: null
     }
 
-    componentDidUpdate() { // dodac odświażanie po akcji na bazie danych
+    componentDidUpdate() {
         if (this.props.isActive && !this.state.isLoadedNewList) {
             this.setFavouriteList();
+            if (!this.props.isFavouriteRecipesUpdatedOnApp) {
+                this.props.setFavourites();
+                console.log('pobierz nową listę');
+            }
         }
     }
 
@@ -36,16 +37,8 @@ class FavouriteRecipes extends Component {
 
     setFavouriteList = () => {
         this.props.setFavourites();
-        this.setLoadingToTrue(); // should work async (use redux to menage?)
+        this.setLoadingToTrue();
 
-    }
-
-    saveFavouriteList = list => {
-        Axios.put(CORS + 'https://fooddatabase-75cfa.firebaseio.com/favouritesList.json', list)
-            .then(res => {
-                console.log(res);
-                this.setLoadingToFalse();
-            })
     }
 
     seeFavoriteRecipeDetailHandler = (recipeDetail, index) => {
@@ -64,8 +57,8 @@ class FavouriteRecipes extends Component {
     }
 
     removeFromFavouritesHandler = (id) => {
+        this.props.removeFromFavourites(id);
         this.closeModalHandler();
-        this.props.removeFromFavourites(id, this.props.favourites);
     }
 
     render() {
@@ -77,7 +70,9 @@ class FavouriteRecipes extends Component {
         let favouritesRecipesList = [];
 
         if (this.props.favourites !== null) {
-            favouritesRecipesList = [...this.props.favourites];
+            Object.keys(this.props.favourites).map((item) => {
+                return favouritesRecipesList.push({ ...this.props.favourites[item], key: item })
+            });
         }
         return (
             <div className={StartPageStyle.join(' ')}>
@@ -88,7 +83,9 @@ class FavouriteRecipes extends Component {
                             ? <ReceiptsList
                                 seeReceiptDetail={this.seeFavoriteRecipeDetailHandler}
                                 receiptList={favouritesRecipesList} />
-                            : <h3>Loading...</h3>
+                            : !this.props.isFavouriteRecipesUpdatedOnApp
+                                ? <h3>Loading...</h3>
+                                : <h3 className='favouriteRecipes__emptyList'>List is empty!</h3>
                     }
                 </div>
                 <Modal
@@ -97,9 +94,10 @@ class FavouriteRecipes extends Component {
                     {
                         this.state.favouriteRecipeDetail !== null
                             ? <RecipeDetail
+                                isFavouriteList={true}
                                 addToPurchaseList={(...args) => this.props.addToPurchaseList(this.props.itemsToPurchase, ...args)}
                                 removeFromFavourite={(id) => this.removeFromFavouritesHandler(id)}
-                                ID={this.state.favouriteRecipeID}
+                                ID={this.state.favouriteRecipeDetail.key}
                                 isBookmarked={this.state.favouriteRecipeDetail.bookmarked}
                                 reciptDetail={this.state.favouriteRecipeDetail.recipe} />
                             : null
@@ -114,6 +112,7 @@ const mapStateToProps = state => {
         favourites: state.recipesReducer.favouritesRecipes,
         dataBaseKey: state.recipesReducer.dataBaseKey,
         itemsToPurchase: state.purchaseListReducer.purchaseList,
+        isFavouriteRecipesUpdatedOnApp: state.recipesReducer.isFavouriteRecipesUpdatedOnApp
     }
 }
 

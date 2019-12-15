@@ -1,9 +1,10 @@
 .modal {
     z-index: 990;
     position: fixed;
-    background: rgb(91,51,0);
-    background: rgb(91,51,0);
-    background: linear-gradient(53deg, rgba(91,51,0,1) 0%, rgba(125,78,17,1) 21%, rgba(133,86,28,1) 33%, rgba(117,70,12,1) 44%, rgba(50,28,0,1) 100%); border-radius: 3px;
+    background: rgb(91, 51, 0);
+    background: rgb(91, 51, 0);
+    background: linear-gradient(53deg, rgba(91, 51, 0, 1) 0%, rgba(125, 78, 17, 1) 21%, rgba(133, 86, 28, 1) 33%, rgba(117, 70, 12, 1) 44%, rgba(50, 28, 0, 1) 100%);
+    border-radius: 3px;
     background-image: url('../../Assets/modalbg.png');
     width: 300px;
     height: 400px;
@@ -18,6 +19,35 @@
 }
 
 .modal--show {
-    top: calc(50% - 200px);
-    left: calc(50% - 150px);
+    animation: modalShow .3s forwards;
+}
+
+.modal--hide {
+    animation: modalHide .3s forwards;
+}
+
+@keyframes modalShow {
+    0% {
+        top: -100%;
+        left: -100%;
+    }
+
+    100% {
+        top: calc(50% - 200px);
+        left: calc(50% - 150px);
+    }
+
+}
+
+@keyframes modalHide {
+    0% {
+        top: calc(50% - 200px);
+        left: calc(50% - 150px);
+    }
+
+    100% {
+        top: +100%;
+        left: +100%;
+    }
+
 }

@@ -12,7 +12,7 @@ const formElements = props => {
                 htmlTag={item.htmlTag}
                 class={item.className}
                 type={item.type}
-                validation={props.emailValidation[item.id]}
+                validation={props.itemValidation[item.id]}
                 placeholder={typeof (item.placeholder) !== 'object'
                     ? item.placeholder
                     : props.placeholders[item.id].placeholder.end}

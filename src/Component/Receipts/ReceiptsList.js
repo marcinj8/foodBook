@@ -10,7 +10,7 @@ const receiptsList = props => {
             return receipts.push(
                 <Receipt 
                     key={index}
-                    id={index}
+                    id={typeof(item.key) === 'undefined' ? index : item.key}
                     receipt={item.recipe}
                     activeRecipe={props.activeRecipe === index}
                     active={''}
