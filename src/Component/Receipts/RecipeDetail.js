@@ -25,11 +25,15 @@ const recipeDetail = props => {
             </div>
             {
                 !props.isBookmarked
-                ? <button onClick={props.addToFavourites}>Add to favourite</button>
-                : props.isFavouriteList
-                    ? <button onClick={() => props.removeFromFavourite(props.ID)}>Remove from favourite</button>
-                    : <div className='recipeDetail_confirmation'>Added to favourite</div>
-                }
+                    ? <button
+                        className='recipeDetail__button'
+                        onClick={props.addToFavourites}>Add to favourite</button>
+                    : props.isFavouriteList
+                        ? <button
+                            className='recipeDetail__button'
+                            onClick={() => props.removeFromFavourite(props.ID)}>Remove from favourite</button>
+                        : <div className='recipeDetail_confirmation'>Added to favourite</div>
+            }
         </div>
     )
 }

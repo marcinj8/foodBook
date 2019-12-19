@@ -24,7 +24,8 @@ class SearchReceipt extends Component {
         showMobileModalDetail: false,
         currentScrollPositon: 0,
         showIsmoreButton: false,
-        dateOfStartShowingButton: 0
+        dateOfStartShowingButton: 0,
+        showRecipeDetailModal: false
     };
 
     componentDidUpdate() {
@@ -76,8 +77,7 @@ class SearchReceipt extends Component {
 
     hideIsmoreButton = () => {
         const currentDate = new Date();
-        console.log(this.state.dateOfStartShowingButton + 4000, currentDate.getTime())
-        if (this.state.dateOfStartShowingButton + 4000 < currentDate.getTime() && this.state.showIsmoreButton) {
+        if (this.state.dateOfStartShowingButton + 3000 < currentDate.getTime() && this.state.showIsmoreButton) {
             console.log('yesss');
             this.setState({
                 showIsmoreButton: false
@@ -116,6 +116,15 @@ class SearchReceipt extends Component {
         this.props.onAddToFavourites(newRecipe);
     }
 
+    seeReciptDetailHandler = (...args) => {
+        this.props.seeReciptDetail(...args);
+        this.setState({showRecipeDetailModal: true})
+    }
+
+    closeModalHandler = () => {
+        this.setState({ showRecipeDetailModal: false })
+    }
+
     render() {
         const searchRcipeStyle = ['searchRcipe__container',
             this.props.isActive
@@ -132,8 +141,10 @@ class SearchReceipt extends Component {
 
         const recipeDetalModal = this.props.reciptDetail !== null
             ? (
-                <Modal>
-                    <div className='searchRcipe__recipeDetailsSliderl'>
+                <Modal
+                    show={this.state.showRecipeDetailModal}
+                    closeModal={this.closeModalHandler}>
+                    <div className='searchRcipe__recipeDetailsSlider'>
                         <ReciptDetail
                             addToPurchaseList={(...args) => this.props.addToPurchaseList(this.props.itemsToPurchase, ...args)}
                             addToFavourites={() => this.addToFavouritesHandler(this.props.reciptDetail)}
@@ -153,7 +164,7 @@ class SearchReceipt extends Component {
                         ? <ReceiptList
                             receiptList={this.props.receiptList}
                             activeRecipe={this.props.activeRecipe}
-                            seeReceiptDetail={this.props.seeReciptDetail} />
+                            seeReceiptDetail={this.seeReciptDetailHandler} />
                         : <div>Loading...</div>
                     }
                 </div>

@@ -18,7 +18,7 @@ const modal = props => {
                 ? 'modal--show'
                 : 'modal--hide'];
     }
-
+    console.log(props.show)
     return (
         <div>
             <Backdrop clicked={props.closeModal} show={props.show} />
@@ -26,7 +26,9 @@ const modal = props => {
                 <div>
                     {props.children}
                 </div>
-                <button onClick={props.closeModal}>Close</button>
+                <button 
+                    className='modal__button--closeModal'
+                    onClick={props.closeModal}>Close</button>
             </div>
         </div>
     )

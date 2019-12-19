@@ -26,6 +26,21 @@
     animation: modalHide .3s forwards;
 }
 
+.modal__button--closeModal {
+    margin: 10px auto;
+    padding: 5px;
+    border: 1px red solid;
+    border-radius: 5px;
+    color: red;
+    width: 75px;
+    transition: all .2s linear;
+}
+
+.modal__button--closeModal:hover {
+    background: rgb(255, 138, 138);
+    color: black
+}
+
 @keyframes modalShow {
     0% {
         top: -100%;
