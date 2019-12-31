@@ -6,6 +6,7 @@ import * as actionsPurchaseList from '../../Store/Actions/actionsPurchaseList';
 import ReceiptList from '../../Component/Receipts/ReceiptsList';
 import ReciptDetail from '../../Component/Receipts/RecipeDetail';
 import Modal from '../../Component/Modal/Modal';
+import RecipesNavigation from '../../Component/Receipts/RecipesNavigation';
 
 import './SearchReceipt.css';
 
@@ -16,6 +17,7 @@ class SearchReceipt extends Component {
             searchFrom: 0,
             searchTo: 10
         },
+        startNewSearching: false,
         loading: false,
         error: {
             occurred: false,
@@ -25,7 +27,8 @@ class SearchReceipt extends Component {
         currentScrollPositon: 0,
         showIsmoreButton: false,
         dateOfStartShowingButton: 0,
-        showRecipeDetailModal: false
+        showRecipeDetailModal: false,
+        isMouseOverRecipeNavigation: false
     };
 
     componentDidUpdate() {
@@ -33,17 +36,27 @@ class SearchReceipt extends Component {
             console.log(window.innerWidth, window.outerWidth)
         }
         if (this.props.apiKey !== null && this.props.apiId !== null && this.state.loading === false) {
-            if (this.props.ingredient !== this.state.currentSearching.ingredient && this.props.ingredient !== '') {
+            this.checkIfSchouldStartNewSearching();
+            if (this.state.startNewSearching) {
                 this.getReceipts();
             }
         };
         if (this.props.receiptList.length > 0 && this.state.loading === true) {
-            this.setLoadingToFalse()
+            this.setLoadingToFalse();
         }
         if (this.state.currentScrollPositon !== this.props.currentScrollPositon) {
             this.scrollHandler();
         }
     };
+
+    checkIfSchouldStartNewSearching = () => {
+        if (this.props.ingredient !== this.state.currentSearching.ingredient && this.props.ingredient !== '') {
+            return this.setState({
+                startNewSearching: true
+            })
+        }
+        return null
+    }
 
     setReceips = response => {
         this.props.setReceips(response.data)
@@ -54,7 +67,6 @@ class SearchReceipt extends Component {
     }
 
     setLoadingToTrue = () => {
-
         this.setState({
             loading: true,
         })
@@ -65,12 +77,15 @@ class SearchReceipt extends Component {
         updateState.ingredient = this.props.ingredient;
 
         this.setState({
-            currentSearching: updateState
+            currentSearching: updateState,
+            startNewSearching: false
+
         })
     }
 
     getReceipts = () => {
         this.setLoadingToTrue();
+        this.props.resetRecipesState();
         this.props.setReceips(this.props.ingredient, this.props.apiId, this.props.apiKey, this.state.currentSearching.searchFrom, this.state.currentSearching.searchTo);
         this.updateCurrentSearching();
     }
@@ -78,7 +93,6 @@ class SearchReceipt extends Component {
     hideIsmoreButton = () => {
         const currentDate = new Date();
         if (this.state.dateOfStartShowingButton + 3000 < currentDate.getTime() && this.state.showIsmoreButton) {
-            console.log('yesss');
             this.setState({
                 showIsmoreButton: false
             })
@@ -118,11 +132,42 @@ class SearchReceipt extends Component {
 
     seeReciptDetailHandler = (...args) => {
         this.props.seeReciptDetail(...args);
-        this.setState({showRecipeDetailModal: true})
+        this.setState({ showRecipeDetailModal: true })
     }
 
     closeModalHandler = () => {
         this.setState({ showRecipeDetailModal: false })
+    }
+
+
+    showPreviousRecipes = () => {
+        const setNewSearchingData = {...this.state.currentSearching};
+        if(setNewSearchingData.searchFrom > 0) {
+            setNewSearchingData.searchFrom = setNewSearchingData.searchFrom - 10;
+            setNewSearchingData.searchTo = setNewSearchingData.searchTo - 10;
+            this.setState({
+                currentSearching: setNewSearchingData,
+                startNewSearching: true
+            })
+        }
+        return null
+    }
+
+    showNextRecipes = () => {
+        // sprawdź ilość przepisów
+        const setNewSearchingData = {...this.state.currentSearching};
+            setNewSearchingData.searchFrom = setNewSearchingData.searchFrom + 10;
+            setNewSearchingData.searchTo = setNewSearchingData.searchTo + 10;
+        this.setState({
+            currentSearching: setNewSearchingData,
+            startNewSearching: true
+        })
+    }
+
+    checkIsMouseOverRecipeNavigation = isOverNavbar => {
+        this.setState({
+            isMouseOverRecipeNavigation: isOverNavbar
+        })
     }
 
     render() {
@@ -132,16 +177,10 @@ class SearchReceipt extends Component {
                 : 'searchRcipe__container--noActive'
         ];
 
-        const isMoreButtonStyle = [
-            'searchRcipe__buttonIsmore',
-            this.props.isActive && this.state.showIsmoreButton
-                ? 'searchRcipe__buttonIsmore--show'
-                : 'searchRcipe__buttonIsmore--hide'
-        ]
-
         const recipeDetalModal = this.props.reciptDetail !== null
             ? (
                 <Modal
+                    onlyMobile={true}
                     show={this.state.showRecipeDetailModal}
                     closeModal={this.closeModalHandler}>
                     <div className='searchRcipe__recipeDetailsSlider'>
@@ -160,15 +199,22 @@ class SearchReceipt extends Component {
         return (
             <div className={searchRcipeStyle.join(' ')}>
                 <div className='searchRcipe__recipeList'>
-                    {this.props.receipts !== null
+                    {this.props.receiptList.length
                         ? <ReceiptList
                             receiptList={this.props.receiptList}
                             activeRecipe={this.props.activeRecipe}
                             seeReceiptDetail={this.seeReciptDetailHandler} />
-                        : <div>Loading...</div>
+                        : <div className='searchRcipe__loadingContainer'>Loading...</div>
                     }
                 </div>
-                <button className={isMoreButtonStyle.join(' ')} onClick={() => console.log('dupa')} >More receipes</button>
+                <RecipesNavigation
+                    isActive={this.props.isActive}
+                    showIsmoreButton={this.state.showIsmoreButton}
+                    showPreviousRecipes={this.showPreviousRecipes}
+                    showNextRecipes={this.showNextRecipes}
+                    isMouseOver={this.state.isMouseOverRecipeNavigation}
+                    checkIsMouseOver={this.checkIsMouseOverRecipeNavigation}
+                />
                 {recipeDetalModal}
                 <div className='searchRcipe__recipeDetails'>
                     {this.props.reciptDetail !== null
@@ -207,6 +253,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         setReceips: (...arg) => dispatch(actions.setReceipts(...arg)),
+        resetRecipesState: () => dispatch(actions.resetRecipesState()),
         errorHandler: err => dispatch(actions.errorHandler(err)),
         seeReciptDetail: (details, index) => dispatch(actions.seeReciptDetail(details, index)),
         onAddToFavourites: (newRecipe) => dispatch(actions.pushUpdatedFavouriteList(newRecipe)),

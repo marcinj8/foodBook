@@ -1,0 +1,81 @@
+.recipesNavigation__container {
+    position: fixed;
+    display: flex;
+    justify-content: space-between;
+    bottom: 50px;
+    left: calc(50% - 120px);
+    width: 240px;
+    height: 40px;
+    opacity: 0;
+    transform: scale(.5)
+}
+
+.recipesNavigation__buttonIsmore {
+    width: 45%;
+    box-shadow: 5px 5px 15px;
+    border-radius: 5px;
+    height: 100%;
+    border: 1px brown solid;
+    transition: all .15s linear;
+}
+
+.recipesNavigation__buttonIsmore:hover {
+    transform: scale(1.1);
+    border-radius: 5px;
+    border: 1px brown solid;
+}
+
+.recipesNavigation__container--show {
+    animation: showButton .3s forwards;
+
+}
+
+.recipesNavigation__container--hide {
+    animation: hideButton .3s forwards;
+}
+
+@keyframes showButton {
+    0% {
+        opacity: 0;
+        z-index: -1000;
+        transform: scale(0)
+    }
+
+    1% {
+        z-index: 10;
+        transform: scale(.5)
+    }
+
+    100% {
+        transform: scale(1);
+        opacity: 1;
+        z-index: 10;
+    }
+}
+
+@keyframes hideButton {
+    0% {
+        opacity: 1;
+        z-index: 10;
+        transform: scale(1)
+    }
+
+    90% {
+        opacity: 0;
+    }
+    99% {
+        transform: scale(.5);
+        opacity: 0;
+        z-index: -10000;
+    }
+    100% {
+        transform: scale(0);
+        opacity: 0;
+        z-index: -10000;
+    }
+}
+@media(min-width: 575px) {
+    .recipesNavigation__buttonIsmore {
+        bottom: 10%;
+    }
+}

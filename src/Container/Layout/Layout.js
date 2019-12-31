@@ -67,15 +67,7 @@ class Layout extends Component {
       currentScrollPositon: currentScrollPositonUpdated
     })
   }
-  makeCopy = object => {
-    if (Array.isArray(object)) {
-      return this.copyArr(object);
-    } else if (typeof object === 'object') {
-      this.copyObj(object);
-    }
-    return object;
-  };
-
+  
   activateSearchingButton = () => {
     this.setState({
       disableInput: false,
@@ -113,6 +105,15 @@ class Layout extends Component {
       }
       return newObj;
     }
+  };
+  
+  makeCopy = object => {
+    if (Array.isArray(object)) {
+      return this.copyArr(object);
+    } else if (typeof object === 'object') {
+      this.copyObj(object);
+    }
+    return object;
   };
 
   setUnactiveOverlap = navigation => {

@@ -1,9 +1,19 @@
 .backdrop {
     position: fixed;
     z-index: 101;
-    top:0;
+    top: 0;
     left: 0;
     height: 100%;
     width: 100%;
     background: rgba(34, 34, 34, 0.781);
+}
+
+.onlyMobile {
+    display: block;
+}
+
+@media(min-width: 575px) {
+    .onlyMobile {
+        display: none;
+    }
 }

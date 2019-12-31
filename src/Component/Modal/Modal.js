@@ -8,25 +8,31 @@ const modal = props => {
 
     if (props.style) {
         modalStyle = [props.style,
-            props.show
-                ? props.style + '--show'
-                : props.style + '--hide'];
-
+        props.show
+            ? props.style + '--show'
+            : props.style + '--hide'];
     } else {
         modalStyle = ['modal',
             props.show
                 ? 'modal--show'
                 : 'modal--hide'];
     }
-    console.log(props.show)
+
+    if (props.onlyMobile) {
+        modalStyle.push('onlyMobile');
+    }
+
     return (
         <div>
-            <Backdrop clicked={props.closeModal} show={props.show} />
+            <Backdrop 
+                clicked={props.closeModal} 
+                show={props.show} 
+                onlyMobile={props.onlyMobile}/>
             <div className={modalStyle.join(' ')}>
-                <div>
+                <div className='modal__content'>
                     {props.children}
                 </div>
-                <button 
+                <button
                     className='modal__button--closeModal'
                     onClick={props.closeModal}>Close</button>
             </div>

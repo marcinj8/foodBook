@@ -1,7 +1,7 @@
 .recipeDetail__block {
+    color: whitesmoke;
     position: sticky;
-    top: 200px;
-    color: whitesmoke
+    top: 0px;
 }
 
 .recipeDetail__ingredient {
@@ -41,6 +41,14 @@
 .recipeDetail__ingredient:hover::before {
     width: 100%;
     border-bottom: 1px solid rgb(204, 117, 3);
+    content: 'add';
+}
+
+.receipeDetail__linkToRecipe {
+    display: block;
+    font-size: 1.2rem;
+    color: wheat;
+    margin: 15px;
 }
 
 .recipeDetail_confirmation {
@@ -52,4 +60,10 @@
     text-decoration: underline wavy orange;
     border: 1px black solid;
     border-radius: 0 5px 0 5px;
+}
+
+@media(min-width: 575px) {
+    .recipeDetail__block {
+        top: 100px;
+    }
 }

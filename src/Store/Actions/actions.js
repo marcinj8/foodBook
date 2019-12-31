@@ -27,6 +27,12 @@ export const setReceipts = (ingredient, apiId, apiKey, searchFrom, searchTo) => 
     }
 };
 
+export const resetRecipesState = () => {
+    return {
+        type: actionTypes.RESET_RECIPES,
+    }
+}
+
 export const errorHandler = error => {
     return {
         type: actionTypes.ERROR_HANDLER,

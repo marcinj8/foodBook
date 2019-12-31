@@ -64,6 +64,12 @@ const setRecipes = (state, recipes, isMoreRecipes) => {
   }
 }
 
+const resetRecipes = (state) => {
+  return {
+    ...state,
+    receipts: []
+  }
+}
 const setReciptDetail = (state, details, index) => {
   return {
     ...state,
@@ -125,6 +131,8 @@ const menageReceiptReducer = (state = initialState, action) => {
       return setRecipes(state, action.receipts, action.isMoreReceipts);
     case actionTypes.SEE_RECIPT_DETAIL:
       return setReciptDetail(state, action.details, action.index);
+    case actionTypes.RESET_RECIPES:
+      return resetRecipes(state);
     case actionTypes.SET_FAVOURITES:
       return setFavouritesRecipes(state, action.recipes, action.dataBaseKey);
     case actionTypes.UPDATE_FAVOURITIES:

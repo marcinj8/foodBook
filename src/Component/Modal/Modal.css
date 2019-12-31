@@ -2,11 +2,9 @@
     z-index: 990;
     position: fixed;
     background: rgb(91, 51, 0);
-    background: rgb(91, 51, 0);
     background: linear-gradient(53deg, rgba(91, 51, 0, 1) 0%, rgba(125, 78, 17, 1) 21%, rgba(133, 86, 28, 1) 33%, rgba(117, 70, 12, 1) 44%, rgba(50, 28, 0, 1) 100%);
-    border-radius: 3px;
     background-image: url('../../Assets/modalbg.png');
-    width: 300px;
+    width: 95%;
     height: 400px;
     overflow: auto;
     top: -100%;
@@ -19,14 +17,20 @@
 }
 
 .modal--show {
-    animation: modalShow .3s forwards;
+    animation: modalShowMobile .3s forwards;
 }
 
 .modal--hide {
     animation: modalHide .3s forwards;
 }
 
+.modal__content {
+    min-height: 70%;
+}
+
 .modal__button--closeModal {
+    position: relative;
+    bottom: 0px;
     margin: 10px auto;
     padding: 5px;
     border: 1px red solid;
@@ -41,6 +45,52 @@
     color: black
 }
 
+.onlyMobile {
+    display: block
+}
+
+@keyframes modalShowMobile {
+    0% {
+        top: -100%;
+        left: -100%;
+    }
+
+    100% {
+        top: calc(50% - 200px);
+        left: 2.5%;
+    }
+
+}
+
+@keyframes modalHideMobile {
+    0% {
+        top: calc(50% - 200px);
+        left: 2.5%;
+    }
+
+    100% {
+        top: +100%;
+        left: +100%;
+    }
+
+}
+
+@media(min-width: 575px) {
+    .onlyMobile {
+        display: none;
+    }
+    .modal{
+        width: 400px;
+
+    }
+    .modal--show {
+        animation: modalShow .3s forwards;
+    }
+    
+    .modal--hide {
+        animation: modalHide .3s forwards;
+    }
+}
 @keyframes modalShow {
     0% {
         top: -100%;
@@ -49,7 +99,7 @@
 
     100% {
         top: calc(50% - 200px);
-        left: calc(50% - 150px);
+        left: calc(50% - 200px);
     }
 
 }
@@ -57,7 +107,7 @@
 @keyframes modalHide {
     0% {
         top: calc(50% - 200px);
-        left: calc(50% - 150px);
+        left: calc(50% - 200px);
     }
 
     100% {
