@@ -6,46 +6,59 @@ const isMinLenght = (value, minLength) => {
     return value.length >= minLength;
 }
 
-const checkIsIncluded = (value, requiredSign) => {
-    return value.some(character => character === requiredSign);
-}
-
-const checkCharactersBeetwenSigns = (array, quantity) => {
-    console.log(array)
-    let isLongEnough = false;
-    for (let index = 0; index <= array.length - 2; index++) {
-        isLongEnough = array[index + 1] - array[index] >= quantity
-        if (!isLongEnough) {
-            return false
+const checkSignPosition = (valueArr, sing) => {
+    let signCounter = 0;
+    let signPosition = 0;
+    for (let value of valueArr) {
+        if (value === sing) {
+            signCounter++;
         }
     }
-    return isLongEnough
+    if (signCounter !== 1) {
+        return false
+    }
+    signPosition = valueArr.findIndex(val => val === sing);
+
+    return signPosition;
 }
 
-const isIncluded = (value, requiredSigns) => {
+const checkIsEmailValid = (value, ) => {
     const stringToArr = [...value];
-    let isSignsIncluded = false;
-    let currentPositionInString = 0;
-    const signsPositionsInArr = [0];
+    const excludedSignsArr = ["!", "#", "$", "%", "&", "'", "*", "+", "-", "/", "=", "?", "^", "_", "`", "{", "|", "}", "~", "(", ")", ",", ":", ";", "<", ">", "[", "]", '"'];
+    let isEmailValid = false;
     let isLongEnough = false;
 
-    for (const sign of requiredSigns) {
-        const updatedArr = stringToArr.slice(currentPositionInString);
-        isSignsIncluded = checkIsIncluded(updatedArr.slice(currentPositionInString), sign);
-        currentPositionInString = updatedArr.findIndex(item => item === sign) + 1;
-        signsPositionsInArr.push(currentPositionInString);
-        console.log(updatedArr, currentPositionInString)
-        if (!isSignsIncluded) {
-            return isSignsIncluded;
-        }
+    const atPosition = checkSignPosition(stringToArr, '@');
+    if (!atPosition) {
+        return atPosition;
     }
-    signsPositionsInArr.push(stringToArr.length);
-    isLongEnough = checkCharactersBeetwenSigns(signsPositionsInArr, 2);
-    if (!isLongEnough) {
-        return isLongEnough
+    const dotPosition = checkSignPosition(stringToArr.slice(atPosition + 1), '.')
+    if (!dotPosition) {
+        return dotPosition;
+    }
+    isLongEnough = dotPosition + 1 + atPosition + 1;
+
+    if (atPosition >= 1 && dotPosition >= 2 && stringToArr.slice(isLongEnough).length >= 2 && stringToArr.slice(isLongEnough).length < 4) {
+        isEmailValid = true;
     }
 
-    return isSignsIncluded;
+    const emailExcludedSigns = isExncluded(value.slice(atPosition + 1), excludedSignsArr)
+    if (!emailExcludedSigns) {
+        return emailExcludedSigns;
+    }
+
+    return isEmailValid;
+}
+
+const isExncluded = (value, excludedSignsArr) => {
+    for (let character of value) {
+        for (let sign of excludedSignsArr) {
+            if (character === sign) {
+                return false
+            }
+        }
+    }
+    return true
 }
 
 const checkValidation = (value, validationConditions) => {
@@ -63,11 +76,11 @@ const checkValidation = (value, validationConditions) => {
             case 'minLength':
                 isConditionValid.push(isMinLenght(currentValue, validationConditions[condition]));
                 break;
-            // case 'excludes':
-            //     isConditionValid.push(isExncluded(currentValue, validationConditions[condition]));
-            //     break;
-            case 'includes':
-                isConditionValid.push(isIncluded(currentValue, validationConditions[condition]));
+            case 'excludes':
+                isConditionValid.push(isExncluded(currentValue, validationConditions[condition]));
+                break;
+            case 'email':
+                isConditionValid.push(checkIsEmailValid(currentValue));
                 break;
             default: break;
         }

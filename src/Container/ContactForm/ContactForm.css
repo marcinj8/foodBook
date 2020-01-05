@@ -1,6 +1,9 @@
 .contactForm__container {
     position: absolute;
     right: 0%;
+    width: 0%;
+    height: 0;
+    padding: 0;
     box-sizing: border-box;
     overflow: hidden;
     background: rgba(68, 68, 68, 0.75);
@@ -14,10 +17,10 @@
 
 }
 
-.contactForm__container--noActive {
+/* .contactForm__container--noActive {
     animation: hideContactForm .3s forwards;
-
-}
+} */
+/* rozwiązac problem z animacją na starcie - podczas ładowania strony uruchamia się animacja zamykająca podgląd */
 
 .contactForm__postCard {
     position: absolute;
@@ -137,11 +140,11 @@
     }
 } */
 
-@media(min-width: 500px){
+@media(min-width: 500px) {
     .contactForm__input {
         width: 300px;
     }
-    
+
     .contactForm__textarea {
         width: 300px;
     }

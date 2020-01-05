@@ -4,11 +4,12 @@
     top: 0px;
 }
 
-.recipeDetail__ingredient {
-    position: relative;
-    width: 90%;
-    margin: 15px auto;
-    cursor: pointer
+.recipeDetail__details {
+    text-align: left
+}
+
+.recipeDetail__details ul {
+    margin-top: 5px
 }
 
 .recipeDetail__button {
@@ -22,26 +23,6 @@
 .recipeDetail__button:hover {
     border: 1px gold solid;
     background: rgb(246, 235, 172)
-}
-
-.recipeDetail__ingredient:hover {
-    background: rgba(192, 192, 192, 0.644)
-}
-
-.recipeDetail__ingredient::before {
-    position: absolute;
-    left: 0;
-    content: '';
-    bottom: 0;
-    width: 0%;
-    border-bottom: 1px solid transparent;
-    transition: all .5s;
-}
-
-.recipeDetail__ingredient:hover::before {
-    width: 100%;
-    border-bottom: 1px solid rgb(204, 117, 3);
-    content: 'add';
 }
 
 .receipeDetail__linkToRecipe {

@@ -1,40 +1,41 @@
 import React from 'react';
 
 import './RecipeDetail.css';
+import IngredientList from './IngredientList';
 
 const recipeDetail = props => {
     if (props.reciptDetail === null) {
         return null
     }
-    console.log(props.reciptDetail)
-
-    const ingredients = [];
-    props.reciptDetail.ingredients.map((ingredient, index) => ingredients.push(
-        <li className="recipeDetail__ingredient"
-            onClick={() => props.addToPurchaseList(ingredient.text, ingredient.weight)}
-            key={index}>{ingredient.text} ( {Math.round(ingredient.weight)}g )</li>
-    ))
 
     const preparationTime = (
         props.reciptDetail.totalTime > 60
             ? props.reciptDetail.totalTime / 60 > 1
                 ? Math.round(props.reciptDetail.totalTime / 60 * 100) / 100 + ' hours'
                 : Math.round(props.reciptDetail.totalTime / 60 * 100) / 100 + ' hour'
-            : Math.round(props.reciptDetail.totalTime) + 'minutes'
+            : props.reciptDetail.totalTime < 10
+                ? 'up to 15 minutes'
+                : Math.round(props.reciptDetail.totalTime) + 'minutes'
     );
-
+    // console.log(props.reciptDetail.totalWeight)
+    // console.log(props.reciptDetail.totalNutrients.PROCNT.quantity)
+    // console.log(props.reciptDetail.totalNutrients.PROCNT.quantity / props.reciptDetail.totalWeight * 100 + ' proteins')
+    // console.log(props.reciptDetail.totalNutrients.FAT.quantity / props.reciptDetail.totalWeight * 100 + ' fat')
 
 
     return (
         <div className='recipeDetail__block'>
-            <h3>{props.reciptDetail.label}</h3>
+            <h2>{props.reciptDetail.label}</h2>
             <div>
-                <div className='recipeDetail__details'>
-                    <span>Preparation time: {preparationTime}</span>
-                </div>
                 <h4>Ingredients:</h4>
-                <ul style={{ 'textAlign': 'left' }}>
-                    {ingredients}
+                <IngredientList
+                    purchaseList={props.purchaseList}
+                    reciptDetail={props.reciptDetail}
+                    clicked={props.addToPurchaseList} />
+
+                <ul className='recipeDetail__details'>
+                    <ul><b>Preparation time:</b> {preparationTime}</ul>
+                    <ul><b>YIELD:</b> Makes {props.reciptDetail.yield} servings</ul>
                 </ul>
                 <a
                     className='receipeDetail__linkToRecipe'

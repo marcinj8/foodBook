@@ -16,7 +16,8 @@ class PurchaseList extends Component {
         newItemData: {
             description: '',
             quantity: '',
-            weight: ''
+            weight: '',
+            startAnimation: false
         },
         newItemValidation: null,
 
@@ -35,15 +36,17 @@ class PurchaseList extends Component {
         if (!this.props.isServerListUpdated) {
             this.props.onSendListOnServer(this.props.purchaseList);
         }
+        if(this.props.isActive && !this.state.startAnimation) {
+            this.setState({
+                startAnimation: true
+            })
+        }
     }
 
     setNewItemState = () => {
         const newItemvalidationUpdated = {};
         for (let item of formConfig) {
-            // placeholders[item.id] = {};
             newItemvalidationUpdated[item.id] = {};
-            // placeholders[item.id].placeholder = {};
-            // placeholders[item.id].placeholder.end = item.placeholder.end;
             newItemvalidationUpdated[item.id].isValid = false;
             newItemvalidationUpdated[item.id].message = '';
             newItemvalidationUpdated[item.id].showMessage = false;
@@ -51,7 +54,6 @@ class PurchaseList extends Component {
 
         this.setState({
             newItemValidation: newItemvalidationUpdated,
-            // placeholders: placeholders
         })
         
     }
@@ -92,7 +94,7 @@ class PurchaseList extends Component {
         const newItemQuantity = this.state.newItemData.quantity;
         const newItemWeight = this.state.newItemData.weight;
 
-        this.props.onAddToPurchaseList(newItemName, newItemQuantity, newItemWeight);
+        this.props.onAddToPurchaseList(newItemName, newItemWeight, newItemQuantity);
         this.hideModalAddToPurchaseList();
         this.setState({
             newItemData: {}
@@ -114,6 +116,7 @@ class PurchaseList extends Component {
         if (this.props.purchaseList !== null && Object.keys(this.props.purchaseList).length > 0) {
             purchaseList = (
                 <PurchaseListRender
+                    startAnimation={this.state.startAnimation}
                     purchaseList={this.props.purchaseList}
                     removeFromPurchaseList={this.props.onRemoveFromPurchaseList}
                     tooglePurchasedProperty={this.props.onTooglePurchasedProperty}

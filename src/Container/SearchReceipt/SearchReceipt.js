@@ -79,7 +79,6 @@ class SearchReceipt extends Component {
         this.setState({
             currentSearching: updateState,
             startNewSearching: false
-
         })
     }
 
@@ -185,7 +184,7 @@ class SearchReceipt extends Component {
                     closeModal={this.closeModalHandler}>
                     <div className='searchRcipe__recipeDetailsSlider'>
                         <ReciptDetail
-                            addToPurchaseList={(...args) => this.props.addToPurchaseList(this.props.itemsToPurchase, ...args)}
+                            addToPurchaseList={(...args) => this.props.addToPurchaseList( ...args)}
                             addToFavourites={() => this.addToFavouritesHandler(this.props.reciptDetail)}
                             removeFromFavourite={(id) => this.props.removeFromFavourites(id, this.props.favouritesRecipes)}
                             ID={this.props.reciptDetail.ID}
@@ -195,7 +194,6 @@ class SearchReceipt extends Component {
                 </Modal>
             )
             : null;
-
         return (
             <div className={searchRcipeStyle.join(' ')}>
                 <div className='searchRcipe__recipeList'>
@@ -220,14 +218,15 @@ class SearchReceipt extends Component {
                     {this.props.reciptDetail !== null
                         ? <ReciptDetail
                             isFavouriteList={false}
-                            addToPurchaseList={(...args) => this.props.addToPurchaseList(this.props.itemsToPurchase, ...args)}
+                            purchaseList={this.props.itemsToPurchase}
+                            addToPurchaseList={(...args) => this.props.addToPurchaseList( ...args)}
                             addToFavourites={() => this.addToFavouritesHandler(this.props.reciptDetail)}
                             removeFromFavourite={(id) => this.props.removeFromFavourites(id, this.props.favouritesRecipes)}
                             ID={this.props.reciptDetail.ID}
                             isBookmarked={this.props.reciptDetail.bookmarked}
                             reciptDetail={this.props.reciptDetail.recipe} />
                         : <div style={{ 'marginTop': '50px' }}>
-                            <h4>Choose recipe</h4>
+                            <h2 className='searchRcipe__noRecipeContent'>Choose recipe</h2>
                         </div>
                     }
                 </div>

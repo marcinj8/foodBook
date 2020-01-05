@@ -29,6 +29,10 @@
     animation: hideSearchRecipe .3s forwards;
 }
 
+.searchRcipe__noRecipeContent {
+    display: none
+}
+
 .searchRcipe__recipeDetails {
     display: none;
 }
@@ -73,7 +77,7 @@
 
     100% {
         opacity: 1;
-        overflow: none;
+        overflow: visible;
         left: 0%;
         width: 100%;
         height: auto;
@@ -90,7 +94,7 @@
 
     35% {
         opacity: 0;
-        overflow: hidden;
+        overflow: visible;
         padding: 20px 5px 20px 5px;
         ;
     }
@@ -136,15 +140,65 @@
         width: 45%;
     }
 
+    .searchRcipe__noRecipeContent {
+        display: block;
+        position: fixed;
+        top: 250px;
+        width: 45%;
+        margin: 0 auto;
+        color: wheat;
+        text-shadow: black 15px 10px 5px;
+        animation: noRecipeDetailAnimation infinite 5s;
+    }
+
     .searchRcipe__recipeDetailsSlider {
         display: none
     }
 
     .searchRcipe__loadingContainer {
-        padding: 250px;
+        padding: 100px;
         font-size: 2rem;
         width: 500px;
         height: 500px;
         animation: loadingAnimation infinite 2s;
+    }
+}
+
+@keyframes noRecipeDetailAnimation {
+    0% {
+        transform: scale(1)
+    }
+
+    42% {
+        transform: scale(1)
+    }
+
+    46% {
+        transform: scale(1.2)
+    }
+
+    50% {
+        transform: scale(1);
+    }
+
+    /* 53% {
+        color: wheat
+    } */
+
+    55% {
+        transform: scale(1.4);
+        /* color: red */
+    }
+
+    /* 65% {
+        color: wheat
+    } */
+
+    75% {
+        transform: scale(1);
+    }
+
+    100% {
+        transform: scale(1)
     }
 }

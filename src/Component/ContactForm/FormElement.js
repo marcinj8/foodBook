@@ -16,11 +16,24 @@ const formElement = props => {
                 : null
     ];
 
+    let animationStyle = {
+        transitionDelay: props.animationDelay + 's',
+        transition: 'all .5s forwards',
+        transform: 'scale(0)',
+        opacity: 0
+    }
+
+    if (props.startAnimation) {
+        animationStyle.transform = 'scale(1)';
+        animationStyle.opacity = 1;
+    }
+
     switch (props.htmlTag) {
         case 'input':
             return (
                 <div>
                     <input
+                        style={{ ...animationStyle }}
                         className={itemStyle.join(' ')}
                         placeholder={props.placeholder}
                         onChange={props.onChangeElement}
@@ -34,6 +47,7 @@ const formElement = props => {
             return (
                 <div>
                     <textarea
+                        style={{ ...animationStyle }}
                         className={itemStyle.join(' ')}
                         placeholder={props.placeholder}
                         onChange={props.onChangeElement}

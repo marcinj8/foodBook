@@ -21,7 +21,7 @@ const initialState = {
 };
 
 const setKey = (state, apiKey, apiId) => {
-  console.log(apiKey, apiId);
+  console.log('access granted');
   return {
     ...state,
     access: {

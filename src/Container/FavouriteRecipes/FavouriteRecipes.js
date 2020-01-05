@@ -95,7 +95,8 @@ class FavouriteRecipes extends Component {
                         this.state.favouriteRecipeDetail !== null
                             ? <RecipeDetail
                                 isFavouriteList={true}
-                                addToPurchaseList={(...args) => this.props.addToPurchaseList(this.props.itemsToPurchase, ...args)}
+                                purchaseList={this.props.itemsToPurchase}
+                                addToPurchaseList={(...args) => this.props.addToPurchaseList( ...args)}
                                 removeFromFavourite={(id) => this.removeFromFavouritesHandler(id)}
                                 ID={this.state.favouriteRecipeDetail.key}
                                 isBookmarked={this.state.favouriteRecipeDetail.bookmarked}

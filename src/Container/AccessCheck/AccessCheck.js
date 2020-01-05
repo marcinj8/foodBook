@@ -7,7 +7,7 @@ import * as actions from '../../Store/Actions/actions';
 const CORS = 'https://cors-anywhere.herokuapp.com/';
 
 class AppPremission extends Component {
-  componentWillMount () {
+  UNSAFE_componentWillMount () {
     this.AccessCheck ();
     this.getFavouritesRecipes ();
   }

@@ -15,11 +15,20 @@ class ContactForm extends Component {
         placeholders: {},
         isSent: false,
         animatePlaceholder: true,
-        disableSendButton: true
+        disableSendButton: true,
+        startFirstOpenAnimation: false
     };
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         this.setStateOnMount();
+    }
+
+    componentDidUpdate() {
+        if(this.props.isActive && !this.state.startFirstOpenAnimation) {
+            this.setState({
+                startFirstOpenAnimation: true
+            })
+        }
     }
 
     setStateOnMount = () => {
@@ -32,7 +41,6 @@ class ContactForm extends Component {
             placeholders[item.id] = {};
             emailValidation[item.id] = {};
             placeholders[item.id].placeholder = {};
-            // placeholders[item.id].placeholder.start = item.placeholder.start;
             placeholders[item.id].placeholder.end = item.placeholder.end;
             emailValidation[item.id].isValid = false;
             emailValidation[item.id].message = '';
@@ -93,34 +101,6 @@ class ContactForm extends Component {
         })
     }
 
-    // animacja placeholdera
-    // writePlaceholder = (placeholder, writePlaceholder) => {
-    //     setTimeout(() => {
-    //         placeholder.push(writePlaceholder[0]);
-    //         const updatedPlaceholder = placeholder.join('');
-    //         writePlaceholder.shift();
-    //         const updatedWritePlaceholder = writePlaceholder.join('');
-
-    //         this.setState({
-    //             placeholder: updatedPlaceholder,
-    //             writePlaceholder: updatedWritePlaceholder
-    //         });
-    //     }, 130)
-    // }
-
-    // animatePlaceholder = () => {
-    //     let writePlaceholder = [...this.state.placeholders];
-    //     let placeholder = [...this.state.placeholder];
-    //     if (this.state.placeholder === 'Loading...') {
-    //         placeholder = [];
-    //     }
-
-    //     if (writePlaceholder.length >= 1) {
-    //         this.writePlaceholder(placeholder, writePlaceholder)
-    //     }
-    // }
-    // koniec bloku animacji
-
     render() {
         const contactFormStyle = [
             'contactForm__container',
@@ -140,6 +120,7 @@ class ContactForm extends Component {
                 <h4 className='contactForm__title'>Contact me</h4>
                 <form className="contactForm__form">
                     <FormElements
+                        startAnimation={this.state.startFirstOpenAnimation}
                         formConfig={formConfig}
                         placeholders={this.state.placeholders}
                         onChangeElement={this.onInputChange}

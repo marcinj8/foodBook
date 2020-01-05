@@ -1,6 +1,10 @@
 .favouriteRecipes__container {
     position: absolute;
     right: 40%;
+    width: 0%;
+    height: 0;
+    padding: 0;
+    overflow: hidden;
     box-sizing: border-box;
     text-align: center;
     background: rgba(68, 68, 68, 0.75);
@@ -36,9 +40,10 @@
     animation: showFavouriteRecipes .4s forwards;
 }
 
-.favouriteRecipes__container--noActive {
+/* .favouriteRecipes__container--noActive {
     animation: hideFavouriteRecipes .3s forwards;
-}
+} */
+/* rozwiązac problem z animacją na starcie - podczas ładowania strony uruchamia się animacja zamykająca podgląd */
 
 @keyframes showFavouriteRecipes {
     0% {

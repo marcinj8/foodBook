@@ -9,7 +9,7 @@ export const removedFromPurchaseList = id => {
 }
 
 export const removeFromPurchaseList = id => {
-    console.log(id)
+    console.log(id) // id to pusty string, sprawdzić czy można usunąć parametr?
 
     return dispatch => {
         Axios.delete('https://fooddatabase-75cfa.firebaseio.com/purchseList/' + id + '.json')
@@ -29,11 +29,11 @@ const removedMultipleItemsFromPurchaseList = () => {
 
 const filterItemsToSaveOnServer = purchaseList => {
     const updatedPurchaseList = { ...purchaseList };
-    const arrayKeys = Object.keys(updatedPurchaseList).filter(key => {
+    const purchasedItemList = Object.keys(updatedPurchaseList).filter(key => {
         return updatedPurchaseList[key].purchased === true;
     })
-
-    for (let value of arrayKeys) {
+    
+    for (let value of purchasedItemList) {
         delete updatedPurchaseList[value];
     }
 
@@ -68,19 +68,22 @@ const addIngredientesToState = () => {
     }
 }
 
-export const addToPurchaseList = (ingredient, quantity, weight) => {
+export const addToPurchaseList = (ingredient, weight, quantity = null ) => {
     const item = {
-        ingredient: quantity + ' of ' + ingredient,
+        ingredient: quantity === null
+        ? ingredient
+        : quantity + ' of ' + ingredient,
         weight: weight,
         purchased: false
     }
+    console.log('kurwa', ingredient, weight, quantity, item)
 
     console.log(item, 'pushed to server')
     return dispatch => {
         Axios.post('https://fooddatabase-75cfa.firebaseio.com/purchseList.json', item)
             .then(res => {
                 console.log(res);
-                return dispatch(addIngredientesToState(item))
+                return dispatch(addIngredientesToState())
             })
             .catch(err => alert(err))
 

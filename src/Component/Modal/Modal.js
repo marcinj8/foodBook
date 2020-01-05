@@ -5,7 +5,6 @@ import './Modal.css'
 
 const modal = props => {
     let modalStyle = [];
-
     if (props.style) {
         modalStyle = [props.style,
         props.show

@@ -21,7 +21,7 @@
 }
 
 .modal--hide {
-    animation: modalHide .3s forwards;
+    animation: modalHideMobile .1s forwards;
 }
 
 .modal__content {
@@ -80,7 +80,7 @@
         display: none;
     }
     .modal{
-        width: 400px;
+        width: 60%;
 
     }
     .modal--show {
@@ -88,7 +88,7 @@
     }
     
     .modal--hide {
-        animation: modalHide .3s forwards;
+        animation: modalHide .1s forwards;
     }
 }
 @keyframes modalShow {
@@ -99,15 +99,15 @@
 
     100% {
         top: calc(50% - 200px);
-        left: calc(50% - 200px);
+        left: 20%;
     }
 
 }
 
 @keyframes modalHide {
     0% {
+        left: 20%;
         top: calc(50% - 200px);
-        left: calc(50% - 200px);
     }
 
     100% {

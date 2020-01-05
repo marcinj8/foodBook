@@ -14,8 +14,23 @@ const PurchaseItem = props => {
             ? 'purchaseItem__container--purchased'
             : 'purchaseItem__container--toPurchase'
     ]
+
+    let animationStyle = {
+        transitionDelay: props.animationDelay + 's',
+        transition: 'all .3s forwards',
+        transform: 'translateY(-100%)',
+        opacity: 0
+    }
+
+    if (props.startAnimation) {
+        animationStyle.transform = 'translateY(0)';
+        animationStyle.opacity = 1;
+    }
+
     return (
-        <div className={itemStyle.join(' ')}>
+        <div 
+            style={{...animationStyle}}
+            className={itemStyle.join(' ')}>
             {props.ingredient} -
             {Math.round(props.weight)} gram
             {

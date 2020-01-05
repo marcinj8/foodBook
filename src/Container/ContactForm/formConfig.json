@@ -26,12 +26,12 @@
         "validation": {
             "required": true,
             "minLength": 5,
-            "includes": [
+            "email": [
                 "@",
                 "."
             ],
             "excludes": [
-                " "
+                "ą", "ć", "ę", "ł", "ń", "ó", "ś", "ź", "ż"
             ],
             "message": "please check your email address"
         }

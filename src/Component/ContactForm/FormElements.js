@@ -5,10 +5,11 @@ import FormElement from './FormElement';
 
 const formElements = props => {
     const elementes = [];
-    props.formConfig.map(item => {
+    props.formConfig.map((item, index) => {
         return elementes.push(
             <FormElement
                 key={item.id}
+                animationDelay={index * 0.2 + .5}
                 htmlTag={item.htmlTag}
                 class={item.className}
                 type={item.type}
@@ -18,6 +19,7 @@ const formElements = props => {
                     : props.placeholders[item.id].placeholder.end}
                 onChangeElement={props.onChangeElement}
                 itemValue={props.values[item.id]}
+                startAnimation={props.startAnimation}
             />
         )
     })
