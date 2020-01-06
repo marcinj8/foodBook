@@ -18,12 +18,8 @@ class FavouriteRecipes extends Component {
     }
 
     componentDidUpdate() {
-        if (this.props.isActive && !this.state.isLoadedNewList) {
+        if (this.props.isActive && !this.props.isFavouriteRecipesUpdatedOnApp && !this.state.isLoadedNewList) {
             this.setFavouriteList();
-            if (!this.props.isFavouriteRecipesUpdatedOnApp) {
-                this.props.setFavourites();
-                console.log('pobierz nową listę');
-            }
         }
     }
 
@@ -68,7 +64,6 @@ class FavouriteRecipes extends Component {
                 : 'favouriteRecipes__container--noActive'
         ];
         let favouritesRecipesList = [];
-
         if (this.props.favourites !== null) {
             Object.keys(this.props.favourites).map((item) => {
                 return favouritesRecipesList.push({ ...this.props.favourites[item], key: item })
@@ -96,7 +91,7 @@ class FavouriteRecipes extends Component {
                             ? <RecipeDetail
                                 isFavouriteList={true}
                                 purchaseList={this.props.itemsToPurchase}
-                                addToPurchaseList={(...args) => this.props.addToPurchaseList( ...args)}
+                                addToPurchaseList={(...args) => this.props.addToPurchaseList(...args)}
                                 removeFromFavourite={(id) => this.removeFromFavouritesHandler(id)}
                                 ID={this.state.favouriteRecipeDetail.key}
                                 isBookmarked={this.state.favouriteRecipeDetail.bookmarked}
@@ -120,7 +115,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         setFavourites: () => dispatch(actions.setFavourites()),
-        removeFromFavourites: (id, recipes) => dispatch(actions.removeFromFavourities(id, recipes)),
+        removeFromFavourites: (id) => dispatch(actions.removeFromFavourities(id)),
         addToPurchaseList: (...args) => dispatch(actionsPurchaseList.addToPurchaseList(...args))
     }
 }

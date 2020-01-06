@@ -37,7 +37,7 @@ const compareRecipeList = (recipes, favouritesRecipes) => {
   let recipesUpdated = [...recipes];
   if (recipes.length) {
     recipesUpdated.map((recipe, index) => { // zribic for
-      for (let favouriteRecipeID of favouriteRecipesArr){
+      for (let favouriteRecipeID of favouriteRecipesArr) {
         if (recipe.recipe.label === favouritesRecipes[favouriteRecipeID].recipe.label) {
           recipesUpdated[index] = { ...favouritesRecipes[favouriteRecipeID] }
         }
@@ -94,21 +94,19 @@ const setFavouritesRecipes = (state, favRecipes) => {
 }
 
 const updateFavouriteList = (state, newRecipe) => {
-  // debugger
-  console.log('updateFavouriteList', newRecipe)
-  const newFavouritiesList = {...state.favouritesRecipes};
-  const temporaryKey = new Date().getTime();
-  console.log(temporaryKey)
-  newFavouritiesList[temporaryKey] = {...newRecipe};
-  console.log('dupa')
-  const recipeList = compareRecipeList(
-    state.receipts,
-    newFavouritiesList
-  );
+  // console.log('updateFavouriteList', newRecipe)
+  // const newFavouritiesList = {...state.favouritesRecipes};
+  // const temporaryKey = new Date().getTime();
+  // console.log(temporaryKey)
+  // newFavouritiesList[temporaryKey] = {...newRecipe};
+  // const recipeList = compareRecipeList(
+  //   state.receipts,
+  //   newFavouritiesList
+  // );
   return {
     ...state,
-    favouritesRecipes: newFavouritiesList,
-    receipts: recipeList,
+    // favouritesRecipes: newFavouritiesList,
+    // receipts: recipeList,
     isFavouriteRecipesUpdatedOnApp: false,
 
 
@@ -117,9 +115,12 @@ const updateFavouriteList = (state, newRecipe) => {
 };
 
 const deleteRecipeFromFavouriteList = (state, id) => {
-  console.log(id);
+  const updatedFavouritesReclipesList = { ...state.favouritesRecipes };
+  delete updatedFavouritesReclipesList[id];
+  
   return {
     ...state,
+    favouritesRecipes: updatedFavouritesReclipesList,
     isRecipesUpdatedOnApp: false,
   };
 }

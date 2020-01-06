@@ -7,7 +7,6 @@ const recipeDetail = props => {
     if (props.reciptDetail === null) {
         return null
     }
-
     const preparationTime = (
         props.reciptDetail.totalTime > 60
             ? props.reciptDetail.totalTime / 60 > 1
@@ -50,7 +49,7 @@ const recipeDetail = props => {
                     : props.isFavouriteList
                         ? <button
                             className='recipeDetail__button'
-                            onClick={() => props.removeFromFavourite(props.ID)}>Remove from favourite</button>
+                            onClick={() => props.removeFromFavourite(props.ID)}>Remove from favourite </button>
                         : <div className='recipeDetail_confirmation'>Added to favourite</div>
             }
         </div>
